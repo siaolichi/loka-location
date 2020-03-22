@@ -1,0 +1,4 @@
+{
+    "MONGO_URI": "mongodb+srv://lokaAdmin:ye7TFveKVXnxAzVPjG@user-vsmgz.mongodb.net/users?retryWrites=true&w=majority",
+    "JWT_SECRET": "My secret token"
+}
