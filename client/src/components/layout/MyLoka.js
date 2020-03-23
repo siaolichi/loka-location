@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import Button from "@material/react-button";
+import PropTypes from "prop-types";
 import TextField, { Input, HelperText } from "@material/react-text-field";
 import CardGrid from "../elements/CardGrid";
 import Spinner from "./Spinner";
+import { receivePublicGroups } from "../../actions/group"
+import { connect } from "react-redux";
 
 const MyLoka = ({
+  receivePublicGroups,
+  allGroups,
   isAuthenticated,
   profile: {
     loading,
     profile
   }
 }) => {
-  const { groups } = profile
   const [modal, setModal] = useState({
     openPublic: false,
     openPrivate: false,
     choices: ["Berlin Wi-Fi Cafe", "Berlin Twainese Restaurant"],
-    selectedIndex: [],
-    action: "",
     newGroupInput: "",
     newGroupCode: "",
     selectedChoice: [],
@@ -26,16 +28,20 @@ const MyLoka = ({
   });
   useEffect(() => {
     initGroup();
-  }, [groups]);
+  }, [allGroups, profile.groups]);
+  useEffect(() => {
+    receivePublicGroups();
+  }, []);
   if (loading) return <Spinner />;
   if (!isAuthenticated) return <Redirect to="/login" />;
   const initGroup = () => {
     const selected = [],
       other = [];
-    for (let choice of modal.choices) {
-      let index = groups.indexOf(choice);
-      if (index > -1) selected.push(choice);
-      else other.push(choice);
+    for (let group of allGroups) {
+      console.log(group)
+      let index = profile.groups.indexOf(group.name);
+      if (index > -1) selected.push(group);
+      else other.push(group);
     }
     setModal({
       ...modal,
@@ -110,5 +116,11 @@ const MyLoka = ({
     </div>
   );
 };
+MyLoka.propTypes = {
+  allGroups: PropTypes.array.isRequired
+};
 
-export default MyLoka;
+const mapStateToProps = state => ({
+  allGroups: state.group.allGroups
+});
+export default connect(mapStateToProps, {receivePublicGroups})(MyLoka);

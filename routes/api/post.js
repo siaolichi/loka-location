@@ -19,7 +19,6 @@ router.get("/", async (req, res) => {
     console.error(err);
     res.status(404).send("Server Error");
   }
-  res.send("Posts route.");
 });
 
 //@routes       GET api/post/:id
@@ -39,7 +38,6 @@ router.get("/:id", async (req, res) => {
     console.error(err);
     res.status(404).send("Server Error");
   }
-  res.send("Posts route.");
 });
 
 //@routes       POST api/post
@@ -78,8 +76,6 @@ router.post(
       console.error(err);
       res.status(500).send("Server Error");
     }
-
-    res.send("Posts route.");
   }
 );
 
@@ -110,7 +106,6 @@ router.delete("/:id", auth, async (req, res) => {
     console.log(err);
     res.status(500).send("Server Error");
   }
-  res.send("Posts route.");
 });
 
 //@routes       PUT api/post/like/:id
@@ -195,8 +190,6 @@ router.post(
       console.error(err);
       res.status(500).send("Server Error");
     }
-
-    res.send("Posts route.");
   }
 );
 
@@ -229,8 +222,6 @@ router.delete("/comment/:id/:comment_id", auth, async (req, res) => {
     console.error(err);
     res.status(500).send("Server Error");
   }
-
-  res.send("Posts route.");
 });
 
 module.exports = router;

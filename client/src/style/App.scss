@@ -50,7 +50,7 @@ img {
 /* Overlay */
 .dark-overlay {
   background-color: rgba($color: #0f2540, $alpha: 0.6);
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;

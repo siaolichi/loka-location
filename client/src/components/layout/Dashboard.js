@@ -48,18 +48,6 @@ const Dashboard = ({
             ActiveTab === "Map" ?(<Map profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
             (<Redirect to="/"/>)
           }
-          {/* // {()=>{
-          //   switch(ActiveTab){
-          //     case "Profile":
-          //       return (<Profile profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
-          //     case "My LOKA":
-          //       return (<MyLoka profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
-          //     case "Map":
-          //       return (<Map profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
-          //     default: 
-          //       return (<Profile profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
-          //   }
-          // }} */}
         </div>
       </div>
     </div>

@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 import Select, { Option } from "@material/react-select";
+import { receivePublicGroups } from "../../actions/group";
 
 const mapContainerStyle = {
   height: "500px",
@@ -9,36 +12,45 @@ const mapContainerStyle = {
 };
 const Map = ({
   isAuthenticated,
+  receivePublicGroups,
+  allGroups,
   profile: { loading, profile }
 }) => {
+  const [map, setMap] = useState(null)
+  const [markers, setMarkers] = useState([])
   const { google } = window;
   const containerRef = useRef(null);
   const [mapValue, setMapValue] = useState("Home");
   useEffect(() => {
-    initMap();
+    setMap(new window.google.maps.Map(containerRef.current, {
+      zoom: 12
+    }));
+    receivePublicGroups();
   }, []);
+  useEffect(() => {
+    if(map) addMarker(map, profile.location, profile.user.name, "home");
+  }, [map]);
   if (loading) return <Spinner />;
   if (!isAuthenticated) return <Redirect to="/login" />;
 
-  const markersInfo = [
-    {
-      addr: profile.location,
-      type: "home",
-      content: profile.name,
-      type: "home"
-    }
-  ];
 
-  const initMap = () => {
-    const map = new window.google.maps.Map(containerRef.current, {
-      zoom: 7
-    });
-    for (let info of markersInfo) {
-      getLatLngFromAddr(map, info.addr, info.content, info.type);
+  const changeGroupMap = (value) => {
+    setMapValue(value);
+    clearMarkers();
+    if ( value === "Home" ) {
+      console.log(profile)
+      addMarker(map, profile.location, profile.user.name, "home");
     }
-  };
-  const getLatLngFromAddr = (map, addr, content, type = "marker") => {
-    var geocoder = new google.maps.Geocoder();
+    allGroups.forEach((group, index)=>{
+      if ( group.name === value ) {
+        group.locations.forEach((location)=>{
+          addMarker(map, location.address, location.name, "marker");
+        })
+      }
+    });
+  }
+  const addMarker = (map, addr, content, type = "marker") => {
+    let geocoder = new google.maps.Geocoder();
     geocoder.geocode({ address: addr }, function(results, status) {
       if (status === google.maps.GeocoderStatus.OK) {
         const icon = {
@@ -51,19 +63,28 @@ const Map = ({
           position: results[0].geometry.location,
           icon: icon,
           map: map
-        });
-        var infowindow = new google.maps.InfoWindow({
+        })
+        console.log(content)
+        let infowindow = new google.maps.InfoWindow({
           content: content
         });
 
         google.maps.event.addListener(marker, "click", function() {
           infowindow.open(map, marker);
         });
+        markers.push(marker);
         map.setCenter(results[0].geometry.location);
-        console.log("Center");
       } else console.error("error: " + status);
     });
   };
+  const clearMarkers = () => {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+    for (var i = 0; i < markers.length; i++) {
+      if(markers[i].map == null) markers.splice(i, 1);
+    }
+  }
 
   return (
     <Fragment>
@@ -71,9 +92,9 @@ const Map = ({
         outlined
         label="Select Group"
         value={mapValue}
-        onChange={evt => setMapValue(evt.target.value)}
+        onChange={evt => changeGroupMap(evt.target.value)}
       >
-        <Option value="pomsky">Home</Option>
+        <Option value="Home">Home</Option>
         {profile.groups.map((value, i) => (
           <Option key={i} value={value}>
             {value}
@@ -86,5 +107,12 @@ const Map = ({
     </Fragment>
   );
 };
+Map.propTypes = {
+  allGroups: PropTypes.array.isRequired,
+  receivePublicGroups:PropTypes.func.isRequired
+};
 
-export default Map;
+const mapStateToProps = state => ({
+  allGroups: state.group.allGroups
+});
+export default connect(mapStateToProps, {receivePublicGroups})(Map);

@@ -9,7 +9,7 @@ import Card, {
 } from "@material/react-card";
 import { createProfile } from "../../actions/profile";
 
-const CardGrid = ({ type, choices, createProfile, profile }) => {
+const CardGrid = ({ type, choices, createProfile, profile: {profile } }) => {
   const cardStyle = {
     width: "300px",
     height: "400px",
@@ -21,12 +21,10 @@ const CardGrid = ({ type, choices, createProfile, profile }) => {
   const addGroup = choice => {
     if (profile.groups) profile.groups.push(choice);
     else profile.groups = [choice];
-    console.log(profile);
     createProfile(profile);
     console.log(`Add ${choice}`);
   };
   const removeGroup = choice => {
-    console.log(profile);
     let index = profile.groups.indexOf(choice);
     if (index > -1) {
       profile.groups.splice(index, 1);
@@ -39,10 +37,10 @@ const CardGrid = ({ type, choices, createProfile, profile }) => {
       {choices.map((choice, i) => (
         <Card style={cardStyle} key={i}>
           <CardPrimaryContent>
-            <h3>{choice}</h3>
+            <h3>{choice.name}</h3>
             <br />
             <CardMedia square imageUrl={require("../../img/flavor.jpg")} />
-            <p>content</p>
+            <p>{choice.description}</p>
           </CardPrimaryContent>
 
           {type === "others" && (
@@ -50,7 +48,7 @@ const CardGrid = ({ type, choices, createProfile, profile }) => {
               <CardActionButtons>
                 <button
                   onClick={() => {
-                    addGroup(choice);
+                    addGroup(choice.name);
                   }}
                 >
                   Add
@@ -63,7 +61,7 @@ const CardGrid = ({ type, choices, createProfile, profile }) => {
               <CardActionButtons>
                 <button
                   onClick={() => {
-                    removeGroup(choice);
+                    removeGroup(choice.name);
                   }}
                 >
                   Remove
