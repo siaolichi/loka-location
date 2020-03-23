@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import Button from "@material/react-button";
-
-import { getCurrentProfile } from "../../actions/profile";
 
 import Spinner from "./Spinner";
 import CreateProfile from "./CreateProfile";
 
 const Profile = ({
-  getCurrentProfile,
-  auth: { isAuthenticated },
+  isAuthenticated,
   profile: { loading, profile }
 }) => {
   const [editProfile, setEditProfile] = useState(false);
-  useEffect(() => {
-    console.log("GetProfile", isAuthenticated);
-    getCurrentProfile();
-  }, [isAuthenticated, editProfile]);
   console.log("profile", profile);
   if (loading) return <Spinner />;
   if (!isAuthenticated) return <Redirect to="/login" />;
@@ -105,15 +96,5 @@ const Profile = ({
   }
 };
 
-Profile.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
-};
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  profile: state.profile
-});
-
-export default connect(mapStateToProps, { getCurrentProfile })(Profile);
+export default Profile;

@@ -1,21 +1,18 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
-import PropTypes from "prop-types";
 import Button from "@material/react-button";
 import TextField, { Input, HelperText } from "@material/react-text-field";
 import CardGrid from "../elements/CardGrid";
-import { getCurrentProfile } from "../../actions/profile";
 import Spinner from "./Spinner";
 
 const MyLoka = ({
-  getCurrentProfile,
   isAuthenticated,
   profile: {
     loading,
-    profile: { groups }
+    profile
   }
 }) => {
+  const { groups } = profile
   const [modal, setModal] = useState({
     openPublic: false,
     openPrivate: false,
@@ -28,7 +25,6 @@ const MyLoka = ({
     otherChoice: []
   });
   useEffect(() => {
-    getCurrentProfile();
     initGroup();
   }, [groups]);
   if (loading) return <Spinner />;
@@ -49,7 +45,7 @@ const MyLoka = ({
   };
   return (
     <div>
-      <CardGrid type="selected" choices={modal.selectedChoice} />
+      <CardGrid type="selected" choices={modal.selectedChoice} profile={{profile, loading}}/>
       <Button
         outlined
         style={{ margin: "20px", border: "solid 1px #AAA", color: "black" }}
@@ -79,7 +75,7 @@ const MyLoka = ({
         Add Private Group
       </Button>
       {modal.openPublic && (
-        <CardGrid type="others" choices={modal.otherChoice} />
+        <CardGrid type="others" choices={modal.otherChoice} profile={{profile, loading}}/>
       )}
       {modal.openPrivate && (
         <div>
@@ -115,11 +111,4 @@ const MyLoka = ({
   );
 };
 
-MyLoka.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired
-};
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  profile: state.profile
-});
-export default connect(mapStateToProps, { getCurrentProfile })(MyLoka);
+export default MyLoka;

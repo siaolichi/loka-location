@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
-import { getCurrentProfile } from "../../actions/profile";
 import Spinner from "./Spinner";
 import Select, { Option } from "@material/react-select";
 
@@ -11,8 +8,7 @@ const mapContainerStyle = {
   width: "100%"
 };
 const Map = ({
-  getCurrentProfile,
-  auth: { isAuthenticated },
+  isAuthenticated,
   profile: { loading, profile }
 }) => {
   const { google } = window;
@@ -20,11 +16,7 @@ const Map = ({
   const [mapValue, setMapValue] = useState("Home");
   useEffect(() => {
     initMap();
-    getCurrentProfile();
-  }, [isAuthenticated]);
-  useEffect(() => {
-    getCurrentProfile();
-  }, [profile]);
+  }, []);
   if (loading) return <Spinner />;
   if (!isAuthenticated) return <Redirect to="/login" />;
 
@@ -95,15 +87,4 @@ const Map = ({
   );
 };
 
-Map.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth,
-  profile: state.profile
-});
-
-export default connect(mapStateToProps, { getCurrentProfile })(Map);
+export default Map;

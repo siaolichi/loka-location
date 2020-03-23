@@ -80,8 +80,5 @@ const CardGrid = ({ type, choices, createProfile, profile }) => {
 CardGrid.propTypes = {
   createProfile: PropTypes.func.isRequired
 };
-const mapStateToprop = state => ({
-  profile: state.profile.profile
-});
 
-export default connect(mapStateToprop, { createProfile })(CardGrid);
+export default connect(null, { createProfile })(CardGrid);

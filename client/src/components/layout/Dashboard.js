@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import {Redirect} from 'react-router';
+import PropTypes from "prop-types";
+import { getCurrentProfile } from "../../actions/profile";
 import Profile from "./Profile";
 import MyLoka from "./MyLoka";
 import Map from "./Map";
 import "../../style/Dashboard.scss";
-const Dashboard = props => {
-  const [ActiveTab, setActiveTab] = useState(Profile);
+const Dashboard = ({
+  getCurrentProfile,
+  auth: { isAuthenticated },
+  profile: { loading, profile }
+}) => {
+  useEffect(() => {
+    console.log("GetProfile", isAuthenticated);
+    getCurrentProfile();
+  }, [isAuthenticated, getCurrentProfile]);
+  const [ActiveTab, setActiveTab] = useState('Profile');
   const changeTab = e => {
     const allTabs = document.getElementsByClassName("profile-title");
     Object.values(allTabs).forEach(tab => {
       tab.classList.remove("active");
     });
     e.target.classList.add("active");
-    switch (e.target.innerHTML) {
-      case "Profile":
-        setActiveTab(Profile);
-        break;
-      case "My LOKA":
-        setActiveTab(MyLoka);
-        break;
-      case "Map":
-        setActiveTab(Map);
-        break;
-    }
+    setActiveTab(e.target.innerHTML);
   };
 
   return (
@@ -41,11 +42,39 @@ const Dashboard = props => {
 
       <div className="tab__content">
         <div className="content__wrapper">
-          <ActiveTab />
+          {
+            ActiveTab === "Profile" ? (<Profile profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
+            ActiveTab === "My LOKA" ?(<MyLoka profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
+            ActiveTab === "Map" ?(<Map profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
+            (<Redirect to="/"/>)
+          }
+          {/* // {()=>{
+          //   switch(ActiveTab){
+          //     case "Profile":
+          //       return (<Profile profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
+          //     case "My LOKA":
+          //       return (<MyLoka profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
+          //     case "Map":
+          //       return (<Map profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
+          //     default: 
+          //       return (<Profile profile={{profile, loading}} isAuthenticated={isAuthenticated}/>)
+          //   }
+          // }} */}
         </div>
       </div>
     </div>
   );
 };
 
-export default connect(null, null)(Dashboard);
+Dashboard.propTypes = {
+  getCurrentProfile: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  profile: state.profile
+});
+
+export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
