@@ -14,9 +14,9 @@
   "author": "siao.lichi",
   "license": "MIT",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.25",
-    "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@fortawesome/react-fontawesome": "^0.1.7",
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@material/react-card": "^0.15.0",
     "@material/react-checkbox": "^0.15.0",
     "@material/react-dialog": "^0.15.0",
@@ -24,16 +24,16 @@
     "@material/react-material-icon": "^0.15.0",
     "@material/react-select": "^0.15.0",
     "bcryptjs": "^2.4.3",
-    "config": "^3.2.4",
+    "config": "^3.3.0",
     "express": "^4.17.1",
-    "express-validator": "^6.2.0",
+    "express-validator": "^6.4.0",
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.7",
-    "request": "^2.88.0"
+    "mongoose": "^5.9.5",
+    "request": "^2.88.2"
   },
   "devDependencies": {
-    "concurrently": "^5.0.0",
+    "concurrently": "^5.1.0",
     "nodemon": "^1.19.4"
   }
 }
