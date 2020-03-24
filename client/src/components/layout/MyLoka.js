@@ -5,17 +5,14 @@ import PropTypes from "prop-types";
 import TextField, { Input, HelperText } from "@material/react-text-field";
 import CardGrid from "../elements/CardGrid";
 import Spinner from "./Spinner";
-import { receivePublicGroups } from "../../actions/group"
+import { receivePublicGroups } from "../../actions/group";
 import { connect } from "react-redux";
 
 const MyLoka = ({
   receivePublicGroups,
   allGroups,
   isAuthenticated,
-  profile: {
-    loading,
-    profile
-  }
+  profile: { loading, profile }
 }) => {
   const [modal, setModal] = useState({
     openPublic: false,
@@ -27,7 +24,7 @@ const MyLoka = ({
     otherChoice: []
   });
   useEffect(() => {
-    initGroup();
+    if (allGroups.length > 0) initGroup();
   }, [allGroups, profile.groups]);
   useEffect(() => {
     receivePublicGroups();
@@ -38,7 +35,6 @@ const MyLoka = ({
     const selected = [],
       other = [];
     for (let group of allGroups) {
-      console.log(group)
       let index = profile.groups.indexOf(group.name);
       if (index > -1) selected.push(group);
       else other.push(group);
@@ -51,7 +47,11 @@ const MyLoka = ({
   };
   return (
     <div>
-      <CardGrid type="selected" choices={modal.selectedChoice} profile={{profile, loading}}/>
+      <CardGrid
+        type="selected"
+        choices={modal.selectedChoice}
+        profile={{ profile, loading }}
+      />
       <Button
         outlined
         style={{ margin: "20px", border: "solid 1px #AAA", color: "black" }}
@@ -81,7 +81,11 @@ const MyLoka = ({
         Add Private Group
       </Button>
       {modal.openPublic && (
-        <CardGrid type="others" choices={modal.otherChoice} profile={{profile, loading}}/>
+        <CardGrid
+          type="others"
+          choices={modal.otherChoice}
+          profile={{ profile, loading }}
+        />
       )}
       {modal.openPrivate && (
         <div>
@@ -123,4 +127,4 @@ MyLoka.propTypes = {
 const mapStateToProps = state => ({
   allGroups: state.group.allGroups
 });
-export default connect(mapStateToProps, {receivePublicGroups})(MyLoka);
+export default connect(mapStateToProps, { receivePublicGroups })(MyLoka);

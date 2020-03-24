@@ -148,3 +148,39 @@
         padding: 10px;
     }
 }
+
+// Map
+.map-container * {
+    transition: none;
+}
+// .map-input {
+//     width: 90%;
+//     height: 40px;
+//     padding: 10px;
+//     box-shadow: none;
+//     outline: none;
+//     border: none;
+//     margin: 10px auto;
+//     -webkit-appearance:     none;
+//     -webkit-appearance:     none;
+//     -moz-appearance:        none;
+//     -ms-appearance:         none;
+//     -o-appearance:          none;
+//     appearance:             none;
+// }
+
+//MyLoka
+// .my-loka-dialog{
+//     width: 100%;
+//     .mdc-dialog__container {
+//     width: 60% ;
+//     }
+//     .mdc-dialog__surface {
+//         width: 100%;
+//     }
+//     @media (min-width: 592px){
+//         .mdc-dialog__surface {
+//             max-width: 100% !important;
+//         }
+//     }
+// }

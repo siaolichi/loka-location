@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Card, {
@@ -8,21 +8,31 @@ import Card, {
   CardActionButtons
 } from "@material/react-card";
 import { createProfile } from "../../actions/profile";
+import CardModal from "./CardModal";
 
-const CardGrid = ({ type, choices, createProfile, profile: {profile } }) => {
+const CardGrid = ({ type, choices, createProfile, profile: { profile } }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [editInfo, seteditInfo] = useState({
+    name: "",
+    description: "",
+    address: ""
+  });
   const cardStyle = {
     width: "300px",
     height: "400px",
     margin: "10px"
   };
-  const containerStyle = {
-    display: "flex"
+  const openModal = i => {
+    setIsOpen(true);
+    seteditInfo(i);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
   };
   const addGroup = choice => {
     if (profile.groups) profile.groups.push(choice);
     else profile.groups = [choice];
     createProfile(profile);
-    console.log(`Add ${choice}`);
   };
   const removeGroup = choice => {
     let index = profile.groups.indexOf(choice);
@@ -30,12 +40,26 @@ const CardGrid = ({ type, choices, createProfile, profile: {profile } }) => {
       profile.groups.splice(index, 1);
     }
     createProfile(profile);
-    console.log(`Remove ${choice}`);
   };
   return (
-    <div style={containerStyle}>
+    <div style={{ display: "flex" }}>
+      {isOpen ? (
+        <CardModal
+          choice={choices[editInfo]}
+          isOpen={isOpen}
+          closeModal={closeModal}
+        />
+      ) : (
+        ""
+      )}
       {choices.map((choice, i) => (
-        <Card style={cardStyle} key={i}>
+        <Card
+          style={cardStyle}
+          key={i}
+          onClick={e => {
+            openModal(i);
+          }}
+        >
           <CardPrimaryContent>
             <h3>{choice.name}</h3>
             <br />

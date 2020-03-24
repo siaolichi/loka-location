@@ -12,8 +12,8 @@ const User = require("../../models/User");
 router.get("/", async (req, res) => {
   try {
     const posts = await Group.find()
-        .populate("user", [ "name", "avatar" ])
-        .sort({ date: -1 });
+      .populate("user", ["name", "avatar"])
+      .sort({ date: -1 });
     res.json(posts);
   } catch (err) {
     console.error(err);
@@ -48,12 +48,12 @@ router.post(
   [
     auth,
     [
-        check("name", "Text is required")
+      check("name", "Text is required")
         .not()
         .isEmpty(),
-        check("public", "Choose public or private")
+      check("public", "Choose public or private")
         .not()
-        .isEmpty(),
+        .isEmpty()
     ]
   ],
   async (req, res) => {
@@ -116,12 +116,15 @@ router.post(
   [
     auth,
     [
-        check("name", "Name is required")
-            .not()
-            .isEmpty(),
-        check("address", "Address is required")
-            .not()
-            .isEmpty()
+      check("name", "Name is required")
+        .not()
+        .isEmpty(),
+      check("address", "Address is required")
+        .not()
+        .isEmpty(),
+      check("latLng", "Address is required")
+        .not()
+        .isEmpty()
     ]
   ],
   async (req, res) => {
@@ -131,18 +134,19 @@ router.post(
     }
 
     try {
-        const user = await User.findById(req.user.id).select("-password");
-        const group = await Group.findById(req.params.id);
-        const newLocation = {
-            user: user.id,
-            avatar: user.avatar,
-            name: req.body.name,
-            address: req.body.address,
-            photo: req.body.photo,
-            description: req.body.description
-        };
+      const user = await User.findById(req.user.id).select("-password");
+      const group = await Group.findById(req.params.id);
+      const newLocation = {
+        user: user.id,
+        avatar: user.avatar,
+        name: req.body.name,
+        address: req.body.address,
+        photo: req.body.photo,
+        latLng: req.body.latLng,
+        description: req.body.description
+      };
 
-        group.locations.unshift(newLocation);
+      group.locations.unshift(newLocation);
 
       const location = await group.save();
       res.json(location);
@@ -167,7 +171,10 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
     if (!location) return res.status(404).json({ msg: "Location not found" });
 
     //Check user
-    if ((req.user.id !== location.user.toString()) || (req.user.id !== group.user.toString())) {
+    if (
+      req.user.id !== location.user.toString() ||
+      req.user.id !== group.user.toString()
+    ) {
       return res.status(401).json({ msg: "User not authorized" });
     }
 
@@ -175,7 +182,7 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
     const removeIndex = group.locations
       .map(location => location.id.toString())
       .indexOf(req.params.comment_id);
-      group.locations.splice(removeIndex, 1);
+    group.locations.splice(removeIndex, 1);
     await group.save();
     res.json(group.locations);
   } catch (err) {

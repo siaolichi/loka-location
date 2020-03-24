@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {Redirect} from 'react-router';
+import { Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { getCurrentProfile } from "../../actions/profile";
 import Profile from "./Profile";
@@ -16,7 +16,7 @@ const Dashboard = ({
     console.log("GetProfile", isAuthenticated);
     getCurrentProfile();
   }, [isAuthenticated, getCurrentProfile]);
-  const [ActiveTab, setActiveTab] = useState('Profile');
+  const [ActiveTab, setActiveTab] = useState("Profile");
   const changeTab = e => {
     const allTabs = document.getElementsByClassName("profile-title");
     Object.values(allTabs).forEach(tab => {
@@ -42,12 +42,24 @@ const Dashboard = ({
 
       <div className="tab__content">
         <div className="content__wrapper">
-          {
-            ActiveTab === "Profile" ? (<Profile profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
-            ActiveTab === "My LOKA" ?(<MyLoka profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
-            ActiveTab === "Map" ?(<Map profile={{profile, loading}} isAuthenticated={isAuthenticated}/>):
-            (<Redirect to="/"/>)
-          }
+          {ActiveTab === "Profile" ? (
+            <Profile
+              profile={{ profile, loading }}
+              isAuthenticated={isAuthenticated}
+            />
+          ) : ActiveTab === "My LOKA" ? (
+            <MyLoka
+              profile={{ profile, loading }}
+              isAuthenticated={isAuthenticated}
+            />
+          ) : ActiveTab === "Map" ? (
+            <Map
+              profile={{ profile, loading }}
+              isAuthenticated={isAuthenticated}
+            />
+          ) : (
+            <Redirect to="/" />
+          )}
         </div>
       </div>
     </div>
