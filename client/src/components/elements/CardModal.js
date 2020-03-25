@@ -9,10 +9,14 @@ import Dialog, {
 } from "@material/react-dialog";
 // import TextField, { Input, HelperText } from "@material/react-text-field";
 import MaterialIcon from "@material/react-material-icon";
-// import Button from "@material/react-button";
+import Button from "@material/react-button";
 import GMap from "./GMap";
 import TextField, { Input } from "@material/react-text-field";
-import { changeLocationDetail, removeLocation } from "../../actions/group";
+import {
+  changeLocationDetail,
+  removeLocation,
+  removeGroupFromAllGroups
+} from "../../actions/group";
 
 const GroupMadol = ({
   isOpen,
@@ -20,6 +24,7 @@ const GroupMadol = ({
   choice,
   changeLocationDetail,
   removeLocation,
+  removeGroupFromAllGroups,
   userID
 }) => {
   const [locations, setLocations] = useState(choice.locations);
@@ -51,7 +56,10 @@ const GroupMadol = ({
                   <b>{location.name}</b>:{location.address}
                   <br />
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <TextField style={{ width: "calc(100% - 50px)" }}>
+                    <TextField
+                      label="edit details"
+                      style={{ width: "calc(100% - 50px)" }}
+                    >
                       <Input
                         value={location.description}
                         onChange={e => {
@@ -87,6 +95,19 @@ const GroupMadol = ({
             })}
           </ul>
           <GMap locations={choice.locations} group_id={choice._id} />
+          <Button
+            style={{
+              color: "rgba(255, 0, 0, 0.6)",
+              fontSize: "9px",
+              float: "right"
+            }}
+            onClick={() => {
+              closeModal();
+              removeGroupFromAllGroups(choice._id);
+            }}
+          >
+            Delete Completely
+          </Button>
         </DialogContent>
         <DialogFooter>
           <DialogButton action="confirm">Close</DialogButton>
@@ -98,7 +119,8 @@ const GroupMadol = ({
 
 GroupMadol.propTypes = {
   changeLocationDetail: PropTypes.func.isRequired,
-  removeLocation: PropTypes.func.isRequired
+  removeLocation: PropTypes.func.isRequired,
+  removeGroupFromAllGroups: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -107,5 +129,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   changeLocationDetail,
-  removeLocation
+  removeLocation,
+  removeGroupFromAllGroups
 })(GroupMadol);

@@ -129,3 +129,27 @@ export const removeLocation = (group_id, location_id) => async dispatch => {
     });
   }
 };
+
+export const removeGroupFromAllGroups = group_id => async dispatch => {
+  try {
+    const config = {
+      header: {
+        "content-type": "application/json"
+      }
+    };
+    const res = await axios.delete(`/api/group/${group_id}`, config);
+    console.log(res.data);
+    dispatch(receivePublicGroups());
+    dispatch(setAlert("Group deleted", "success"));
+  } catch (err) {
+    console.log(err);
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: GROUP_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};

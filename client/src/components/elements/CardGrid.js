@@ -77,9 +77,8 @@ const CardGrid = ({
             <CardMedia square imageUrl={require("../../img/flavor.jpg")} />
             <p>{choice.description}</p>
           </CardPrimaryContent>
-
-          {type === "others" && (
-            <CardActions>
+          <CardActions>
+            {type === "others" && (
               <CardActionButtons>
                 <button
                   onClick={() => {
@@ -89,10 +88,8 @@ const CardGrid = ({
                   Add
                 </button>
               </CardActionButtons>
-            </CardActions>
-          )}
-          {type === "selected" && (
-            <CardActions>
+            )}
+            {type === "selected" && (
               <CardActionButtons>
                 <button
                   onClick={() => {
@@ -102,8 +99,8 @@ const CardGrid = ({
                   Remove
                 </button>
               </CardActionButtons>
-            </CardActions>
-          )}
+            )}
+          </CardActions>
         </Card>
       ))}
     </div>
@@ -115,6 +112,7 @@ CardGrid.propTypes = {
   removeGroupToProfile: PropTypes.func.isRequired
 };
 
-export default connect(null, { addGroupToProfile, removeGroupToProfile })(
-  CardGrid
-);
+export default connect(null, {
+  addGroupToProfile,
+  removeGroupToProfile
+})(CardGrid);
