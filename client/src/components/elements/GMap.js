@@ -12,11 +12,14 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
   const [map, setMap] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [markers, setMarkers] = useState([]);
-  const { google } = window;
+  const [description, setDescription] = useState("");
+
   const containerRef = useRef(null);
   const inputRef = useRef(null);
   const infoWindowRef = useRef(null);
-  const [description, setDescription] = useState("");
+
+  const { google } = window;
+  const infowindow = new google.maps.InfoWindow();
 
   useEffect(() => {
     setMap(
@@ -116,8 +119,6 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
           ""
       ].join(" ");
     }
-
-    let infowindow = new google.maps.InfoWindow();
     let infowindowContent = infoWindowRef.current;
     infowindow.setContent(infowindowContent);
     infowindowContent.children[0].textContent = place.name;
@@ -154,6 +155,7 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
     location.latLng = latLng;
     location.description = description;
     addLocationToGroup(group_id, location);
+    setDescription("");
   };
   return (
     <Fragment>
@@ -176,7 +178,7 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       <div ref={infoWindowRef}>
         <b className="title"></b>
         <p className="address"></p>
-        <p className="lat-lng" style={{ display: "none" }}></p>
+        <p className="lat-lng"></p>
         <TextField
           outlined
           textarea

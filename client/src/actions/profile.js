@@ -48,3 +48,21 @@ export const createProfile = (
     });
   }
 };
+
+export const addGroupToProfile = group => async dispatch => {
+  const res = await axios.get("/api/profile/me");
+  const profile = res.data;
+  if (profile.groups) profile.groups.push(group);
+  else profile.groups = [group];
+  dispatch(createProfile(profile, true));
+};
+
+export const removeGroupToProfile = group => async dispatch => {
+  const res = await axios.get("/api/profile/me");
+  const profile = res.data;
+  let index = profile.groups.indexOf(group);
+  if (index > -1) {
+    profile.groups.splice(index, 1);
+  }
+  dispatch(createProfile(profile, true));
+};

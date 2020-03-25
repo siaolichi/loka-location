@@ -157,6 +157,49 @@ router.post(
   }
 );
 
+//@routes       POST api/group/location
+//@desc         Edit location details
+//@access       private
+router.post("/location/:id/:location_id", auth, async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+
+    const location = group.locations.find(
+      location => location.id == req.params.location_id
+    );
+    if (!location) return res.status(404).json({ msg: "Location not found" });
+
+    const newLocation = {
+      user: location.user,
+      avatar: location.avatar,
+      name: location.name,
+      address: location.address,
+      photo: location.photo,
+      latLng: location.latLng,
+      description: req.body.description
+    };
+    //Check user
+    // if (
+    //   req.user.id !== location.user.toString() ||
+    //   req.user.id !== group.user.toString()
+    // ) {
+    //   return res.status(401).json({ msg: "User not authorized" });
+    // }
+
+    //Get remove index
+    const editIndex = group.locations
+      .map(location => location.id.toString())
+      .indexOf(req.params.location_id);
+    group.locations[editIndex] = newLocation;
+    console.log(newLocation);
+    await group.save();
+    res.json(group.locations);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@routes       DELETE api/group/location
 //@desc         Delete a location from a post
 //@access       private
@@ -181,7 +224,7 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
     //Get remove index
     const removeIndex = group.locations
       .map(location => location.id.toString())
-      .indexOf(req.params.comment_id);
+      .indexOf(req.params.location_id);
     group.locations.splice(removeIndex, 1);
     await group.save();
     res.json(group.locations);

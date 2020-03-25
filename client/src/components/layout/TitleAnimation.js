@@ -14,7 +14,7 @@ const TitleAnimation = () => {
           className="block-reveal"
           style={{ "--bc": "#fff", "--d": ".5s", fontSize: "32px" }}
         >
-          Create your own locations
+          Share your Maps
         </div>
       </h1>
     </div>

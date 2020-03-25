@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Redirect } from "react-router";
 import Button from "@material/react-button";
 import PropTypes from "prop-types";
 import TextField, { Input, HelperText } from "@material/react-text-field";
 import CardGrid from "../elements/CardGrid";
 import Spinner from "./Spinner";
-import { receivePublicGroups } from "../../actions/group";
+import { receivePublicGroups, createGroup } from "../../actions/group";
 import { connect } from "react-redux";
 
 const MyLoka = ({
+  createGroup,
   receivePublicGroups,
   allGroups,
   isAuthenticated,
@@ -18,6 +19,7 @@ const MyLoka = ({
     openPublic: false,
     openPrivate: false,
     choices: ["Berlin Wi-Fi Cafe", "Berlin Twainese Restaurant"],
+    newPublicGroupInput: "",
     newGroupInput: "",
     newGroupCode: "",
     selectedChoice: [],
@@ -66,7 +68,7 @@ const MyLoka = ({
       >
         Add Public Group
       </Button>
-      <Button
+      {/* <Button
         outlined
         style={{ margin: "20px", border: "solid 1px #AAA", color: "black" }}
         className="fade-in"
@@ -79,13 +81,46 @@ const MyLoka = ({
         }}
       >
         Add Private Group
-      </Button>
+      </Button> */}
       {modal.openPublic && (
-        <CardGrid
-          type="others"
-          choices={modal.otherChoice}
-          profile={{ profile, loading }}
-        />
+        <div>
+          <TextField label="Create group" outlined>
+            <Input
+              value={modal.newPublicGroupInput}
+              onChange={e =>
+                setModal({
+                  ...modal,
+                  newPublicGroupInput: e.currentTarget.value
+                })
+              }
+            />
+          </TextField>
+          <Button
+            outlined
+            style={{
+              margin: "20px",
+              border: "solid 1px #AAA",
+              color: "black",
+              display: "inline-box"
+            }}
+            className="fade-in"
+            onClick={e => {
+              setModal({
+                ...modal,
+                newPublicGroupInput: "",
+                openPublic: false
+              });
+              createGroup({ name: modal.newPublicGroupInput, public: true });
+            }}
+          >
+            create
+          </Button>
+          <CardGrid
+            type="others"
+            choices={modal.otherChoice}
+            profile={{ profile, loading }}
+          />
+        </div>
       )}
       {modal.openPrivate && (
         <div>
@@ -121,10 +156,14 @@ const MyLoka = ({
   );
 };
 MyLoka.propTypes = {
-  allGroups: PropTypes.array.isRequired
+  allGroups: PropTypes.array.isRequired,
+  createGroup: PropTypes.func.isRequired,
+  receivePublicGroups: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   allGroups: state.group.allGroups
 });
-export default connect(mapStateToProps, { receivePublicGroups })(MyLoka);
+export default connect(mapStateToProps, { receivePublicGroups, createGroup })(
+  MyLoka
+);

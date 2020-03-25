@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Dialog, {
   DialogTitle,
@@ -8,11 +8,23 @@ import Dialog, {
   DialogButton
 } from "@material/react-dialog";
 // import TextField, { Input, HelperText } from "@material/react-text-field";
-
+import MaterialIcon from "@material/react-material-icon";
 import Button from "@material/react-button";
 import GMap from "./GMap";
+import TextField, { Input } from "@material/react-text-field";
+import { changeLocationDetail, removeLocation } from "../../actions/group";
 
-const GroupMadol = ({ isOpen, closeModal, choice }) => {
+const GroupMadol = ({
+  isOpen,
+  closeModal,
+  choice,
+  changeLocationDetail,
+  removeLocation
+}) => {
+  const [locations, setLocations] = useState(choice.locations);
+  useEffect(() => {
+    setLocations(choice.locations);
+  }, [choice.locations]);
   console.log(choice);
   return (
     <div>
@@ -26,12 +38,45 @@ const GroupMadol = ({ isOpen, closeModal, choice }) => {
       >
         <DialogTitle>{choice.name}</DialogTitle>
         <DialogContent>
-          <h3>{choice.description}</h3>
           <ul>
-            {choice.locations.map((location, i) => {
+            {locations.map((location, i) => {
               return (
-                <li key={i}>
-                  {location.name}:{location.address}
+                <li
+                  key={location._id}
+                  style={{
+                    margin: "5px 0"
+                  }}
+                >
+                  <b>{location.name}</b>:{location.address}
+                  <br />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <TextField style={{ width: "calc(100% - 50px)" }}>
+                      <Input
+                        value={location.description}
+                        onChange={e => {
+                          const tmpLocations = [...locations];
+                          tmpLocations[i].description = e.currentTarget.value;
+                          setLocations(tmpLocations);
+                        }}
+                      />
+                    </TextField>
+                    <MaterialIcon
+                      role="button"
+                      icon="check"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        changeLocationDetail(choice._id, location);
+                      }}
+                    />
+                    <MaterialIcon
+                      role="button"
+                      icon="delete"
+                      style={{ float: "right", cursor: "pointer" }}
+                      onClick={() => {
+                        removeLocation(choice._id, location._id);
+                      }}
+                    />
+                  </div>
                 </li>
               );
             })}
@@ -46,6 +91,11 @@ const GroupMadol = ({ isOpen, closeModal, choice }) => {
   );
 };
 
-GroupMadol.propTypes = {};
+GroupMadol.propTypes = {
+  changeLocationDetail: PropTypes.func.isRequired,
+  removeLocation: PropTypes.func.isRequired
+};
 
-export default connect(null, null)(GroupMadol);
+export default connect(null, { changeLocationDetail, removeLocation })(
+  GroupMadol
+);

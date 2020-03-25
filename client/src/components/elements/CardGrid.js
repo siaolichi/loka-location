@@ -7,10 +7,16 @@ import Card, {
   CardActions,
   CardActionButtons
 } from "@material/react-card";
-import { createProfile } from "../../actions/profile";
+import { addGroupToProfile, removeGroupToProfile } from "../../actions/profile";
 import CardModal from "./CardModal";
 
-const CardGrid = ({ type, choices, createProfile, profile: { profile } }) => {
+const CardGrid = ({
+  addGroupToProfile,
+  removeGroupToProfile,
+  type,
+  choices,
+  profile: { profile }
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [editInfo, seteditInfo] = useState({
     name: "",
@@ -23,26 +29,28 @@ const CardGrid = ({ type, choices, createProfile, profile: { profile } }) => {
     margin: "10px"
   };
   const openModal = i => {
-    setIsOpen(true);
-    seteditInfo(i);
+    if (type === "selected") {
+      setIsOpen(true);
+      seteditInfo(i);
+    }
   };
   const closeModal = () => {
     setIsOpen(false);
   };
   const addGroup = choice => {
-    if (profile.groups) profile.groups.push(choice);
-    else profile.groups = [choice];
-    createProfile(profile);
+    addGroupToProfile(choice);
   };
   const removeGroup = choice => {
-    let index = profile.groups.indexOf(choice);
-    if (index > -1) {
-      profile.groups.splice(index, 1);
-    }
-    createProfile(profile);
+    removeGroupToProfile(choice);
   };
   return (
-    <div style={{ display: "flex" }}>
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-around"
+      }}
+    >
       {isOpen ? (
         <CardModal
           choice={choices[editInfo]}
@@ -56,13 +64,16 @@ const CardGrid = ({ type, choices, createProfile, profile: { profile } }) => {
         <Card
           style={cardStyle}
           key={i}
-          onClick={e => {
-            openModal(i);
-          }}
+          style={{ minWidth: "300px", margin: "10px" }}
         >
-          <CardPrimaryContent>
-            <h3>{choice.name}</h3>
-            <br />
+          <CardPrimaryContent
+            onClick={e => {
+              openModal(i);
+            }}
+          >
+            <div style={{ height: "4rem" }}>
+              <h3>{choice.name}</h3>
+            </div>
             <CardMedia square imageUrl={require("../../img/flavor.jpg")} />
             <p>{choice.description}</p>
           </CardPrimaryContent>
@@ -100,7 +111,10 @@ const CardGrid = ({ type, choices, createProfile, profile: { profile } }) => {
 };
 
 CardGrid.propTypes = {
-  createProfile: PropTypes.func.isRequired
+  addGroupToProfile: PropTypes.func.isRequired,
+  removeGroupToProfile: PropTypes.func.isRequired
 };
 
-export default connect(null, { createProfile })(CardGrid);
+export default connect(null, { addGroupToProfile, removeGroupToProfile })(
+  CardGrid
+);

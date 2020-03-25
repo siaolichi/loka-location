@@ -52,7 +52,8 @@ const Map = ({
 
     allGroups.forEach((group, index) => {
       if (group.name === value) {
-        map.setCenter(group.locations[0].latLng);
+        if (group.locations.length > 0)
+          map.setCenter(group.locations[0].latLng);
         group.locations.forEach(location => {
           addMarker(map, location, "marker");
         });
@@ -64,8 +65,8 @@ const Map = ({
     const icon = {
       url: require(`../../img/${type}.png`),
       scaledSize: new google.maps.Size(50, 50),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(0, 32)
+      origin: new google.maps.Point(0, 0)
+      // anchor: new google.maps.Point(0, 32)
     };
     const marker = new google.maps.Marker({
       position: location.latLng,
@@ -75,9 +76,8 @@ const Map = ({
     // InfoWindow
     const infowindowContent = infoWindowRef.current;
     infowindow.setContent(infowindowContent);
-    if (infowindowContent.children[0].textContent.length < 2) {
-      infowindow.close();
-    }
+    infowindow.close();
+
     google.maps.event.addListener(marker, "click", function() {
       infowindowContent.children[0].textContent = location.name;
       infowindowContent.children[1].textContent = location.address;
@@ -89,10 +89,10 @@ const Map = ({
     markers.push(marker);
   };
   const clearMarkers = () => {
-    for (var i = 0; i < markers.length; i++) {
+    for (let i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
     }
-    for (var i = 0; i < markers.length; i++) {
+    for (let i = 0; i < markers.length; i++) {
       if (markers[i].map == null) markers.splice(i, 1);
     }
   };
@@ -106,9 +106,9 @@ const Map = ({
         onChange={evt => changeGroupMap(evt.target.value)}
       >
         {/* <Option value="Home">Home</Option> */}
-        {profile.groups.map((value, i) => (
-          <Option key={i} value={value}>
-            {value}
+        {profile.groups.map(group => (
+          <Option key={group._id} value={group}>
+            {group}
           </Option>
         ))}
       </Select>
