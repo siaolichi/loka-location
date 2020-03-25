@@ -9,7 +9,7 @@ import Dialog, {
 } from "@material/react-dialog";
 // import TextField, { Input, HelperText } from "@material/react-text-field";
 import MaterialIcon from "@material/react-material-icon";
-import Button from "@material/react-button";
+// import Button from "@material/react-button";
 import GMap from "./GMap";
 import TextField, { Input } from "@material/react-text-field";
 import { changeLocationDetail, removeLocation } from "../../actions/group";
@@ -19,7 +19,8 @@ const GroupMadol = ({
   closeModal,
   choice,
   changeLocationDetail,
-  removeLocation
+  removeLocation,
+  userID
 }) => {
   const [locations, setLocations] = useState(choice.locations);
   useEffect(() => {
@@ -68,14 +69,18 @@ const GroupMadol = ({
                         changeLocationDetail(choice._id, location);
                       }}
                     />
-                    <MaterialIcon
-                      role="button"
-                      icon="delete"
-                      style={{ float: "right", cursor: "pointer" }}
-                      onClick={() => {
-                        removeLocation(choice._id, location._id);
-                      }}
-                    />
+                    {userID === location.user ? (
+                      <MaterialIcon
+                        role="button"
+                        icon="delete"
+                        style={{ float: "right", cursor: "pointer" }}
+                        onClick={() => {
+                          removeLocation(choice._id, location._id);
+                        }}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </li>
               );
@@ -96,6 +101,11 @@ GroupMadol.propTypes = {
   removeLocation: PropTypes.func.isRequired
 };
 
-export default connect(null, { changeLocationDetail, removeLocation })(
-  GroupMadol
-);
+const mapStateToProps = state => ({
+  userID: state.auth.user._id
+});
+
+export default connect(mapStateToProps, {
+  changeLocationDetail,
+  removeLocation
+})(GroupMadol);
