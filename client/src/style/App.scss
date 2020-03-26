@@ -98,6 +98,41 @@ img {
   margin-bottom: 0.5rem;
 }
 
+/* Alert */
+.alert-contianer {
+  top: 60px;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+}
+.alert {
+  height: 60px;
+  line-height: 60px;
+  color: white;
+  text-align: center;
+  width: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+}
+.alert-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+.alert-light {
+  background: var(--light-color);
+  color: #333;
+}
+.alert-dark {
+  color: var(--dark-color);
+}
+.alert-danger {
+  color: var(--danger-color);
+}
+.alert-success {
+  color: var(--success-color);
+}
+
+
 /* Animation */
 .fade-in {
   -webkit-animation: fadein 1s ; /* Safari, Chrome and Opera > 12.1 */

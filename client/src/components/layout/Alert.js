@@ -2,15 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-const Alert = ({ alerts }) =>
-  alerts !== null &&
-  alerts.length > 0 &&
-  alerts.map(alert => (
-    /*eslint no-unused-expressions: ["off", { "allowShortCircuit": false }]*/
-    <div key={alert.id} className={`fade-in alert alert-${alert.alertType}`}>
-      {alert.msg}
-    </div>
-  ));
+const Alert = ({ alerts }) => (
+  <div className="alert-contianer">
+    {alerts !== null &&
+      alerts.length > 0 &&
+      alerts.map(alert => (
+        /*eslint no-unused-expressions: ["off", { "allowShortCircuit": false }]*/
+        <div
+          key={alert.id}
+          className={`fade-in alert alert-${alert.alertType}`}
+        >
+          {alert.msg}
+        </div>
+      ))}
+  </div>
+);
 
 Alert.propTypes = {
   alerts: PropTypes.array.isRequired
