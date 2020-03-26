@@ -6,7 +6,6 @@ import { addGroupToProfile, removeGroupToProfile } from "./profile";
 export const receivePublicGroups = () => async dispatch => {
   try {
     const res = await axios.get("/api/group");
-    console.log(res);
     dispatch({
       type: GET_GROUPS,
       payload: res.data
@@ -59,7 +58,6 @@ export const createGroup = group => async dispatch => {
       }
     };
     const res = await axios.post("/api/group", group, config);
-    console.log(res.data);
     await dispatch(receivePublicGroups());
     dispatch(addGroupToProfile(group.name));
   } catch (err) {
@@ -87,7 +85,6 @@ export const changeLocationDetail = (group_id, location) => async dispatch => {
       location,
       config
     );
-    console.log(res.data);
     dispatch(receivePublicGroups());
     dispatch(setAlert("Location updated", "success"));
   } catch (err) {
@@ -114,7 +111,6 @@ export const removeLocation = (group_id, location_id) => async dispatch => {
       `/api/group/location/${group_id}/${location_id}`,
       config
     );
-    console.log(res.data);
     dispatch(receivePublicGroups());
     dispatch(setAlert("Location updated", "success"));
   } catch (err) {
@@ -139,7 +135,6 @@ export const removeGroupFromAllGroups = group => async dispatch => {
     };
     const res = await axios.delete(`/api/group/${group._id}`, config);
     await dispatch(removeGroupToProfile(group.name));
-    console.log(res.data);
     dispatch(receivePublicGroups());
     dispatch(setAlert("Group deleted", "success"));
   } catch (err) {
