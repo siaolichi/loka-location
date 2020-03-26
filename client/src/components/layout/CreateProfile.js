@@ -14,7 +14,8 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
   const [formData, setFormData] = useState(
     initProfile === null
       ? {
-          name: "",
+          name: initProfile.user.name,
+          email: initProfile.user.email,
           bio: "",
           website: "",
           location: "",
@@ -25,6 +26,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
       : initProfile.social
       ? {
           name: initProfile.user.name,
+          email: initProfile.user.email,
           bio: initProfile.bio,
           website: initProfile.website,
           location: initProfile.location,
@@ -34,6 +36,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
         }
       : {
           name: initProfile.user.name,
+          email: initProfile.user.email,
           bio: initProfile.bio,
           website: initProfile.website,
           location: initProfile.location
@@ -47,11 +50,21 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
   return (
     <div id="create-profile" className="fade-in">
       <div className="form-group">
-        <TextField label="Name( *Required )" className="profile-form" outlined>
+        <TextField label="Name" className="profile-form" outlined disabled>
           <Input
+            disabled
             value={formData.name}
             onChange={e => {
               setFormData({ ...formData, name: e.currentTarget.value });
+            }}
+          />
+        </TextField>
+        <TextField label="Email" className="profile-form" outlined disabled>
+          <Input
+            disabled
+            value={formData.email}
+            onChange={e => {
+              setFormData({ ...formData, email: e.currentTarget.value });
             }}
           />
         </TextField>

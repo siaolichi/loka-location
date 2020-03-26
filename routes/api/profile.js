@@ -58,9 +58,10 @@ router.post("/", auth, async (req, res) => {
         { $set: profileFields },
         { new: true }
       );
+      console.log("Found Profile", profile);
       return res.json(profile);
     }
-
+    console.log("Not found Profile");
     //Create if profile not found
     profile = new Profile(profileFields);
     await profile.save();
@@ -75,15 +76,15 @@ router.post("/", auth, async (req, res) => {
 // @routes       GET api/profiles
 // @desc         Get all user's profile
 // @access       public
-router.get("/", async (req, res) => {
-  try {
-    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
-    res.json(profiles);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error.");
-  }
-});
+// router.get("/", async (req, res) => {
+//   try {
+//     const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+//     res.json(profiles);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Server Error.");
+//   }
+// });
 
 // @routes       GET api/profile/user/:user_id
 // @desc         Get profile by user ID

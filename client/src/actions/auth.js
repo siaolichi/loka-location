@@ -1,6 +1,7 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import { setAlert } from "./alert";
+import { createProfile } from "./profile";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAILED,
@@ -28,6 +29,14 @@ export const signup = ({ name, email, password }) => async dispatch => {
       payload: res.data
     });
     dispatch(loadUser());
+    // await dispatch(
+    //   createProfile({
+    //     name: name,
+    //     bio: "",
+    //     website: "",
+    //     location: ""
+    //   })
+    // );
   } catch (err) {
     const errors = err.response.data.errors;
     dispatch({ type: REGISTER_FAILED });
