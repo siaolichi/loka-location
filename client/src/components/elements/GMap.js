@@ -11,7 +11,7 @@ const mapContainerStyle = {
 const GMap = ({ locations, addLocationToGroup, group_id }) => {
   const [map, setMap] = useState(null);
   const [inputValue, setInputValue] = useState("");
-  const [markers, setMarkers] = useState([]);
+  const [markers] = useState([]);
   const [description, setDescription] = useState("");
 
   const containerRef = useRef(null);

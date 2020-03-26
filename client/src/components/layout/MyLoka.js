@@ -72,7 +72,7 @@ const MyLoka = ({
           });
         }}
       >
-        Add Public Group
+        Join Group
       </Button>
       {/* <Button
         outlined

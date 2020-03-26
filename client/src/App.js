@@ -53,7 +53,7 @@ function App() {
                 path="/map/:groupId"
                 component={({ match, location }) => {
                   // console.log(match, location);
-                  return [
+                  return (
                     <Map
                       profile={{
                         loading: false,
@@ -61,7 +61,7 @@ function App() {
                       }}
                       match={match}
                     />
-                  ];
+                  );
                 }}
               />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />

@@ -1,7 +1,13 @@
 .map-selection{ 
     width: 100%;
-    background-color: rgba($color: #fff, $alpha: 0.6) !important;
+    background-color: rgba($color: #fff, $alpha: 1) !important;
 }
-.share-map-button {
-    margin: auto;
+.share-map-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .share-map-button {
+        width: 100%;
+        background-color: rgba($color: #fff, $alpha: 1) !important;
+    }
 }

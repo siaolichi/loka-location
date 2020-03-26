@@ -7,12 +7,30 @@ import Select, { Option } from "@material/react-select";
 import { receivePublicGroups } from "../../actions/group";
 import "../../style/Map.scss";
 import { Button } from "@material/react-button";
+import { setAlert } from "../../actions/alert";
 
 const mapContainerStyle = {
   height: "500px",
   width: "100%",
   transition: "none"
 };
+
+function copyStringToClipboard(str) {
+  // Create new element
+  var el = document.createElement("textarea");
+  // Set value (string to be copied)
+  el.value = str;
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute("readonly", "");
+  el.style = { position: "absolute", left: "-9999px" };
+  document.body.appendChild(el);
+  // Select text inside element
+  el.select();
+  // Copy text to clipboard
+  document.execCommand("copy");
+  // Remove temporary element
+  document.body.removeChild(el);
+}
 const Map = ({
   match,
   receivePublicGroups,
@@ -26,14 +44,11 @@ const Map = ({
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const [mapValue, setMapValue] = useState("");
-  if (match) {
-    const { params } = match;
-    console.log(params);
-  }
+  const [groupId, setGroupId] = useState("");
   useEffect(() => {
     receivePublicGroups();
     setMap(
-      new window.google.maps.Map(containerRef.current, {
+      new google.maps.Map(containerRef.current, {
         zoom: 12
       })
     );
@@ -44,7 +59,23 @@ const Map = ({
   if (loading) return <Spinner />;
   // if (!isAuthenticated) return <Redirect to="/login" />;
   const initSetting = () => {
-    changeGroupMap(allGroups[0].name);
+    if (match) {
+      const { params } = match;
+      console.log(params);
+      const initIndex = allGroups
+        .map(group => group._id)
+        .indexOf(params.groupId);
+      if (allGroups[initIndex]) {
+        changeGroupMap(allGroups[initIndex].name);
+      } else {
+        changeGroupMap(allGroups[0].name);
+        setAlert("No group ID was found", "danger");
+        changeGroupMap(allGroups[0].name);
+      }
+    } else {
+      changeGroupMap(allGroups[0].name);
+    }
+
     var bounds = new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
   };
@@ -60,6 +91,7 @@ const Map = ({
       if (group.name === value) {
         if (group.locations.length > 0)
           map.setCenter(group.locations[0].latLng);
+        setGroupId(group._id);
         group.locations.forEach(location => {
           addMarker(map, location, "marker");
         });
@@ -87,7 +119,7 @@ const Map = ({
     google.maps.event.addListener(marker, "click", function() {
       infowindowContent.children[0].textContent = location.name;
       infowindowContent.children[1].textContent = location.address;
-      infowindowContent.children[2].textContent = location.description;
+      infowindowContent.children[3].textContent = location.description;
       infowindow.open(map, marker);
       map.setZoom(15);
       map.setCenter(marker.getPosition());
@@ -137,9 +169,19 @@ const Map = ({
         <br />
         <p className="description"></p>
       </div>
-      <Button className="share-map-button">
-        <Link>SHARE THIS MAP!!</Link>
-      </Button>
+      <div className="share-map-container">
+        <Button
+          className="share-map-button"
+          onClick={() => {
+            copyStringToClipboard(
+              `https://loka-location.herokuapp.com/map/${groupId}`
+            );
+            alert("Link is copied to your clipboard");
+          }}
+        >
+          <Link to={`/map/${groupId}`}>SHARE THIS MAP!!</Link>
+        </Button>
+      </div>
     </div>
   );
 };
