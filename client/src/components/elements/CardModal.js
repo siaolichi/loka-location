@@ -95,19 +95,23 @@ const GroupMadol = ({
             })}
           </ul>
           <GMap locations={choice.locations} group_id={choice._id} />
-          <Button
-            style={{
-              color: "rgba(255, 0, 0, 0.6)",
-              fontSize: "9px",
-              float: "right"
-            }}
-            onClick={() => {
-              closeModal();
-              removeGroupFromAllGroups(choice);
-            }}
-          >
-            Delete Completely
-          </Button>
+          {userID === choice._id ? (
+            <Button
+              style={{
+                color: "rgba(255, 0, 0, 0.6)",
+                fontSize: "9px",
+                float: "right"
+              }}
+              onClick={() => {
+                closeModal();
+                removeGroupFromAllGroups(choice);
+              }}
+            >
+              Delete Completely
+            </Button>
+          ) : (
+            ""
+          )}
         </DialogContent>
         <DialogFooter>
           <DialogButton action="confirm">Close</DialogButton>

@@ -48,7 +48,8 @@ const CardGrid = ({
       style={{
         display: "flex",
         flexWrap: "wrap",
-        justifyContent: "space-around"
+        justifyContent: "flex-start",
+        margin: "auto"
       }}
     >
       {isOpen ? (
@@ -64,7 +65,7 @@ const CardGrid = ({
         <Card
           style={cardStyle}
           key={i}
-          style={{ minWidth: "300px", margin: "10px" }}
+          style={{ width: "300px", margin: "25px" }}
         >
           <CardPrimaryContent
             onClick={e => {

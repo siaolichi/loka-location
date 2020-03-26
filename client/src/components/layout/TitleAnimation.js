@@ -6,7 +6,7 @@ const TitleAnimation = () => {
   useEffect(() => {
     setTimeout(() => {
       setChange(true);
-    }, 3000);
+    }, 4000);
   }, []);
   if (change) return <Redirect to="/map" />;
   return (

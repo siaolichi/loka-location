@@ -19,6 +19,7 @@ const MyLoka = ({
   const [modal, setModal] = useState({
     openPublic: false,
     openPrivate: false,
+    createPublic: false,
     choices: ["Berlin Wi-Fi Cafe", "Berlin Twainese Restaurant"],
     newPublicGroupInput: "",
     newGroupInput: "",
@@ -68,11 +69,27 @@ const MyLoka = ({
           setModal({
             ...modal,
             openPublic: !modal.openPublic,
-            openPrivate: false
+            openPrivate: false,
+            createPublic: false
           });
         }}
       >
         Join Group
+      </Button>
+      <Button
+        outlined
+        style={{ margin: "20px", border: "solid 1px #AAA", color: "black" }}
+        className="fade-in"
+        onClick={() => {
+          setModal({
+            ...modal,
+            createPublic: !modal.createPublic,
+            openPrivate: false,
+            openPublic: false
+          });
+        }}
+      >
+        Create Group
       </Button>
       {/* <Button
         outlined
@@ -88,7 +105,7 @@ const MyLoka = ({
       >
         Add Private Group
       </Button> */}
-      {modal.openPublic && (
+      {modal.createPublic && (
         <div>
           <TextField label="Create group" outlined>
             <Input
@@ -121,6 +138,10 @@ const MyLoka = ({
           >
             create
           </Button>
+        </div>
+      )}
+      {modal.openPublic && (
+        <div>
           <CardGrid
             type="others"
             choices={modal.otherChoice}
