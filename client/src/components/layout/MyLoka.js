@@ -9,6 +9,7 @@ import { receivePublicGroups, createGroup } from "../../actions/group";
 import { connect } from "react-redux";
 
 const MyLoka = ({
+  backToProfile,
   createGroup,
   receivePublicGroups,
   allGroups,
@@ -25,11 +26,16 @@ const MyLoka = ({
     selectedChoice: [],
     otherChoice: []
   });
+  console.log(profile);
   useEffect(() => {
     if (allGroups.length > 0) initGroup();
-  }, [allGroups, profile.groups]);
+  }, [allGroups, profile]);
   useEffect(() => {
     receivePublicGroups();
+    if (!profile) {
+      alert("Please create profile first.");
+      backToProfile();
+    }
   }, []);
   if (loading) return <Spinner />;
   if (!isAuthenticated) return <Redirect to="/login" />;

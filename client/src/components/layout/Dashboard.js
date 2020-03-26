@@ -25,6 +25,14 @@ const Dashboard = ({
     e.target.classList.add("active");
     setActiveTab(e.target.innerHTML);
   };
+  const backToProfile = () => {
+    const allTabs = document.getElementsByClassName("profile-title");
+    Object.values(allTabs).forEach(tab => {
+      tab.classList.remove("active");
+    });
+    document.getElementsByClassName("profile-title")[0].classList.add("active");
+    setActiveTab("Profile");
+  };
 
   return (
     <div id="dashboard" className="fade-in">
@@ -51,6 +59,7 @@ const Dashboard = ({
             <MyLoka
               profile={{ profile, loading }}
               isAuthenticated={isAuthenticated}
+              backToProfile={backToProfile}
             />
           ) : ActiveTab === "Map" ? (
             <Map
