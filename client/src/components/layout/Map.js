@@ -119,6 +119,10 @@ const Map = ({
       infowindowContent.children[0].textContent = location.name;
       infowindowContent.children[1].textContent = location.address;
       infowindowContent.children[3].textContent = location.description;
+      infowindowContent.children[4].setAttribute(
+        "href",
+        `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
+      );
       infowindow.open(map, marker);
       map.setZoom(15);
       map.setCenter(marker.getPosition());
@@ -167,6 +171,9 @@ const Map = ({
         <p className="address"></p>
         <br />
         <p className="description"></p>
+        <a target="_blank">
+          <b>Show on google map</b>
+        </a>
       </div>
       <div className="share-map-container">
         <Button
