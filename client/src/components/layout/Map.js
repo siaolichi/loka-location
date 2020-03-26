@@ -106,8 +106,8 @@ const Map = ({
         onChange={evt => changeGroupMap(evt.target.value)}
       >
         {/* <Option value="Home">Home</Option> */}
-        {profile.groups.map(group => (
-          <Option key={group._id} value={group}>
+        {profile.groups.map((group, i) => (
+          <Option key={i} value={group}>
             {group}
           </Option>
         ))}

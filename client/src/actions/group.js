@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 import { GET_GROUPS, GROUP_ERROR } from "./types";
-import { addGroupToProfile } from "./profile";
+import { addGroupToProfile, removeGroupToProfile } from "./profile";
 
 export const receivePublicGroups = () => async dispatch => {
   try {
@@ -130,14 +130,15 @@ export const removeLocation = (group_id, location_id) => async dispatch => {
   }
 };
 
-export const removeGroupFromAllGroups = group_id => async dispatch => {
+export const removeGroupFromAllGroups = group => async dispatch => {
   try {
     const config = {
       header: {
         "content-type": "application/json"
       }
     };
-    const res = await axios.delete(`/api/group/${group_id}`, config);
+    const res = await axios.delete(`/api/group/${group._id}`, config);
+    await dispatch(removeGroupToProfile(group.name));
     console.log(res.data);
     dispatch(receivePublicGroups());
     dispatch(setAlert("Group deleted", "success"));

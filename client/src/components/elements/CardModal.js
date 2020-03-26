@@ -103,7 +103,7 @@ const GroupMadol = ({
             }}
             onClick={() => {
               closeModal();
-              removeGroupFromAllGroups(choice._id);
+              removeGroupFromAllGroups(choice);
             }}
           >
             Delete Completely
