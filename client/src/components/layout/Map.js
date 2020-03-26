@@ -43,7 +43,9 @@ const Map = ({
   const [markers] = useState([]);
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
-  const [mapValue, setMapValue] = useState(profile.groups[0]);
+  const [mapValue, setMapValue] = useState(
+    profile ? profile.groups[0] : "Bubble Tea in Berlin"
+  );
   const [groupId, setGroupId] = useState("");
   useEffect(() => {
     receivePublicGroups();
