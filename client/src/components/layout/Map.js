@@ -43,7 +43,7 @@ const Map = ({
   const [markers] = useState([]);
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
-  const [mapValue, setMapValue] = useState("");
+  const [mapValue, setMapValue] = useState(profile.groups[0]);
   const [groupId, setGroupId] = useState("");
   useEffect(() => {
     receivePublicGroups();
@@ -66,16 +66,13 @@ const Map = ({
         .map(group => group._id)
         .indexOf(params.groupId);
       if (allGroups[initIndex]) {
-        changeGroupMap(allGroups[initIndex].name);
+        setMapValue(allGroups[initIndex].name);
       } else {
-        changeGroupMap(allGroups[0].name);
+        setMapValue(allGroups[0].name);
         setAlert("No group ID was found", "danger");
-        changeGroupMap(allGroups[0].name);
       }
-    } else {
-      changeGroupMap(allGroups[0].name);
     }
-
+    changeGroupMap(mapValue);
     var bounds = new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
   };
