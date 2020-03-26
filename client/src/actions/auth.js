@@ -29,14 +29,13 @@ export const signup = ({ name, email, password }) => async dispatch => {
       payload: res.data
     });
     dispatch(loadUser());
-    // await dispatch(
-    //   createProfile({
-    //     name: name,
-    //     bio: "",
-    //     website: "",
-    //     location: ""
-    //   })
-    // );
+    await dispatch(
+      createProfile({
+        bio: "",
+        website: "",
+        location: ""
+      })
+    );
   } catch (err) {
     const errors = err.response.data.errors;
     dispatch({ type: REGISTER_FAILED });
