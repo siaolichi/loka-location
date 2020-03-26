@@ -40,8 +40,29 @@ function App() {
                 exact
                 path="/map"
                 component={() => (
-                  <Map profile={{ loading: false, profile: null }} />
+                  <Map
+                    profile={{
+                      loading: false,
+                      profile: null
+                    }}
+                  />
                 )}
+              />
+              <Route
+                exact
+                path="/map/:groupId"
+                component={({ match, location }) => {
+                  // console.log(match, location);
+                  return [
+                    <Map
+                      profile={{
+                        loading: false,
+                        profile: null
+                      }}
+                      match={match}
+                    />
+                  ];
+                }}
               />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>

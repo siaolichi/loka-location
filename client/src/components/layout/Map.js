@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 import Select, { Option } from "@material/react-select";
 import { receivePublicGroups } from "../../actions/group";
 import "../../style/Map.scss";
+import { Button } from "@material/react-button";
 
 const mapContainerStyle = {
   height: "500px",
@@ -12,7 +14,7 @@ const mapContainerStyle = {
   transition: "none"
 };
 const Map = ({
-  // isAuthenticated,
+  match,
   receivePublicGroups,
   allGroups,
   profile: { loading, profile }
@@ -20,10 +22,14 @@ const Map = ({
   const { google } = window;
   const infowindow = new google.maps.InfoWindow();
   const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const [markers] = useState([]);
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const [mapValue, setMapValue] = useState("");
+  if (match) {
+    const { params } = match;
+    console.log(params);
+  }
   useEffect(() => {
     receivePublicGroups();
     setMap(
@@ -131,6 +137,9 @@ const Map = ({
         <br />
         <p className="description"></p>
       </div>
+      <Button className="share-map-button">
+        <Link>SHARE THIS MAP!!</Link>
+      </Button>
     </div>
   );
 };

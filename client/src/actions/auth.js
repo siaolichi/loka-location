@@ -49,6 +49,7 @@ export const loadUser = () => async dispatch => {
       payload: res.data
     });
   } catch (err) {
+    console.log(err);
     console.log("User not loaded");
     dispatch({
       type: AUTH_ERROR

@@ -9,16 +9,16 @@ const User = require("../../models/User");
 //@routes       GET api/auth
 //@desc         Test route
 //@access       public
-// router.get("/", auth, async (req, res) => {
-//   try {
-//     console.log(req.user);
-//     const user = await User.findById(req.user.id).select("-password");
-//     console.log(user);
-//     res.json(user);
-//   } catch (err) {
-//     res.status(500).send("Server Error");
-//   }
-// });
+router.get("/", auth, async (req, res) => {
+  try {
+    console.log(req.user);
+    const user = await User.findById(req.user.id).select("-password");
+    console.log(user);
+    res.json(user);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
 
 //@routes       POST api/auth
 //@desc         Login user
