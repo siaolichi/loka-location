@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Button from "@material/react-button";
 
 import Spinner from "./Spinner";
 import CreateProfile from "./CreateProfile";
 
-const Profile = ({
-  isAuthenticated,
-  profile: { loading, profile }
-}) => {
+const Profile = ({ isAuthenticated, profile: { loading, profile } }) => {
   const [editProfile, setEditProfile] = useState(false);
   console.log("profile", profile);
   if (loading) return <Spinner />;
@@ -95,6 +92,5 @@ const Profile = ({
     );
   }
 };
-
 
 export default Profile;

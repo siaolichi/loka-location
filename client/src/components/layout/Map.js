@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 import Select, { Option } from "@material/react-select";
 import { receivePublicGroups } from "../../actions/group";
+import "../../style/Map.scss";
 
 const mapContainerStyle = {
   height: "500px",
@@ -12,7 +12,7 @@ const mapContainerStyle = {
   transition: "none"
 };
 const Map = ({
-  isAuthenticated,
+  // isAuthenticated,
   receivePublicGroups,
   allGroups,
   profile: { loading, profile }
@@ -25,18 +25,18 @@ const Map = ({
   const infoWindowRef = useRef(null);
   const [mapValue, setMapValue] = useState("");
   useEffect(() => {
+    receivePublicGroups();
     setMap(
       new window.google.maps.Map(containerRef.current, {
         zoom: 12
       })
     );
-    receivePublicGroups();
   }, []);
   useEffect(() => {
     if (map) initSetting();
   }, [allGroups]);
   if (loading) return <Spinner />;
-  if (!isAuthenticated) return <Redirect to="/login" />;
+  // if (!isAuthenticated) return <Redirect to="/login" />;
   const initSetting = () => {
     changeGroupMap(allGroups[0].name);
     var bounds = new google.maps.LatLngBounds();
@@ -98,19 +98,25 @@ const Map = ({
   };
 
   return (
-    <Fragment>
-      <small>Select Groups</small>
+    <div className="fade-in fill-content">
       <Select
-        outlined
         value={mapValue}
+        label="Select Groups"
+        className="map-selection"
         onChange={evt => changeGroupMap(evt.target.value)}
       >
         {/* <Option value="Home">Home</Option> */}
-        {profile.groups.map((group, i) => (
-          <Option key={i} value={group}>
-            {group}
-          </Option>
-        ))}
+        {profile
+          ? profile.groups.map((group, i) => (
+              <Option key={i} value={group}>
+                {group}
+              </Option>
+            ))
+          : allGroups.map((group, i) => (
+              <Option key={i} value={group.name}>
+                {group.name}
+              </Option>
+            ))}
       </Select>
       <br />
       <br />
@@ -125,7 +131,7 @@ const Map = ({
         <br />
         <p className="description"></p>
       </div>
-    </Fragment>
+    </div>
   );
 };
 Map.propTypes = {
