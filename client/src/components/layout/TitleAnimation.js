@@ -8,7 +8,7 @@ const TitleAnimation = () => {
       setChange(true);
     }, 4000);
   }, []);
-  if (change) return <Redirect to="/map" />;
+  // if (change) return <Redirect to="/map" />;
   return (
     <Link to="/map" className="title-animation">
       <h1 className="block-effect" style={{ "--td": "1.2s" }}>

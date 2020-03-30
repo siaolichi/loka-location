@@ -27,7 +27,6 @@ const MyLoka = ({
     selectedChoice: [],
     otherChoice: []
   });
-  console.log(profile);
   useEffect(() => {
     if (allGroups.length > 0) initGroup();
   }, [allGroups, profile]);

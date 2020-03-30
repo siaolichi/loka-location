@@ -10,7 +10,7 @@ import { Button } from "@material/react-button";
 import { setAlert } from "../../actions/alert";
 
 const mapContainerStyle = {
-  height: "500px",
+  height: "calc( 100vh - 250px )",
   width: "100%",
   transition: "none"
 };
@@ -139,11 +139,12 @@ const Map = ({
   };
 
   return (
-    <div className="fade-in fill-content">
+    <div className="fade-in full-container">
       <Select
         value={mapValue}
         label="Select Groups"
         className="map-selection"
+        outlined
         onChange={evt => changeGroupMap(evt.target.value)}
       >
         {/* <Option value="Home">Home</Option> */}
@@ -166,14 +167,16 @@ const Map = ({
         style={mapContainerStyle}
         className="map-container"
       ></div>
-      <div ref={infoWindowRef}>
-        <b className="title"></b>
-        <p className="address"></p>
-        <br />
-        <p className="description"></p>
-        <a target="_blank">
-          <b>Show on google map</b>
-        </a>
+      <div className="hide-info-window">
+        <div ref={infoWindowRef}>
+          <b className="title"></b>
+          <p className="address"></p>
+          <br />
+          <p className="description"></p>
+          <a target="_blank">
+            <b>Show on google map</b>
+          </a>
+        </div>
       </div>
       <div className="share-map-container">
         <Button

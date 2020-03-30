@@ -22,6 +22,8 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "three": "^0.115.0",
+    "three-fbxloader-offical": "git+https://github.com/siaolichi/three-fbxloader.git",
     "uuid": "^3.4.0",
     "webpack": "4.41.0"
   },

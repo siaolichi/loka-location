@@ -1,6 +1,9 @@
 .map-selection{ 
     width: 100%;
-    background-color: rgba($color: #fff, $alpha: 1) !important;
+    // background-color: rgba($color: #fff, $alpha: 1) !important;
+}
+.hide-info-window{
+    display: none;
 }
 .share-map-container{
     width: 100%;
@@ -8,6 +11,6 @@
     justify-content: center;
     .share-map-button {
         width: 100%;
-        background-color: rgba($color: #fff, $alpha: 1) !important;
+        // background-color: rgba($color: #fff, $alpha: 1) !important;
     }
 }

@@ -7,6 +7,7 @@ import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import Alert from "./components/layout/Alert";
 import Dashboard from "./components/layout/Dashboard";
+import Three from "./components/elements/Three";
 import Map from "./components/layout/Map";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -29,7 +30,8 @@ function App() {
       <Router>
         <Fragment>
           <div className="container">
-            <div className="dark-overlay" />
+            {/* <div className="dark-overlay" /> */}
+            <Three />
             <Navbar />
             <Alert />
             <Switch>

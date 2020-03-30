@@ -45,6 +45,9 @@
             overflow: hidden;
             cursor: pointer;
             color: white;
+            @media screen and (max-width: 760px) {
+                width :30%;
+            }
             
             &:before{
                 z-index: -1;
@@ -92,6 +95,9 @@
             width: 100%;
             padding: 45px 40px 40px 40px;
             background-color: white;
+            @media screen and (max-width: 760px) {
+                padding: 10px;
+            }
         }
     }
 }
@@ -116,20 +122,20 @@
 }
 
 #profile {
-    color: white;
-    .profile-container{
-        &:nth-child(odd) {
-            background-color: #323C50;
-        }
-        &:nth-child(even) {
-            background-color: #2C3446;
-        } 
-        font-size: 1em;
-        -webkit-box-shadow: 0 2px 2px -2px #0E1119;
-        -moz-box-shadow: 0 2px 2px -2px #0E1119;
-        box-shadow: 0 2px 2px -2px #0E1119;
+    color: black;
+    // .profile-container{
+    //     &:nth-child(odd) {
+    //         background-color: #323C50;
+    //     }
+    //     &:nth-child(even) {
+    //         background-color: #2C3446;
+    //     } 
+    //     font-size: 1em;
+    //     -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+    //     -moz-box-shadow: 0 2px 2px -2px #0E1119;
+    //     box-shadow: 0 2px 2px -2px #0E1119;
         
-    }
+    // }
     .profile-title{
         display: inline-block;
         width :150px;
