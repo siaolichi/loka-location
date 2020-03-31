@@ -11,6 +11,7 @@
     "@material/react-text-field": "^0.15.0",
     "@react-google-maps/api": "^1.8.6",
     "axios": "^0.19.2",
+    "gsap": "^3.2.6",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
@@ -24,6 +25,7 @@
     "redux-thunk": "^2.3.0",
     "three": "^0.115.0",
     "three-fbxloader-offical": "git+https://github.com/siaolichi/three-fbxloader.git",
+    "three-orbitcontrols": "^2.110.3",
     "uuid": "^3.4.0",
     "webpack": "4.41.0"
   },

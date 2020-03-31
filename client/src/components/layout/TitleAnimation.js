@@ -1,32 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import React, { useEffect, useState, Fragment } from "react";
+import { TweenMax } from "gsap";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import { login } from "../../actions/auth";
+
 import "../../style/Animation.scss";
-const TitleAnimation = () => {
+const TitleAnimation = ({ login, isAuthenticated }) => {
   const [change, setChange] = useState(false);
   useEffect(() => {
     setTimeout(() => {
+      TweenMax.to(".bubble", 1, { x: 100 });
       setChange(true);
     }, 4000);
   }, []);
-  // if (change) return <Redirect to="/map" />;
+  useEffect(() => {
+    if (change) TweenMax.to(".bubble", { y: -50, opacity: 1, duration: 1 });
+  }, [change]);
+  const onClick = async e => {
+    e.preventDefault();
+    login({ email: "testUser@gmail.com", password: "12345678" });
+  };
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
-    <Link to="/map" className="title-animation">
-      <h1 className="block-effect" style={{ "--td": "1.2s" }}>
-        <div
-          className="block-reveal"
-          style={{ "--bc": "#fff", "--d": ".1s", fontSize: "64px" }}
-        >
-          LOKA
+    <Fragment>
+      {change ? (
+        <div className="bubble-container" onClick={onClick}>
+          <div className="bubble">Try it!</div>
         </div>
-        <div
-          className="block-reveal"
-          style={{ "--bc": "#fff", "--d": ".5s", fontSize: "32px" }}
-        >
-          Share your Maps
-        </div>
-      </h1>
-    </Link>
+      ) : (
+        ""
+      )}
+      <div className="title-animation">
+        <h1 className="block-effect" style={{ "--td": "1.2s" }}>
+          <div
+            className="block-reveal"
+            style={{ "--bc": "#fff", "--d": ".1s", fontSize: "64px" }}
+          >
+            LOKA
+          </div>
+          <div
+            className="block-reveal"
+            style={{ "--bc": "#fff", "--d": ".5s", fontSize: "32px" }}
+          >
+            Share your Maps
+          </div>
+        </h1>
+      </div>
+    </Fragment>
   );
 };
-
-export default TitleAnimation;
+TitleAnimation.propType = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+const mapStateToProp = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProp, { login })(TitleAnimation);
