@@ -7,7 +7,7 @@ import CreateProfile from "./CreateProfile";
 
 const Profile = ({ isAuthenticated, profile: { loading, profile } }) => {
   const [editProfile, setEditProfile] = useState(false);
-  console.log("profile", profile);
+  // console.log("profile", profile);
   if (loading) return <Spinner />;
   if (!isAuthenticated) return <Redirect to="/login" />;
   if (editProfile)
