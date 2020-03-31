@@ -18,7 +18,10 @@
 }
 .bubble-container {
   position: fixed;
-  right: 20%;
+  right: 30%;
+  @media screen and (max-width: 760px) {
+    right: 10%;
+  }
   top: 300px;
   cursor: pointer;
   .bubble {
