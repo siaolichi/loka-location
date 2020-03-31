@@ -8,11 +8,12 @@ import { login } from "../../actions/auth";
 import "../../style/Animation.scss";
 const TitleAnimation = ({ login, isAuthenticated }) => {
   const [change, setChange] = useState(false);
+  const [isLogin, setLogin] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       TweenMax.to(".bubble", 1, { x: 100 });
       setChange(true);
-    }, 4000);
+    }, 2000);
   }, []);
   useEffect(() => {
     if (change) TweenMax.to(".bubble", { y: -50, opacity: 1, duration: 1 });
@@ -20,15 +21,16 @@ const TitleAnimation = ({ login, isAuthenticated }) => {
   const onClick = async e => {
     e.preventDefault();
     login({ email: "testUser@gmail.com", password: "12345678" });
+    setLogin(true);
   };
-  if (isAuthenticated) {
+  if (isAuthenticated && isLogin) {
     return <Redirect to="/dashboard" />;
   }
   return (
     <Fragment>
       {change ? (
         <div className="bubble-container" onClick={onClick}>
-          <div className="bubble">Try it!</div>
+          <div className="bubble">Try it here!</div>
         </div>
       ) : (
         ""

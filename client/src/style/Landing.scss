@@ -3,10 +3,7 @@
 
 .landing-inner {
   color: #fff;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 10%;
+  height: calc(100vh - 90px);
   width: 80%;
   overflow: hidden;
   margin: auto;
@@ -15,10 +12,12 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  pointer-events: none;
 }
 .bubble-container {
   position: fixed;
   right: 30%;
+  pointer-events: auto;
   @media screen and (max-width: 760px) {
     right: 10%;
   }
