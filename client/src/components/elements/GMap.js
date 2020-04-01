@@ -167,11 +167,7 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
   };
   return (
     <Fragment>
-      <TextField
-        label="Add new location"
-        outlined
-        style={{ width: "100%", margin: "10px auto", minWidth: "500px" }}
-      >
+      <TextField label="Add new location" className="my-loka-map" outlined>
         <Input
           ref={inputRef}
           value={inputValue}
@@ -183,26 +179,28 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
         style={mapContainerStyle}
         className="map-container"
       ></div>
-      <div ref={infoWindowRef}>
-        <b className="title"></b>
-        <p className="address"></p>
-        <p className="lat-lng"></p>
-        <TextField
-          outlined
-          textarea
-          label="Add description"
-          style={{
-            width: "100%",
-            margin: "10px auto",
-            fontSize: "10px"
-          }}
-        >
-          <Input
-            value={description}
-            onChange={e => setDescription(e.currentTarget.value)}
-          />
-        </TextField>
-        <Button onClick={addLocation}>Add Location</Button>
+      <div style={{ display: "none" }}>
+        <div ref={infoWindowRef}>
+          <b className="title"></b>
+          <p className="address"></p>
+          <p className="lat-lng"></p>
+          <TextField
+            outlined
+            textarea
+            label="Add description"
+            style={{
+              width: "100%",
+              margin: "10px auto",
+              fontSize: "10px"
+            }}
+          >
+            <Input
+              value={description}
+              onChange={e => setDescription(e.currentTarget.value)}
+            />
+          </TextField>
+          <Button onClick={addLocation}>Add Location</Button>
+        </div>
       </div>
     </Fragment>
   );

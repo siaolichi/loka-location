@@ -7,7 +7,6 @@ import Dialog, {
   DialogFooter,
   DialogButton
 } from "@material/react-dialog";
-// import TextField, { Input, HelperText } from "@material/react-text-field";
 import MaterialIcon from "@material/react-material-icon";
 import Button from "@material/react-button";
 import GMap from "./GMap";

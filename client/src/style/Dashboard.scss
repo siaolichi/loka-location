@@ -176,17 +176,10 @@
 // }
 
 //MyLoka
-// .my-loka-dialog{
-//     width: 100%;
-//     .mdc-dialog__container {
-//     width: 60% ;
-//     }
-//     .mdc-dialog__surface {
-//         width: 100%;
-//     }
-//     @media (min-width: 592px){
-//         .mdc-dialog__surface {
-//             max-width: 100% !important;
-//         }
-//     }
-// }
+.my-loka-map{
+    width: 100%; margin: 10px auto;
+    min-width: 500px;
+    @media (max-width: 592px){
+        min-width: 300px;
+    }
+}
