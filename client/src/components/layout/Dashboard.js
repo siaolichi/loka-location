@@ -44,7 +44,7 @@ const Dashboard = ({
           My LOKA
         </button>
         <button className="profile-title" onClick={e => changeTab(e)}>
-          Map
+          My Map
         </button>
       </div>
 
@@ -61,7 +61,7 @@ const Dashboard = ({
               isAuthenticated={isAuthenticated}
               backToProfile={backToProfile}
             />
-          ) : ActiveTab === "Map" ? (
+          ) : ActiveTab === "My Map" ? (
             <Map
               profile={{ profile, loading }}
               isAuthenticated={isAuthenticated}

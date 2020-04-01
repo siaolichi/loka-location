@@ -105,21 +105,25 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       map: map
     });
 
-    var address = "";
-    if (place.address_components) {
-      address = [
-        (place.address_components[0] &&
-          place.address_components[0].short_name) ||
-          "",
-        (place.address_components[1] &&
-          place.address_components[1].short_name) ||
-          "",
-        (place.address_components[2] &&
-          place.address_components[2].short_name) ||
-          ""
-      ].join(" ");
-    }
+    // var address = "";
+    // if (place.address_components) {
+    //   address = [
+    //     (place.address_components[0] &&
+    //       place.address_components[0].short_name) ||
+    //       "",
+    //     (place.address_components[1] &&
+    //       place.address_components[1].short_name) ||
+    //       "",
+    //     (place.address_components[2] &&
+    //       place.address_components[2].short_name) ||
+    //       ""
+    //   ].join(" ");
+    // }
+    let address = place.formatted_address.split(",");
+    address.pop();
+    address.join("");
     let infowindowContent = infoWindowRef.current;
+    console.log(place.name, address);
     infowindow.setContent(infowindowContent);
     infowindowContent.children[0].textContent = place.name;
     infowindowContent.children[1].textContent = address;
@@ -130,6 +134,10 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
     });
     infowindow.open(map, marker);
     google.maps.event.addListener(marker, "click", function() {
+      infowindowContent.children[0].textContent = place.name;
+      infowindowContent.children[1].textContent = address;
+      infowindowContent.children[2].textContent =
+        place.geometry.location.lat() + "," + place.geometry.location.lng();
       infowindow.open(map, marker);
     });
     markers.push(marker);
@@ -162,7 +170,7 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       <TextField
         label="Add new location"
         outlined
-        style={{ width: "100%", margin: "10px auto" }}
+        style={{ width: "100%", margin: "10px auto", minWidth: "500px" }}
       >
         <Input
           ref={inputRef}
