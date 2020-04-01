@@ -215,10 +215,16 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
 
     //Check user
     if (
-      req.user.id !== location.user.toString() ||
-      req.user.id !== group.user.toString()
+      req.user.id.toString() !== location.user.toString() &&
+      req.user.id.toString() !== group.user.toString()
     ) {
-      return res.status(401).json({ msg: "User not authorized" });
+      return res.status(401).json({
+        msg:
+          "User not authorized, " +
+          req.user.id +
+          " : " +
+          location.user.toString()
+      });
     }
 
     //Get remove index
