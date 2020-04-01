@@ -14,6 +14,9 @@ const Navbar = ({ logout, auth: { isAuthenticated, loading } }) => {
   const guestLink = (
     <ul>
       <li>
+        <Link to="/map">Maps</Link>
+      </li>
+      <li>
         <Link to="/signup">Sign Up</Link>
       </li>
       <li>
@@ -23,6 +26,9 @@ const Navbar = ({ logout, auth: { isAuthenticated, loading } }) => {
   );
   const memberLink = (
     <ul>
+      <li>
+        <Link to="/map">Maps</Link>
+      </li>
       <li>
         <Link to="/dashboard">Account</Link>
       </li>
