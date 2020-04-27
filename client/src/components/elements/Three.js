@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import * as THREE from "three";
 import OrbitControls from "three-orbitcontrols";
 const FBXLoader = require("three-fbxloader-offical");
@@ -86,6 +86,7 @@ export default function Three() {
 
   useEffect(() => {
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     window.addEventListener("resize", onWindowResize, false);
