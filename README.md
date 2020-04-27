@@ -47,9 +47,9 @@ npm install npm@latest -g
 ```sh
 git clone https://github.com/siaolichi/loka-location
 ```
-2. Install NPM packages
+2. Install NPM packages for both server and client
 ```sh
-npm run install
+npm run install-all
 ```
 4. Create a file `.env` in the root folder and enter Mongo URI and JWT secret word in the file
 ```
