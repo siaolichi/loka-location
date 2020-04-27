@@ -75,6 +75,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Hisao Li-Chi - [@chichisiao](https://twitter.com/your_username) - [https://hsiao-li-chi.com](https://hsiao-li-chi.com)
+Hisao Li-Chi - [@chichisiao](https://twitter.com/chichisiao) - [https://hsiao-li-chi.com](https://hsiao-li-chi.com)
 
 Project Link: [https://loka-location.herokuapp.com](https://loka-location.herokuapp.com)
