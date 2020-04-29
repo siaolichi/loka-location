@@ -1,73 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
-import PropTypes from "prop-types";
-import { getCurrentProfile } from "../../actions/profile";
-import Profile from "./Profile";
-import MyLoka from "./MyLoka";
-import Map from "./Map";
-import "../../style/Dashboard.scss";
-const Dashboard = ({
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
+import { getCurrentProfile } from '../../actions/profile';
+import Profile from './Profile';
+import MyLoka from './MyLoka';
+import Favorite from './Favorite';
+import Spinner from './Spinner';
+
+import '../../style/Dashboard.scss';
+export const UnconnectedDashboard = ({
   getCurrentProfile,
   auth: { isAuthenticated },
   profile: { loading, profile }
 }) => {
   useEffect(() => {
-    console.log("GetProfile", isAuthenticated);
+    // console.log('GetProfile', isAuthenticated);
     getCurrentProfile();
-  }, [isAuthenticated, getCurrentProfile]);
-  const [ActiveTab, setActiveTab] = useState("Profile");
+  }, [isAuthenticated]);
+  const [ActiveTab, setActiveTab] = useState('Profile');
+  if (!isAuthenticated) return <Redirect to='/login' />;
+  if (loading) return <Spinner />;
+  if (!profile) {
+    getCurrentProfile();
+    return <Spinner />;
+  }
+
   const changeTab = e => {
-    const allTabs = document.getElementsByClassName("profile-title");
+    const allTabs = document.getElementsByClassName('profile-title');
     Object.values(allTabs).forEach(tab => {
-      tab.classList.remove("active");
+      tab.classList.remove('active');
     });
-    e.target.classList.add("active");
+    e.target.classList.add('active');
     setActiveTab(e.target.innerHTML);
   };
   const backToProfile = () => {
-    const allTabs = document.getElementsByClassName("profile-title");
+    const allTabs = document.getElementsByClassName('profile-title');
     Object.values(allTabs).forEach(tab => {
-      tab.classList.remove("active");
+      tab.classList.remove('active');
     });
-    document.getElementsByClassName("profile-title")[0].classList.add("active");
-    setActiveTab("Profile");
+    document.getElementsByClassName('profile-title')[0].classList.add('active');
+    setActiveTab('Profile');
   };
 
   return (
-    <div id="dashboard" className="fade-in">
-      <div className="tabs">
-        <button className="profile-title active" onClick={e => changeTab(e)}>
+    <div id='dashboard' className='fade-in' data-test='component-dashboard'>
+      <div className='tabs'>
+        <button className='profile-title active' onClick={e => changeTab(e)}>
           Profile
         </button>
-        <button className="profile-title" onClick={e => changeTab(e)}>
-          My LOKA
+        <button className='profile-title' onClick={e => changeTab(e)}>
+          Edit Groups
         </button>
-        <button className="profile-title" onClick={e => changeTab(e)}>
-          My Map
+        <button className='profile-title' onClick={e => changeTab(e)}>
+          My Favorite
         </button>
       </div>
 
-      <div className="tab__content">
-        <div className="content__wrapper">
-          {ActiveTab === "Profile" ? (
-            <Profile
-              profile={{ profile, loading }}
-              isAuthenticated={isAuthenticated}
-            />
-          ) : ActiveTab === "My LOKA" ? (
+      <div className='tab__content'>
+        <div className='content__wrapper'>
+          {ActiveTab === 'Profile' ? (
+            <Profile profile={profile} />
+          ) : ActiveTab === 'Edit Groups' ? (
             <MyLoka
-              profile={{ profile, loading }}
-              isAuthenticated={isAuthenticated}
+              profile={{ loading, profile }}
               backToProfile={backToProfile}
             />
-          ) : ActiveTab === "My Map" ? (
-            <Map
-              profile={{ profile, loading }}
-              isAuthenticated={isAuthenticated}
-            />
+          ) : ActiveTab === 'My Favorite' ? (
+            <Favorite profile={{ loading, profile }} />
           ) : (
-            <Redirect to="/" />
+            <Redirect to='/' />
           )}
         </div>
       </div>
@@ -75,7 +77,7 @@ const Dashboard = ({
   );
 };
 
-Dashboard.propTypes = {
+UnconnectedDashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired
@@ -86,4 +88,6 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile })(
+  UnconnectedDashboard
+);

@@ -1,69 +1,67 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { Redirect } from "react-router";
-import Button from "@material/react-button";
-import PropTypes from "prop-types";
-import TextField, { Input, HelperText } from "@material/react-text-field";
-import CardGrid from "../elements/CardGrid";
-import Spinner from "./Spinner";
-import { receivePublicGroups, createGroup } from "../../actions/group";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import Button from '@material/react-button';
+import PropTypes from 'prop-types';
+import TextField, { Input, HelperText } from '@material/react-text-field';
+import { connect } from 'react-redux';
+
+import CardGrid from '../elements/CardGrid';
+import { receivePublicGroups, createGroup } from '../../actions/group';
+import Spinner from './Spinner';
 
 const MyLoka = ({
   backToProfile,
   createGroup,
   receivePublicGroups,
   allGroups,
-  isAuthenticated,
-  profile: { loading, profile }
+  profile: { profile, loading }
 }) => {
   const [modal, setModal] = useState({
     openPublic: false,
     openPrivate: false,
     createPublic: false,
-    choices: ["Berlin Wi-Fi Cafe", "Berlin Twainese Restaurant"],
-    newPublicGroupInput: "",
-    newGroupInput: "",
-    newGroupCode: "",
+    choices: ['Berlin Wi-Fi Cafe', 'Berlin Twainese Restaurant'],
+    newPublicGroupInput: '',
+    newGroupInput: '',
+    newGroupCode: '',
     selectedChoice: [],
     otherChoice: []
   });
   useEffect(() => {
+    const initGroup = () => {
+      const selected = [],
+        other = [];
+      for (let group of allGroups) {
+        let index = profile.groups.indexOf(group.name);
+        if (index > -1) selected.push(group);
+        else other.push(group);
+      }
+      setModal(m => {
+        return {
+          ...m,
+          selectedChoice: selected,
+          otherChoice: other
+        };
+      });
+    };
+
     if (allGroups.length > 0) initGroup();
   }, [allGroups, profile]);
   useEffect(() => {
     receivePublicGroups();
-    if (!profile) {
-      alert("Please create profile first.");
-      backToProfile();
-    }
   }, []);
+
+  if (!profile) {
+    alert('Please create profile first.');
+    backToProfile();
+  }
   if (loading) return <Spinner />;
-  if (!isAuthenticated) return <Redirect to="/login" />;
-  const initGroup = () => {
-    const selected = [],
-      other = [];
-    for (let group of allGroups) {
-      let index = profile.groups.indexOf(group.name);
-      if (index > -1) selected.push(group);
-      else other.push(group);
-    }
-    setModal({
-      ...modal,
-      selectedChoice: selected,
-      otherChoice: other
-    });
-  };
   return (
     <div>
-      <CardGrid
-        type="selected"
-        choices={modal.selectedChoice}
-        profile={{ profile, loading }}
-      />
+      <CardGrid type='selected' choices={modal.selectedChoice} />
       <Button
         outlined
-        style={{ margin: "20px", border: "solid 1px #AAA", color: "black" }}
-        className="fade-in"
+        style={{ margin: '20px', border: 'solid 1px #AAA', color: 'black' }}
+        className='fade-in'
         onClick={() => {
           setModal({
             ...modal,
@@ -77,8 +75,8 @@ const MyLoka = ({
       </Button>
       <Button
         outlined
-        style={{ margin: "20px", border: "solid 1px #AAA", color: "black" }}
-        className="fade-in"
+        style={{ margin: '20px', border: 'solid 1px #AAA', color: 'black' }}
+        className='fade-in'
         onClick={() => {
           setModal({
             ...modal,
@@ -106,7 +104,7 @@ const MyLoka = ({
       </Button> */}
       {modal.createPublic && (
         <div>
-          <TextField label="Create group" outlined>
+          <TextField label='Create group' outlined>
             <Input
               value={modal.newPublicGroupInput}
               onChange={e =>
@@ -120,16 +118,16 @@ const MyLoka = ({
           <Button
             outlined
             style={{
-              margin: "20px",
-              border: "solid 1px #AAA",
-              color: "black",
-              display: "inline-box"
+              margin: '20px',
+              border: 'solid 1px #AAA',
+              color: 'black',
+              display: 'inline-box'
             }}
-            className="fade-in"
+            className='fade-in'
             onClick={e => {
               setModal({
                 ...modal,
-                newPublicGroupInput: "",
+                newPublicGroupInput: '',
                 openPublic: false
               });
               createGroup({ name: modal.newPublicGroupInput, public: true });
@@ -141,11 +139,7 @@ const MyLoka = ({
       )}
       {modal.openPublic && (
         <div>
-          <CardGrid
-            type="others"
-            choices={modal.otherChoice}
-            profile={{ profile, loading }}
-          />
+          <CardGrid type='others' choices={modal.otherChoice} />
         </div>
       )}
       {modal.openPrivate && (

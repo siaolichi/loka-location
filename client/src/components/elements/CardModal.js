@@ -1,21 +1,21 @@
-import React, { useState, useEffect, Fragment } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Dialog, {
   DialogTitle,
   DialogContent,
   DialogFooter,
   DialogButton
-} from "@material/react-dialog";
-import MaterialIcon from "@material/react-material-icon";
-import Button from "@material/react-button";
-import GMap from "./GMap";
-import TextField, { Input } from "@material/react-text-field";
+} from '@material/react-dialog';
+import MaterialIcon from '@material/react-material-icon';
+import Button from '@material/react-button';
+import GMap from './GMap';
+import TextField, { Input } from '@material/react-text-field';
 import {
   changeLocationDetail,
   removeLocation,
   removeGroupFromAllGroups
-} from "../../actions/group";
+} from '../../actions/group';
 
 const GroupMadol = ({
   isOpen,
@@ -30,15 +30,13 @@ const GroupMadol = ({
   useEffect(() => {
     setLocations(choice.locations);
   }, [choice.locations]);
-  console.log(choice);
   return (
     <div>
       <Dialog
-        className="my-loka-dialog"
+        className='my-loka-dialog'
         open={isOpen}
         onClose={action => {
           closeModal();
-          console.log(action);
         }}
       >
         <DialogTitle>{choice.name}</DialogTitle>
@@ -49,15 +47,15 @@ const GroupMadol = ({
                 <li
                   key={location._id}
                   style={{
-                    margin: "5px 0"
+                    margin: '5px 0'
                   }}
                 >
                   <b>{location.name}</b>:{location.address}
                   <br />
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <TextField
-                      label="edit details"
-                      style={{ width: "calc(100% - 50px)" }}
+                      label='edit details'
+                      style={{ width: 'calc(100% - 50px)' }}
                     >
                       <Input
                         value={location.description}
@@ -69,24 +67,24 @@ const GroupMadol = ({
                       />
                     </TextField>
                     <MaterialIcon
-                      role="button"
-                      icon="check"
-                      style={{ float: "right", cursor: "pointer" }}
+                      role='button'
+                      icon='check'
+                      style={{ float: 'right', cursor: 'pointer' }}
                       onClick={() => {
                         changeLocationDetail(choice._id, location);
                       }}
                     />
                     {userID === location.user ? (
                       <MaterialIcon
-                        role="button"
-                        icon="delete"
-                        style={{ float: "right", cursor: "pointer" }}
+                        role='button'
+                        icon='delete'
+                        style={{ float: 'right', cursor: 'pointer' }}
                         onClick={() => {
                           removeLocation(choice._id, location._id);
                         }}
                       />
                     ) : (
-                      ""
+                      ''
                     )}
                   </div>
                 </li>
@@ -97,9 +95,9 @@ const GroupMadol = ({
           {userID === choice._id ? (
             <Button
               style={{
-                color: "rgba(255, 0, 0, 0.6)",
-                fontSize: "9px",
-                float: "right"
+                color: 'rgba(255, 0, 0, 0.6)',
+                fontSize: '9px',
+                float: 'right'
               }}
               onClick={() => {
                 closeModal();
@@ -109,11 +107,11 @@ const GroupMadol = ({
               Delete Completely
             </Button>
           ) : (
-            ""
+            ''
           )}
         </DialogContent>
         <DialogFooter>
-          <DialogButton action="confirm">Close</DialogButton>
+          <DialogButton action='confirm'>Close</DialogButton>
         </DialogFooter>
       </Dialog>
     </div>

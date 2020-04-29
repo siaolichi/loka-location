@@ -1,35 +1,34 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Card, {
   CardPrimaryContent,
   CardMedia,
   CardActions,
   CardActionButtons
-} from "@material/react-card";
-import { addGroupToProfile, removeGroupToProfile } from "../../actions/profile";
-import CardModal from "./CardModal";
+} from '@material/react-card';
+import { addGroupToProfile, removeGroupToProfile } from '../../actions/profile';
+import CardModal from './CardModal';
 
 const CardGrid = ({
   addGroupToProfile,
   removeGroupToProfile,
   type,
-  choices,
-  profile: { profile }
+  choices
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [editInfo, seteditInfo] = useState({
-    name: "",
-    description: "",
-    address: ""
+    name: '',
+    description: '',
+    address: ''
   });
   const cardStyle = {
-    width: "300px",
-    height: "400px",
-    margin: "10px"
+    width: '300px',
+    height: '400px',
+    margin: '10px'
   };
   const openModal = i => {
-    if (type === "selected") {
+    if (type === 'selected') {
       setIsOpen(true);
       seteditInfo(i);
     }
@@ -46,10 +45,10 @@ const CardGrid = ({
   return (
     <div
       style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "flex-start",
-        margin: "auto"
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        margin: 'auto'
       }}
     >
       {isOpen ? (
@@ -59,27 +58,23 @@ const CardGrid = ({
           closeModal={closeModal}
         />
       ) : (
-        ""
+        ''
       )}
       {choices.map((choice, i) => (
-        <Card
-          style={cardStyle}
-          key={i}
-          style={{ width: "300px", margin: "25px" }}
-        >
+        <Card key={i} style={{ ...cardStyle, width: '300px', margin: '25px' }}>
           <CardPrimaryContent
             onClick={e => {
               openModal(i);
             }}
           >
-            <div style={{ height: "4rem" }}>
+            <div style={{ height: '4rem' }}>
               <h3>{choice.name}</h3>
             </div>
-            <CardMedia square imageUrl={require("../../img/flavor.jpg")} />
+            <CardMedia square imageUrl={require('../../img/flavor.jpg')} />
             <p>{choice.description}</p>
           </CardPrimaryContent>
           <CardActions>
-            {type === "others" && (
+            {type === 'others' && (
               <CardActionButtons>
                 <button
                   onClick={() => {
@@ -90,7 +85,7 @@ const CardGrid = ({
                 </button>
               </CardActionButtons>
             )}
-            {type === "selected" && (
+            {type === 'selected' && (
               <CardActionButtons>
                 <button
                   onClick={() => {

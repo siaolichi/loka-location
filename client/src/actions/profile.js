@@ -1,10 +1,10 @@
-import axios from "axios";
-import { setAlert } from "./alert";
-import { GET_PROFILE, PROFILE_ERROR } from "./types";
+import axios from 'axios';
+import { setAlert } from './alert';
+import { GET_PROFILE, PROFILE_ERROR } from './types';
 
 export const getCurrentProfile = () => async dispatch => {
   try {
-    const res = await axios.get("/api/profile/me");
+    const res = await axios.get('/api/profile/me');
 
     dispatch({
       type: GET_PROFILE,
@@ -25,19 +25,19 @@ export const createProfile = (
   try {
     const config = {
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     };
-    const res = await axios.post("/api/profile", formData, config);
+    await axios.post('/api/profile', formData, config);
     dispatch(getCurrentProfile());
     dispatch(
-      setAlert(isCreated ? "Profile Updated" : "Profile Created", "success")
+      setAlert(isCreated ? 'Profile Updated' : 'Profile Created', 'success')
     );
   } catch (err) {
     console.log(err);
     const errors = err.response.data.errors;
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
     }
     dispatch({
       type: PROFILE_ERROR,
@@ -47,7 +47,7 @@ export const createProfile = (
 };
 
 export const addGroupToProfile = group => async dispatch => {
-  const res = await axios.get("/api/profile/me");
+  const res = await axios.get('/api/profile/me');
   const profile = res.data;
   if (profile.groups) profile.groups.push(group);
   else profile.groups = [group];
@@ -55,7 +55,7 @@ export const addGroupToProfile = group => async dispatch => {
 };
 
 export const removeGroupToProfile = group => async dispatch => {
-  const res = await axios.get("/api/profile/me");
+  const res = await axios.get('/api/profile/me');
   const profile = res.data;
   let index = profile.groups.indexOf(group);
   if (index > -1) {

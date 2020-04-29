@@ -49,7 +49,7 @@ img {
   padding-top: $nav-height;
   min-height: 100vh;
   @media screen and (max-width: 760px) {
-    padding: $nav-height 10px;
+    padding: $nav-height 10px 0 10px;
   }
 }
 #three-container {

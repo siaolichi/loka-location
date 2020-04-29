@@ -1,41 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Spinner from "./Spinner";
-import Select, { Option } from "@material/react-select";
-import { receivePublicGroups } from "../../actions/group";
-import "../../style/Map.scss";
-import { Button } from "@material/react-button";
-import { setAlert } from "../../actions/alert";
+import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Select, { Option } from '@material/react-select';
+import { Button } from '@material/react-button';
+
+import { receivePublicGroups } from '../../actions/group';
+
+import { setAlert } from '../../actions/alert';
+import { copyStringToClipboard } from '../../utils';
+import '../../style/Map.scss';
+import InfoWindow from '../elements/InfoWindow';
+import Spinner from './Spinner';
 
 const mapContainerStyle = {
-  height: "calc( 100vh - 250px )",
-  width: "100%",
-  transition: "none"
+  height: 'calc( 100vh - 250px )',
+  width: '100%',
+  transition: 'none'
 };
 
-function copyStringToClipboard(str) {
-  // Create new element
-  var el = document.createElement("textarea");
-  // Set value (string to be copied)
-  el.value = str;
-  // Set non-editable to avoid focus and move outside of view
-  el.setAttribute("readonly", "");
-  el.style = { position: "absolute", left: "-9999px" };
-  document.body.appendChild(el);
-  // Select text inside element
-  el.select();
-  // Copy text to clipboard
-  document.execCommand("copy");
-  // Remove temporary element
-  document.body.removeChild(el);
-}
-const Map = ({
+const GoogleMap = ({
   match,
   receivePublicGroups,
   allGroups,
-  profile: { loading, profile }
+  profile: { profile, loading }
 }) => {
   const { google } = window;
   const infowindow = new google.maps.InfoWindow();
@@ -44,9 +32,9 @@ const Map = ({
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const [mapValue, setMapValue] = useState(
-    profile ? profile.groups[0] : "Bubble Tea in Berlin"
+    profile ? profile.groups[0] : 'Bubble Tea in Berlin'
   );
-  const [groupId, setGroupId] = useState("");
+  const [groupId, setGroupId] = useState('');
   useEffect(() => {
     receivePublicGroups();
     setMap(
@@ -54,16 +42,15 @@ const Map = ({
         zoom: 12
       })
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (map) initSetting();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allGroups]);
-  if (loading) return <Spinner />;
-  // if (!isAuthenticated) return <Redirect to="/login" />;
   const initSetting = () => {
     if (match) {
       const { params } = match;
-      console.log(params);
       const initIndex = allGroups
         .map(group => group._id)
         .indexOf(params.groupId);
@@ -71,11 +58,12 @@ const Map = ({
         setMapValue(allGroups[initIndex].name);
       } else {
         setMapValue(allGroups[0].name);
-        setAlert("No group ID was found", "danger");
+        setAlert('No group ID was found', 'danger');
       }
     }
     changeGroupMap(mapValue);
-    var bounds = new google.maps.LatLngBounds();
+    // let bounds = new google.maps.LatLngBounds();
+    new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
   };
   const changeGroupMap = value => {
@@ -92,12 +80,12 @@ const Map = ({
           map.setCenter(group.locations[0].latLng);
         setGroupId(group._id);
         group.locations.forEach(location => {
-          addMarker(map, location, "marker");
+          addMarker(map, location, 'marker');
         });
       }
     });
   };
-  const addMarker = (map, location, type = "marker") => {
+  const addMarker = (map, location, type = 'marker') => {
     // Marker
     const icon = {
       url: require(`../../img/${type}.png`),
@@ -115,12 +103,12 @@ const Map = ({
     infowindow.setContent(infowindowContent);
     infowindow.close();
 
-    google.maps.event.addListener(marker, "click", function() {
+    google.maps.event.addListener(marker, 'click', function () {
       infowindowContent.children[0].textContent = location.name;
       infowindowContent.children[1].textContent = location.address;
       infowindowContent.children[3].textContent = location.description;
       infowindowContent.children[4].setAttribute(
-        "href",
+        'href',
         `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
       );
       infowindow.open(map, marker);
@@ -139,11 +127,11 @@ const Map = ({
   };
 
   return (
-    <div className="fade-in full-container">
+    <div className='fade-in full-container'>
       <Select
         value={mapValue}
-        label="Select Groups"
-        className="map-selection"
+        label='Select Groups'
+        className='map-selection'
         outlined
         onChange={evt => changeGroupMap(evt.target.value)}
       >
@@ -165,27 +153,17 @@ const Map = ({
       <div
         ref={containerRef}
         style={mapContainerStyle}
-        className="map-container"
+        className='map-container'
       ></div>
-      <div className="hide-info-window">
-        <div ref={infoWindowRef}>
-          <b className="title"></b>
-          <p className="address"></p>
-          <br />
-          <p className="description"></p>
-          <a target="_blank">
-            <b>Show on google map</b>
-          </a>
-        </div>
-      </div>
-      <div className="share-map-container">
+      <InfoWindow infoWindowRef={infoWindowRef} />
+      <div className='share-map-container'>
         <Button
-          className="share-map-button"
+          className='share-map-button'
           onClick={() => {
             copyStringToClipboard(
               `https://loka-location.herokuapp.com/map/${groupId}`
             );
-            alert("Link is copied to your clipboard");
+            alert('Link is copied to your clipboard');
           }}
         >
           <Link to={`/map/${groupId}`}>SHARE THIS MAP!!</Link>
@@ -194,12 +172,15 @@ const Map = ({
     </div>
   );
 };
-Map.propTypes = {
+GoogleMap.propTypes = {
   allGroups: PropTypes.array.isRequired,
-  receivePublicGroups: PropTypes.func.isRequired
+  receivePublicGroups: PropTypes.func.isRequired,
+  profile: PropTypes.object,
+  allGroups: PropTypes.array
 };
 
 const mapStateToProps = state => ({
-  allGroups: state.group.allGroups
+  allGroups: state.group.allGroups,
+  profile: state.profile
 });
-export default connect(mapStateToProps, { receivePublicGroups })(Map);
+export default connect(mapStateToProps, { receivePublicGroups })(GoogleMap);

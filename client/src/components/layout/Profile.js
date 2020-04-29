@@ -1,44 +1,38 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import Button from '@material/react-button';
 
-import Spinner from './Spinner';
 import CreateProfile from './CreateProfile';
 
-const Profile = ({ isAuthenticated, profile: { loading, profile } }) => {
+const Profile = ({ profile }) => {
   const [editProfile, setEditProfile] = useState(false);
-  // console.log("profile", profile);
-  if (loading) return <Spinner />;
-  if (!isAuthenticated) return <Redirect to='/login' />;
   if (editProfile)
     return (
       <CreateProfile setEditProfile={setEditProfile} initProfile={profile} />
     );
-
   return (
-    <div id='profile'>
+    <div id='profile' data-test='component-profile'>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {profile.user && (
-          <div className='profile-container'>
+          <div className='profile-container' data-test='profile-element'>
             <div className='profile-title'>Name:</div>
             <div className='profile-content'>{profile.user.name}</div>
           </div>
         )}
         {profile.user && (
-          <div className='profile-container'>
+          <div className='profile-container' data-test='profile-element'>
             <div className='profile-title'>E-mail:</div>
             <div className='profile-content'>{profile.user.email}</div>
           </div>
         )}
-        <div className='profile-container'>
+        <div className='profile-container' data-test='profile-element'>
           <div className='profile-title'>Website:</div>
           <div className='profile-content'>{profile.website}</div>
         </div>
-        <div className='profile-container'>
+        <div className='profile-container' data-test='profile-element'>
           <div className='profile-title'>Address:</div>
           <div className='profile-content'>{profile.location}</div>
         </div>
-        <div className='profile-container'>
+        <div className='profile-container' data-test='profile-element'>
           <div className='profile-title'>Introduction:</div>
           <div className='profile-content'>{profile.bio}</div>
         </div>
@@ -67,6 +61,7 @@ const Profile = ({ isAuthenticated, profile: { loading, profile } }) => {
         outlined
         style={{ margin: '20px', border: 'solid 1px #AAA', color: 'black' }}
         className='fade-in'
+        data-test='edit-button'
         onClick={() => {
           setEditProfile(true);
         }}

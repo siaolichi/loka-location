@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import TextField, { Input } from "@material/react-text-field";
-import { addLocationToGroup } from "../../actions/group";
-import { Button } from "@material/react-button";
+import React, { useState, useEffect, useRef, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import TextField, { Input } from '@material/react-text-field';
+import { addLocationToGroup } from '../../actions/group';
+
+import InfoWindow from './InfoWindow';
 const mapContainerStyle = {
-  height: "500px",
-  width: "100%"
+  height: '500px',
+  width: '100%'
 };
 const GMap = ({ locations, addLocationToGroup, group_id }) => {
   const [map, setMap] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [markers] = useState([]);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState('');
 
   const containerRef = useRef(null);
   const inputRef = useRef(null);
@@ -29,29 +30,27 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       })
     );
   }, []);
+
   useEffect(() => {
     if (map) initSetting();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   const initSetting = () => {
     let searchBox = new google.maps.places.SearchBox(
       inputRef.current.inputElement
     );
-    map.addListener("bounds_changed", function() {
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputRef.current);
+    map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
     });
-    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputRef.current);
-    map.addListener("bounds_changed", function() {
-      searchBox.setBounds(map.getBounds());
-    });
-    console.log(locations);
     // locations.forEach((location, index) => {
     //   addMarker(map, location.latLng, location.name, "marker");
     // });
-    searchBox.addListener("places_changed", function() {
+    searchBox.addListener('places_changed', function() {
       var places = searchBox.getPlaces();
 
-      if (places.length == 0) {
+      if (places.length === 0) {
         return;
       }
 
@@ -61,21 +60,10 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       var bounds = new google.maps.LatLngBounds();
       places.forEach(function(place) {
         if (!place.geometry) {
-          console.log("Returned place contains no geometry");
+          console.log('Returned place contains no geometry');
           return;
         }
 
-        // Create a marker for each place.
-        // setMarkers(
-        //   markers.push(
-        //     new google.maps.Marker({
-        //       map: map,
-        //       icon: icon,
-        //       title: place.name,
-        //       position: place.geometry.location
-        //     })
-        //   )
-        // );
         addMarker(map, place);
 
         if (place.geometry.viewport) {
@@ -105,48 +93,37 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       map: map
     });
 
-    // var address = "";
-    // if (place.address_components) {
-    //   address = [
-    //     (place.address_components[0] &&
-    //       place.address_components[0].short_name) ||
-    //       "",
-    //     (place.address_components[1] &&
-    //       place.address_components[1].short_name) ||
-    //       "",
-    //     (place.address_components[2] &&
-    //       place.address_components[2].short_name) ||
-    //       ""
-    //   ].join(" ");
-    // }
-    let address = place.formatted_address.split(",");
+    setInfoWindow(map, marker, infowindow, place, infoWindowRef);
+
+    google.maps.event.addListener(marker, 'click', function() {
+      setInfoWindow(map, marker, infowindow, place, infoWindowRef);
+    });
+
+    markers.push(marker);
+  };
+
+  const setInfoWindow = (map, marker, infowindow, place, infoWindowRef) => {
+    let address = place.formatted_address.split(',');
     address.pop();
-    address.join("");
+    address.join('');
     let infowindowContent = infoWindowRef.current;
-    console.log(place.name, address);
     infowindow.setContent(infowindowContent);
     infowindowContent.children[0].textContent = place.name;
     infowindowContent.children[1].textContent = address;
     infowindowContent.children[2].textContent =
-      place.geometry.location.lat() + "," + place.geometry.location.lng();
-    infowindowContent.children[4].addEventListener("click", function() {
+      place.geometry.location.lat() + ',' + place.geometry.location.lng();
+
+    infowindowContent.children[4].addEventListener('click', function() {
       infowindow.close(map, marker);
     });
     infowindow.open(map, marker);
-    google.maps.event.addListener(marker, "click", function() {
-      infowindowContent.children[0].textContent = place.name;
-      infowindowContent.children[1].textContent = address;
-      infowindowContent.children[2].textContent =
-        place.geometry.location.lat() + "," + place.geometry.location.lng();
-      infowindow.open(map, marker);
-    });
-    markers.push(marker);
   };
+
   const clearMarkers = () => {
-    for (var i = 0; i < markers.length; i++) {
+    for (let i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
     }
-    for (var i = 0; i < markers.length; i++) {
+    for (let i = 0; i < markers.length; i++) {
       if (markers[i].map == null) markers.splice(i, 1);
     }
   };
@@ -155,19 +132,19 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
     const parent = e.currentTarget.parentNode;
     const location = {};
     const latLng = {
-      lat: parseFloat(parent.children[2].textContent.split(",")[0]),
-      lng: parseFloat(parent.children[2].textContent.split(",")[1])
+      lat: parseFloat(parent.children[2].textContent.split(',')[0]),
+      lng: parseFloat(parent.children[2].textContent.split(',')[1])
     };
     location.name = parent.children[0].textContent;
     location.address = parent.children[1].textContent;
     location.latLng = latLng;
     location.description = description;
     addLocationToGroup(group_id, location);
-    setDescription("");
+    setDescription('');
   };
   return (
     <Fragment>
-      <TextField label="Add new location" className="my-loka-map" outlined>
+      <TextField label='Add new location' className='my-loka-map' outlined>
         <Input
           ref={inputRef}
           value={inputValue}
@@ -177,31 +154,14 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
       <div
         ref={containerRef}
         style={mapContainerStyle}
-        className="map-container"
+        className='map-container'
       ></div>
-      <div style={{ display: "none" }}>
-        <div ref={infoWindowRef}>
-          <b className="title"></b>
-          <p className="address"></p>
-          <p className="lat-lng"></p>
-          <TextField
-            outlined
-            textarea
-            label="Add description"
-            style={{
-              width: "100%",
-              margin: "10px auto",
-              fontSize: "10px"
-            }}
-          >
-            <Input
-              value={description}
-              onChange={e => setDescription(e.currentTarget.value)}
-            />
-          </TextField>
-          <Button onClick={addLocation}>Add Location</Button>
-        </div>
-      </div>
+      <InfoWindow
+        infoWindowRef={infoWindowRef}
+        description={description}
+        setDescription={setDescription}
+        addLocation={addLocation}
+      />
     </Fragment>
   );
 };
