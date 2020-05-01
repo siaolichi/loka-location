@@ -5,16 +5,16 @@ import { GET_PROFILE, PROFILE_ERROR } from './types';
 export const getCurrentProfile = () => async dispatch => {
   try {
     const res = await axios.get('/api/profile/me');
-
     dispatch({
       type: GET_PROFILE,
       payload: res.data
     });
   } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    if (err.response)
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data, status: err.response.status }
+      });
   }
 };
 
@@ -29,20 +29,25 @@ export const createProfile = (
       }
     };
     await axios.post('/api/profile', formData, config);
-    dispatch(getCurrentProfile());
+    await dispatch(getCurrentProfile());
     dispatch(
       setAlert(isCreated ? 'Profile Updated' : 'Profile Created', 'success')
     );
   } catch (err) {
-    console.log(err);
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    if (err.response) {
+      const errors = err.response.data.errors;
+      if (errors)
+        errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data, status: err.response.status }
+      });
+    } else {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: err
+      });
     }
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
   }
 };
 
@@ -51,7 +56,7 @@ export const addGroupToProfile = group => async dispatch => {
   const profile = res.data;
   if (profile.groups) profile.groups.push(group);
   else profile.groups = [group];
-  dispatch(createProfile(profile, true));
+  await dispatch(createProfile(profile, true));
 };
 
 export const removeGroupToProfile = group => async dispatch => {
@@ -61,5 +66,5 @@ export const removeGroupToProfile = group => async dispatch => {
   if (index > -1) {
     profile.groups.splice(index, 1);
   }
-  dispatch(createProfile(profile, true));
+  await dispatch(createProfile(profile, true));
 };
