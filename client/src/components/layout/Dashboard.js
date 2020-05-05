@@ -50,7 +50,9 @@ export const Dashboard = ({
   }, [allGroups, profile]);
 
   if (!profile || loading) return <Spinner />;
-
+  if (!modal.showModal && modal.status === 'group-detail') {
+    setModal(m => ({ ...m, status: 'selected', showModal: null }));
+  }
   const leftSection = modal => {
     switch (modal.status) {
       case 'selected':
@@ -58,6 +60,10 @@ export const Dashboard = ({
       case 'other':
         return <GroupList modal={modal} setModal={setModal} />;
       case 'group-detail':
+        if (!modal.showModal) {
+          setModal(m => ({ ...m, status: 'selected', showModal: null }));
+          return <GroupList modal={modal} setModal={setModal} />;
+        }
         return <GroupDetail group={modal.showModal} setModal={setModal} />;
         break;
       default:

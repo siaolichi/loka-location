@@ -71,10 +71,11 @@ const GoogleMap = ({
     } else {
       selectedGroup = selectedGroup[0];
     }
-    try {
-      map.setCenter(selectedGroup.locations[-1].latLng);
-    } catch (err) {
+
+    if (selectedGroup.locations[0]) {
       map.setCenter(selectedGroup.locations[0].latLng);
+    } else if (allGroups[0].locations[0]) {
+      map.setCenter(allGroups[0].locations[0].latLng);
     }
     selectedGroup.locations.forEach(location => {
       addMarker(map, location, 'marker');
