@@ -1,0 +1,32 @@
+
+
+#create-profile{
+
+    --mdc-theme-primary: #FB667A;
+    .title{
+        color: var(--mdc-theme-primary);
+        font-weight: bold;
+        text-align: center;
+        font-size: 1.2em;
+        margin: 30px;
+    }
+    .form-group{
+        width: 100%;
+        // caret-color: white;
+        .mdc-floating-label{
+            color: var(--mdc-theme-primary);
+            font-weight: 300;
+        }
+        .profile-form{
+            margin: 20px;
+            align-self: left;
+            width:calc(50% - 40px);
+            border-color: var(--mdc-theme-primary);
+        }
+        .profile-form-textarea{
+            margin: 20px;
+            width:calc(100% - 40px);
+            border-color: var(--mdc-theme-primary);
+        }
+    }
+}

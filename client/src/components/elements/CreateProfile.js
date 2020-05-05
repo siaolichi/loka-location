@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import TextField, { Input } from "@material/react-text-field";
-import Button from "@material/react-button";
+import TextField, { Input } from '@material/react-text-field';
+import Button from '@material/react-button';
 
-import { createProfile } from "../../actions/profile";
-
-import "@material/react-text-field/dist/text-field.css";
-import "@material/react-button/dist/button.css";
+import { createProfile } from '../../actions/profile';
+import './CreateProfile.scss';
+import '@material/react-text-field/dist/text-field.css';
+import '@material/react-button/dist/button.css';
 
 const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
   const [formData, setFormData] = useState(
@@ -16,12 +16,12 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
       ? {
           name: initProfile.user.name,
           email: initProfile.user.email,
-          bio: "",
-          website: "",
-          location: "",
-          facebook: "",
-          twitter: "",
-          instagram: ""
+          bio: '',
+          website: '',
+          location: '',
+          facebook: '',
+          twitter: '',
+          instagram: ''
         }
       : initProfile.social
       ? {
@@ -48,9 +48,9 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
     setEditProfile(false);
   };
   return (
-    <div id="create-profile" className="fade-in">
-      <div className="form-group">
-        <TextField label="Name" className="profile-form" outlined disabled>
+    <div id='create-profile' className='fade-in'>
+      <div className='form-group'>
+        <TextField label='Name' className='profile-form' outlined disabled>
           <Input
             disabled
             value={formData.name}
@@ -59,7 +59,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
             }}
           />
         </TextField>
-        <TextField label="Email" className="profile-form" outlined disabled>
+        <TextField label='Email' className='profile-form' outlined disabled>
           <Input
             disabled
             value={formData.email}
@@ -68,7 +68,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
             }}
           />
         </TextField>
-        <TextField label="Website" outlined className="profile-form">
+        <TextField label='Website' outlined className='profile-form'>
           <Input
             value={formData.website}
             onChange={e => {
@@ -76,7 +76,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
             }}
           />
         </TextField>
-        <TextField label="Address" outlined className="profile-form">
+        <TextField label='Address' outlined className='profile-form'>
           <Input
             value={formData.location}
             onChange={e => {
@@ -111,8 +111,8 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
          */}
         <TextField
           textarea
-          label="Introduction"
-          className="profile-form-textarea"
+          label='Introduction'
+          className='profile-form-textarea'
           outlined
         >
           <Input
@@ -122,21 +122,17 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
             }}
           />
         </TextField>
-        <Button
-          outlined
-          style={{ margin: "20px", border: "solid 1px #AAA" }}
-          onClick={onSubmit}
-        >
-          Submit
+        <Button outlined style={{ margin: '20px' }} onClick={onSubmit}>
+          <b>Submit</b>
         </Button>
         <Button
           outlined
-          style={{ margin: "20px", border: "solid 1px #AAA" }}
+          style={{ margin: '20px' }}
           onClick={e => {
             setEditProfile(false);
           }}
         >
-          Canceled
+          <b>Canceled</b>
         </Button>
       </div>
     </div>

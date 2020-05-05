@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import TextField, { Input } from '@material/react-text-field';
 import { addLocationToGroup } from '../../actions/group';
 
 import InfoWindow from './InfoWindow';
 const mapContainerStyle = {
-  height: '500px',
+  height: 'calc(100% - 50px)',
   width: '100%'
 };
-const GMap = ({ locations, addLocationToGroup, group_id }) => {
+const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
   const [map, setMap] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [markers] = useState([]);
@@ -38,16 +37,14 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
 
   const initSetting = () => {
     let searchBox = new google.maps.places.SearchBox(
-      inputRef.current.inputElement
+      inputRef.current.childNodes[0]
     );
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputRef.current);
-    map.addListener('bounds_changed', function() {
+    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputRef.current);
+    map.addListener('bounds_changed', function () {
       searchBox.setBounds(map.getBounds());
     });
-    // locations.forEach((location, index) => {
-    //   addMarker(map, location.latLng, location.name, "marker");
-    // });
-    searchBox.addListener('places_changed', function() {
+
+    searchBox.addListener('places_changed', function () {
       var places = searchBox.getPlaces();
 
       if (places.length === 0) {
@@ -58,7 +55,7 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
 
       // For each place, get the icon, name and location.
       var bounds = new google.maps.LatLngBounds();
-      places.forEach(function(place) {
+      places.forEach(function (place) {
         if (!place.geometry) {
           console.log('Returned place contains no geometry');
           return;
@@ -95,16 +92,16 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
 
     setInfoWindow(map, marker, infowindow, place, infoWindowRef);
 
-    google.maps.event.addListener(marker, 'click', function() {
+    google.maps.event.addListener(marker, 'click', function () {
       setInfoWindow(map, marker, infowindow, place, infoWindowRef);
     });
 
     markers.push(marker);
   };
-
   const setInfoWindow = (map, marker, infowindow, place, infoWindowRef) => {
+    console.log(place);
     let address = place.formatted_address.split(',');
-    address.pop();
+    if (address.length > 1) address.pop();
     address.join('');
     let infowindowContent = infoWindowRef.current;
     infowindow.setContent(infowindowContent);
@@ -112,8 +109,8 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
     infowindowContent.children[1].textContent = address;
     infowindowContent.children[2].textContent =
       place.geometry.location.lat() + ',' + place.geometry.location.lng();
-
-    infowindowContent.children[4].addEventListener('click', function() {
+    infowindowContent.children[3].setAttribute('href', place.url);
+    infowindowContent.children[5].addEventListener('click', function () {
       infowindow.close(map, marker);
     });
     infowindow.open(map, marker);
@@ -128,7 +125,7 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
     }
   };
 
-  const addLocation = e => {
+  const addLocation = async e => {
     const parent = e.currentTarget.parentNode;
     const location = {};
     const latLng = {
@@ -138,23 +135,33 @@ const GMap = ({ locations, addLocationToGroup, group_id }) => {
     location.name = parent.children[0].textContent;
     location.address = parent.children[1].textContent;
     location.latLng = latLng;
+    location.url = parent.children[3].getAttribute('href');
     location.description = description;
-    addLocationToGroup(group_id, location);
-    setDescription('');
+    await addLocationToGroup(groupId, location);
+    await setDescription('');
+    closeModal();
   };
   return (
     <Fragment>
-      <TextField label='Add new location' className='my-loka-map' outlined>
-        <Input
+      <div>
+        <div
+          className='input-wrapper'
           ref={inputRef}
-          value={inputValue}
-          onChange={e => setInputValue(e.currentTarget.value)}
-        />
-      </TextField>
+          style={{
+            width: '100%'
+          }}
+        >
+          <input
+            value={inputValue}
+            style={{ color: 'black' }}
+            onChange={e => setInputValue(e.currentTarget.value)}
+          />
+        </div>
+      </div>
       <div
         ref={containerRef}
         style={mapContainerStyle}
-        className='map-container'
+        className='map-container fade-in'
       ></div>
       <InfoWindow
         infoWindowRef={infoWindowRef}

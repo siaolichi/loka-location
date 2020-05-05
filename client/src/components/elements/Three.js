@@ -1,20 +1,28 @@
-import React, { useEffect, useCallback } from 'react';
+/*eslint-disable react-hooks/exhaustive-deps*/
+import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
+import { connect } from 'react-redux';
+import { TweenMax } from 'gsap';
 const FBXLoader = require('three-fbxloader-offical');
 let loader, scene, renderer, clock, camera, container, earth, controls;
-
-export default function Three() {
-  const animate = useCallback(() => {
+/**
+ * status:
+ *  -1 - loading
+ *  0  - not authenticated
+ *  1  - authentcated
+ */
+export function Three({ isAuthenticated }) {
+  const [status, setStatus] = useState(-1);
+  const animate = () => {
     update();
     renderer.setClearColor(0xffffff, 0);
     requestAnimationFrame(() => {
       animate();
     });
     renderer.render(scene, camera);
-  }, []);
-
-  const init = useCallback(() => {
+  };
+  const init = () => {
     container = document.getElementById('three-container');
     container.appendChild(renderer.domElement);
 
@@ -41,12 +49,12 @@ export default function Three() {
         });
       }
 
-      object3d.children[0].position.set(100, -700, 0);
-      scene.add(object3d);
+      earth.children[0].position.set(100, -700, 0);
+      scene.add(earth);
       animate();
+      setStatus(0);
     });
-  }, [animate]);
-
+  };
   useEffect(() => {
     loader = new FBXLoader();
     scene = new THREE.Scene();
@@ -72,11 +80,26 @@ export default function Three() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     init();
     window.addEventListener('resize', onWindowResize, false);
-
     return () => {
       window.removeEventListener('resize', onWindowResize);
     };
-  }, [init]);
+  }, []);
+  useEffect(() => {
+    if (status !== -1) {
+      if (isAuthenticated) setStatus(2);
+      if (!isAuthenticated) setStatus(1);
+    }
+    switch (status) {
+      case 1:
+        TweenMax.to(earth.position, 2, { y: 0 });
+        break;
+      case 2:
+        TweenMax.to(earth.position, 2, { y: -120 });
+        break;
+      default:
+        break;
+    }
+  }, [status, isAuthenticated]);
 
   const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -93,3 +116,7 @@ export default function Three() {
 
   return <div id='three-container'></div>;
 }
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProps, null)(Three);

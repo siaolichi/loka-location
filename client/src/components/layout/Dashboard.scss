@@ -1,0 +1,27 @@
+#dashboard{
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 2;
+    width: 100%;
+    .left-section{
+        width: 400px;
+        height: calc(100vh - 120px);
+        // position: relative;
+    }
+    .right-section{
+        // position: relative;
+        flex-grow: 1;
+        height: calc(100vh - 120px);
+    }
+    @media screen and (max-width: 870px) {
+        .left-section{
+            width: 100%;
+            height: max-content;
+        }
+        .right-section{
+            width: 100%;
+            height: max-content;
+        }
+        
+    }
+}

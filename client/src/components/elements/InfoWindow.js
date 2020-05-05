@@ -17,6 +17,9 @@ const InfoWindow = ({
 
         {addLocation ? (
           <Fragment>
+            <a target='_blank' href='!#'>
+              <b>Show on google map</b>
+            </a>
             <TextField
               outlined
               textarea

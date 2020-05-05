@@ -1,6 +1,13 @@
 .map-selection{ 
     width: 100%;
-    // background-color: rgba($color: #fff, $alpha: 1) !important;
+    background-color: rgba($color: #fff, $alpha: 0.1) !important;
+    border-radius: 10px !important;
+    .mdc-select__native-control{
+        color: var(--mdc-theme-primary) !important;
+    }
+    .mdc-floating-label{
+        color: var(--mdc-theme-primary) !important;
+    }
 }
 .hide-info-window{
     display: none;

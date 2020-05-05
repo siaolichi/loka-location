@@ -105,23 +105,7 @@
 }
 
 
-#create-profile{
-    .form-group{
-        width: 100%;
-        .mdc-floating-label{
-            color: $primary-color;
-        }
-        .profile-form{
-            margin: 20px;
-            align-self: left;
-            width:calc(50% - 40px);
-        }
-        .profile-form-textarea{
-            margin: 20px;
-            width:calc(100% - 40px);
-        }
-    }
-}
+
 
 #profile {
     color: black;

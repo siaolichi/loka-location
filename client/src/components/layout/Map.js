@@ -1,3 +1,4 @@
+/*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,6 @@ import { setAlert } from '../../actions/alert';
 import { copyStringToClipboard } from '../../utils';
 import '../../style/Map.scss';
 import InfoWindow from '../elements/InfoWindow';
-import Spinner from './Spinner';
 
 const mapContainerStyle = {
   height: 'calc( 100vh - 250px )',
@@ -21,6 +21,7 @@ const mapContainerStyle = {
 
 const GoogleMap = ({
   match,
+  groupId,
   receivePublicGroups,
   allGroups,
   profile: { profile, loading }
@@ -34,7 +35,6 @@ const GoogleMap = ({
   const [mapValue, setMapValue] = useState(
     profile ? profile.groups[0] : 'Bubble Tea in Berlin'
   );
-  const [groupId, setGroupId] = useState('');
   useEffect(() => {
     receivePublicGroups();
     setMap(
@@ -42,47 +42,42 @@ const GoogleMap = ({
         zoom: 12
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (map) initSetting();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allGroups]);
+  useEffect(() => {
+    if (groupId && map) {
+      changeGroupMap(groupId);
+    }
+  }, [groupId]);
   const initSetting = () => {
     if (match) {
-      const { params } = match;
-      const initIndex = allGroups
-        .map(group => group._id)
-        .indexOf(params.groupId);
-      if (allGroups[initIndex]) {
-        setMapValue(allGroups[initIndex].name);
-      } else {
-        setMapValue(allGroups[0].name);
-        setAlert('No group ID was found', 'danger');
-      }
+      changeGroupMap(match.params.groupId);
     }
-    changeGroupMap(mapValue);
+    if (groupId) {
+      changeGroupMap(groupId);
+    }
     // let bounds = new google.maps.LatLngBounds();
     new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
   };
-  const changeGroupMap = value => {
-    setMapValue(value);
+  const changeGroupMap = groupId => {
     clearMarkers();
-    // if (value === "Home") {
-    //   console.log(profile);
-    //   addMarker(map, profile.location, profile.user.name, "home");
-    // }
-
-    allGroups.forEach((group, index) => {
-      if (group.name === value) {
-        if (group.locations.length > 0)
-          map.setCenter(group.locations[0].latLng);
-        setGroupId(group._id);
-        group.locations.forEach(location => {
-          addMarker(map, location, 'marker');
-        });
-      }
+    let selectedGroup = allGroups.filter(group => group._id === groupId);
+    setMapValue(groupId);
+    if (selectedGroup.length === 0) {
+      selectedGroup = allGroups[0];
+    } else {
+      selectedGroup = selectedGroup[0];
+    }
+    try {
+      map.setCenter(selectedGroup.locations[-1].latLng);
+    } catch (err) {
+      map.setCenter(selectedGroup.locations[0].latLng);
+    }
+    selectedGroup.locations.forEach(location => {
+      addMarker(map, location, 'marker');
     });
   };
   const addMarker = (map, location, type = 'marker') => {
@@ -107,6 +102,8 @@ const GoogleMap = ({
       infowindowContent.children[0].textContent = location.name;
       infowindowContent.children[1].textContent = location.address;
       infowindowContent.children[3].textContent = location.description;
+      if (location.url)
+        infowindowContent.children[4].setAttribute('href', location.url);
       infowindowContent.children[4].setAttribute(
         'href',
         `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
@@ -127,29 +124,27 @@ const GoogleMap = ({
   };
 
   return (
-    <div className='fade-in full-container'>
-      <Select
-        value={mapValue}
-        label='Select Groups'
-        className='map-selection'
-        outlined
-        onChange={evt => changeGroupMap(evt.target.value)}
-      >
-        {/* <Option value="Home">Home</Option> */}
-        {profile
-          ? profile.groups.map((group, i) => (
-              <Option key={i} value={group}>
-                {group}
-              </Option>
-            ))
-          : allGroups.map((group, i) => (
-              <Option key={i} value={group.name}>
-                {group.name}
-              </Option>
-            ))}
-      </Select>
-      <br />
-      <br />
+    <div className='fade-in '>
+      {!groupId && (
+        <Select
+          value={mapValue}
+          label='Select Groups'
+          className='map-selection'
+          outlined
+          onChange={evt => {
+            console.log(evt.target.value);
+            changeGroupMap(evt.target.value);
+          }}
+        >
+          {/* <Option value="Home">Home</Option> */}
+          {allGroups.map((group, i) => (
+            <Option key={group._id} value={group._id}>
+              {group.name}
+            </Option>
+          ))}
+        </Select>
+      )}
+
       <div
         ref={containerRef}
         style={mapContainerStyle}
@@ -158,15 +153,17 @@ const GoogleMap = ({
       <InfoWindow infoWindowRef={infoWindowRef} />
       <div className='share-map-container'>
         <Button
-          className='share-map-button'
+          className='button'
           onClick={() => {
             copyStringToClipboard(
-              `https://loka-location.herokuapp.com/map/${groupId}`
+              `https://loka-location.herokuapp.com/map/${mapValue}`
             );
             alert('Link is copied to your clipboard');
           }}
         >
-          <Link to={`/map/${groupId}`}>SHARE THIS MAP!!</Link>
+          <Link to={`/map/${mapValue}`} className='button'>
+            SHARE THIS MAP!!
+          </Link>
         </Button>
       </div>
     </div>
@@ -175,8 +172,7 @@ const GoogleMap = ({
 GoogleMap.propTypes = {
   allGroups: PropTypes.array.isRequired,
   receivePublicGroups: PropTypes.func.isRequired,
-  profile: PropTypes.object,
-  allGroups: PropTypes.array
+  profile: PropTypes.object
 };
 
 const mapStateToProps = state => ({

@@ -1,114 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import Dialog, {
   DialogTitle,
   DialogContent,
   DialogFooter,
   DialogButton
 } from '@material/react-dialog';
-import MaterialIcon from '@material/react-material-icon';
-import Button from '@material/react-button';
 import GMap from './GMap';
-import TextField, { Input } from '@material/react-text-field';
-import {
-  changeLocationDetail,
-  removeLocation,
-  removeGroupFromAllGroups
-} from '../../actions/group';
+import './CardModal.scss';
 
-const GroupMadol = ({
-  isOpen,
-  closeModal,
-  choice,
-  changeLocationDetail,
-  removeLocation,
-  removeGroupFromAllGroups,
-  userID
-}) => {
-  const [locations, setLocations] = useState(choice.locations);
-  useEffect(() => {
-    setLocations(choice.locations);
-  }, [choice.locations]);
+const GroupMadol = ({ editMap, setEditMap, groupId, groupName }) => {
+  const closeModal = () => {
+    setEditMap(false);
+  };
   return (
     <div>
       <Dialog
-        className='my-loka-dialog'
-        open={isOpen}
+        className='add-location-modal'
+        open={editMap}
         onClose={action => {
           closeModal();
         }}
       >
-        <DialogTitle>{choice.name}</DialogTitle>
-        <DialogContent>
-          <ul>
-            {locations.map((location, i) => {
-              return (
-                <li
-                  key={location._id}
-                  style={{
-                    margin: '5px 0'
-                  }}
-                >
-                  <b>{location.name}</b>:{location.address}
-                  <br />
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <TextField
-                      label='edit details'
-                      style={{ width: 'calc(100% - 50px)' }}
-                    >
-                      <Input
-                        value={location.description}
-                        onChange={e => {
-                          const tmpLocations = [...locations];
-                          tmpLocations[i].description = e.currentTarget.value;
-                          setLocations(tmpLocations);
-                        }}
-                      />
-                    </TextField>
-                    <MaterialIcon
-                      role='button'
-                      icon='check'
-                      style={{ float: 'right', cursor: 'pointer' }}
-                      onClick={() => {
-                        changeLocationDetail(choice._id, location);
-                      }}
-                    />
-                    {userID === location.user ? (
-                      <MaterialIcon
-                        role='button'
-                        icon='delete'
-                        style={{ float: 'right', cursor: 'pointer' }}
-                        onClick={() => {
-                          removeLocation(choice._id, location._id);
-                        }}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          <GMap locations={choice.locations} group_id={choice._id} />
-          {userID === choice._id ? (
-            <Button
-              style={{
-                color: 'rgba(255, 0, 0, 0.6)',
-                fontSize: '9px',
-                float: 'right'
-              }}
-              onClick={() => {
-                closeModal();
-                removeGroupFromAllGroups(choice);
-              }}
-            >
-              Delete Completely
-            </Button>
-          ) : (
-            ''
-          )}
+        <DialogTitle>{groupName}</DialogTitle>
+        <DialogContent className='add-location-modal-content'>
+          <GMap groupId={groupId} closeModal={closeModal} />
         </DialogContent>
         <DialogFooter>
           <DialogButton action='confirm'>Close</DialogButton>
@@ -118,18 +33,6 @@ const GroupMadol = ({
   );
 };
 
-GroupMadol.propTypes = {
-  changeLocationDetail: PropTypes.func.isRequired,
-  removeLocation: PropTypes.func.isRequired,
-  removeGroupFromAllGroups: PropTypes.func.isRequired
-};
+GroupMadol.propTypes = {};
 
-const mapStateToProps = state => ({
-  userID: state.auth.user._id
-});
-
-export default connect(mapStateToProps, {
-  changeLocationDetail,
-  removeLocation,
-  removeGroupFromAllGroups
-})(GroupMadol);
+export default GroupMadol;

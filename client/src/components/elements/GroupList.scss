@@ -1,0 +1,108 @@
+#group-list {
+    width: 100%;
+    color: white;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    * {
+        transition: none;
+    }
+    .group-wrapper{
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: calc(100% + 15px);
+        height: 100%;
+        overflow-y: scroll;
+        margin: 0;
+        padding: 0;
+    }
+    .list-wrapper{
+        width: 350px;
+        position: relative;
+    }
+    .title{
+        // background: #0000002d;
+        margin: 10px;
+        min-height: 50px;
+        vertical-align: top;
+        line-height: 50px;
+        padding-left: 30px;
+        border-radius: 10px;
+        color: var(--mdc-theme-primary);
+        font-size: 1.2rem;
+        font-weight: bold;
+        // border: .5px solid var(--mdc-theme-primary);
+        float: right;
+        width: calc(100% - 35px);
+        text-transform: uppercase;
+    }
+    .group-content{
+        background: #0000002d;
+        margin: 10px;
+        min-height: 50px;
+        vertical-align: top;
+        line-height: 50px;
+        padding-left: 15px;
+        border-radius: 10px;
+        border: .5px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        width: calc(100% - 35px);
+        float: right;
+        &.button{
+            cursor: pointer;
+            // margin-right: '100px';
+        }
+    }
+    .search-button{
+        color: white;
+        vertical-align: middle;
+        float: right;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    input{
+        background: none;
+        border: none;
+        box-shadow: none;
+        width: calc(100% - 65px);
+        height: 40px;
+        margin: 0;
+    }
+    .icon-button {
+        height: 40px;
+        width: 40px;
+        border: .5px solid rgba(255, 255, 255, 0.5);
+        vertical-align: middle;
+        text-align: center;
+        border-radius: 20px;
+        margin: 10px;
+        line-height: 40px;
+        font-size: 20px;
+        float: right;
+        color: white;
+        &.wrapper{
+            border: none;
+            margin: none;
+            cursor: pointer;
+        }
+    }
+    button{
+        margin: none;
+        background: none;
+        border: none;
+        box-shadow: none;
+        width: calc(100% - 20px);
+        outline: inherit;
+        font: inherit;
+        text-align: left;
+        font-weight: 100;
+    }
+    @media screen and(max-width: 870px) {
+        height: calc(100vh - 120px);
+        .list-wrapper{
+            width: 100%;
+        }
+    }
+}

@@ -1,93 +1,107 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
-import { getCurrentProfile } from '../../actions/profile';
-import Profile from './Profile';
-import MyLoka from './MyLoka';
-import Favorite from './Favorite';
+import { connect } from 'react-redux';
+import { Button } from '@material/react-button';
+import GroupList from '../elements/GroupList';
 import Spinner from './Spinner';
+import GroupDetail from '../elements/GroupDetail';
+import Map from './Map';
+import './Dashboard.scss';
+import { receivePublicGroups } from '../../actions/group';
+import CardModal from '../elements/CardModal';
 
-import '../../style/Dashboard.scss';
-export const UnconnectedDashboard = ({
-  getCurrentProfile,
-  auth: { isAuthenticated },
-  profile: { loading, profile }
+export const Dashboard = ({
+  profile: { profile, loading },
+  allGroups,
+  receivePublicGroups
 }) => {
+  const [modal, setModal] = useState({
+    selected: [],
+    other: [],
+    status: 'selected',
+    showModal: null
+  });
+  const [editMap, setEditMap] = useState(false);
+
   useEffect(() => {
-    // console.log('GetProfile', isAuthenticated);
-    getCurrentProfile();
-  }, [isAuthenticated]);
-  const [ActiveTab, setActiveTab] = useState('Profile');
-  if (!isAuthenticated) return <Redirect to='/login' />;
-  if (loading) return <Spinner />;
-  if (!profile) {
-    getCurrentProfile();
-    return <Spinner />;
-  }
+    receivePublicGroups();
+  }, []);
 
-  const changeTab = e => {
-    const allTabs = document.getElementsByClassName('profile-title');
-    Object.values(allTabs).forEach(tab => {
-      tab.classList.remove('active');
-    });
-    e.target.classList.add('active');
-    setActiveTab(e.target.innerHTML);
-  };
-  const backToProfile = () => {
-    const allTabs = document.getElementsByClassName('profile-title');
-    Object.values(allTabs).forEach(tab => {
-      tab.classList.remove('active');
-    });
-    document.getElementsByClassName('profile-title')[0].classList.add('active');
-    setActiveTab('Profile');
-  };
+  useEffect(() => {
+    const updateGroup = () => {
+      const selected = [],
+        other = [];
+      let showModal = null;
+      for (let group of allGroups) {
+        if (modal.showModal && group._id === modal.showModal._id) {
+          showModal = Object.assign({}, modal.showModal, group);
+          console.log(showModal);
+        }
+        let index = profile.groups.indexOf(group.name);
+        if (index > -1) selected.push(group);
+        else other.push(group);
+      }
+      setModal(m => {
+        return { ...m, selected, other, showModal };
+      });
+    };
 
+    if (allGroups.length > 0 && profile) updateGroup();
+  }, [allGroups, profile]);
+
+  if (!profile || loading) return <Spinner />;
+
+  const leftSection = modal => {
+    switch (modal.status) {
+      case 'selected':
+        return <GroupList modal={modal} setModal={setModal} />;
+      case 'other':
+        return <GroupList modal={modal} setModal={setModal} />;
+      case 'group-detail':
+        return <GroupDetail group={modal.showModal} setModal={setModal} />;
+        break;
+      default:
+        break;
+    }
+  };
   return (
-    <div id='dashboard' className='fade-in' data-test='component-dashboard'>
-      <div className='tabs'>
-        <button className='profile-title active' onClick={e => changeTab(e)}>
-          Profile
-        </button>
-        <button className='profile-title' onClick={e => changeTab(e)}>
-          Edit Groups
-        </button>
-        <button className='profile-title' onClick={e => changeTab(e)}>
-          My Favorite
-        </button>
-      </div>
-
-      <div className='tab__content'>
-        <div className='content__wrapper'>
-          {ActiveTab === 'Profile' ? (
-            <Profile profile={profile} />
-          ) : ActiveTab === 'Edit Groups' ? (
-            <MyLoka
-              profile={{ loading, profile }}
-              backToProfile={backToProfile}
-            />
-          ) : ActiveTab === 'My Favorite' ? (
-            <Favorite profile={{ loading, profile }} />
-          ) : (
-            <Redirect to='/' />
-          )}
-        </div>
+    <div id='dashboard'>
+      <div className='left-section'>{leftSection(modal)}</div>
+      <div className='right-section'>
+        {modal.showModal && (
+          <Button
+            outlined
+            onClick={() => {
+              setEditMap(true);
+            }}
+            style={{ margin: '10px' }}
+          >
+            Add New Location
+          </Button>
+        )}
+        {modal.showModal && <Map groupId={modal.showModal._id} />}
+        {modal.showModal && editMap && (
+          <CardModal
+            groupId={modal.showModal._id}
+            groupName={modal.showModal.name}
+            editMap={editMap}
+            setEditMap={setEditMap}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-UnconnectedDashboard.propTypes = {
-  getCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+Dashboard.propTypes = {
   profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
+  allGroups: state.group.allGroups
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(
-  UnconnectedDashboard
-);
+const mapDispatchToProps = { receivePublicGroups };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
