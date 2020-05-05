@@ -1,5 +1,5 @@
 // import Enzyme from 'enzyme';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import rootReducer from '../reducers';
 import { createStore, applyMiddleware } from 'redux';
 
@@ -14,12 +14,12 @@ export const findByTestAttr = (wrapper, val) => {
   return wrapper.find(`[data-test='${val}']`);
 };
 
-export const checkProps = (component, props) => {
-  const checkError = PropTypes.checkPropTypes(
-    component.propTypes,
-    props,
-    'prop',
-    component.name
-  );
-  expect(checkError).toBeUndefined();
-};
+// export const checkProps = (component, props) => {
+//   const checkError = PropTypes.checkPropTypes(
+//     component.propTypes,
+//     props,
+//     'prop',
+//     component.name
+//   );
+//   expect(checkError).toBeUndefined();
+// };

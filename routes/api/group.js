@@ -1,42 +1,42 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const { check, validationResult } = require("express-validator");
-const auth = require("../../middleware/auth");
-const Group = require("../../models/Group");
-const User = require("../../models/User");
+const { check, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
+const Group = require('../../models/Group');
+const User = require('../../models/User');
 
 //@routes       GET api/group
 //@desc         Get all public group
 //@access       public
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const posts = await Group.find()
-      .populate("user", ["name", "avatar"])
+      .populate('user', ['name', 'avatar'])
       .sort({ date: -1 });
     res.json(posts);
   } catch (err) {
     console.error(err);
-    res.status(404).send("Server Error");
+    res.status(404).send('Server Error');
   }
 });
 
 //@routes       GET api/group/:id
 //@desc         Get public group by id
 //@access       public
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const post = await Group.findById(req.params.id).populate("user", [
-      "name",
-      "avatar"
+    const post = await Group.findById(req.params.id).populate('user', [
+      'name',
+      'avatar'
     ]);
-    if (!post) return res.status(404).json({ msg: "post not found" });
+    if (!post) return res.status(404).json({ msg: 'post not found' });
     res.json(post);
   } catch (err) {
-    if (err.kind === "ObjectId")
-      return res.status(404).json({ msg: "post not found" });
+    if (err.kind === 'ObjectId')
+      return res.status(404).json({ msg: 'post not found' });
     console.error(err);
-    res.status(404).send("Server Error");
+    res.status(404).send('Server Error');
   }
 });
 
@@ -44,14 +44,14 @@ router.get("/:id", async (req, res) => {
 //@desc         Create a group
 //@access       private
 router.post(
-  "/",
+  '/',
   [
     auth,
     [
-      check("name", "Text is required")
+      check('name', 'Text is required')
         .not()
         .isEmpty(),
-      check("public", "Choose public or private")
+      check('public', 'Choose public or private')
         .not()
         .isEmpty()
     ]
@@ -63,7 +63,7 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select("-password");
+      const user = await User.findById(req.user.id).select('-password');
       const newGroup = new Group({
         user: user.id,
         avatar: user.avatar,
@@ -74,7 +74,7 @@ router.post(
       res.json(group);
     } catch (err) {
       console.error(err);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   }
 );
@@ -82,29 +82,29 @@ router.post(
 //@routes       DELETE api/group/:id
 //@desc         Get group by ID
 //@access       private
-router.delete("/:id", auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
-    const group = await Group.findById(req.params.id).populate("user", [
-      "name",
-      "avatar"
+    const group = await Group.findById(req.params.id).populate('user', [
+      'name',
+      'avatar'
     ]);
     //Check if group exist
-    if (!group) return res.status(404).json({ msg: "group not found" });
+    if (!group) return res.status(404).json({ msg: 'group not found' });
 
     //Check user
     if (group.user.id !== req.user.id) {
-      console.log(group.user.id, " ? ", req.user.id);
-      return res.status(404).json({ msg: "User notauthorized" });
+      console.log(group.user.id, ' ? ', req.user.id);
+      return res.status(404).json({ msg: 'User notauthorized' });
     }
     //Remove group
     await group.remove();
 
-    res.json({ group, msg: "Group is removed" });
+    res.json({ group, msg: 'Group is removed' });
   } catch (err) {
-    if (err.kind === "ObjectId")
-      return res.status(404).json({ msg: "group not found" });
+    if (err.kind === 'ObjectId')
+      return res.status(404).json({ msg: 'group not found' });
     console.log(err);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
@@ -112,17 +112,17 @@ router.delete("/:id", auth, async (req, res) => {
 //@desc         Create a location for a group
 //@access       private
 router.post(
-  "/location/:id",
+  '/location/:id',
   [
     auth,
     [
-      check("name", "Name is required")
+      check('name', 'Name is required')
         .not()
         .isEmpty(),
-      check("address", "Address is required")
+      check('address', 'Address is required')
         .not()
         .isEmpty(),
-      check("latLng", "Address is required")
+      check('latLng', 'Address is required')
         .not()
         .isEmpty()
     ]
@@ -134,7 +134,7 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select("-password");
+      const user = await User.findById(req.user.id).select('-password');
       const group = await Group.findById(req.params.id);
       const newLocation = {
         user: user.id,
@@ -143,7 +143,8 @@ router.post(
         address: req.body.address,
         photo: req.body.photo,
         latLng: req.body.latLng,
-        description: req.body.description
+        description: req.body.description,
+        url: req.body.url
       };
 
       group.locations.unshift(newLocation);
@@ -152,7 +153,7 @@ router.post(
       res.json(location);
     } catch (err) {
       console.error(err);
-      res.status(500).send("Server Error");
+      res.status(500).send('Server Error');
     }
   }
 );
@@ -160,14 +161,14 @@ router.post(
 //@routes       POST api/group/location
 //@desc         Edit location details
 //@access       private
-router.post("/location/:id/:location_id", auth, async (req, res) => {
+router.post('/location/:id/:location_id', auth, async (req, res) => {
   try {
     const group = await Group.findById(req.params.id);
 
     const location = group.locations.find(
       location => location.id == req.params.location_id
     );
-    if (!location) return res.status(404).json({ msg: "Location not found" });
+    if (!location) return res.status(404).json({ msg: 'Location not found' });
 
     const newLocation = {
       user: location.user,
@@ -176,7 +177,8 @@ router.post("/location/:id/:location_id", auth, async (req, res) => {
       address: location.address,
       photo: location.photo,
       latLng: location.latLng,
-      description: req.body.description
+      description: req.body.description,
+      url: req.body.url
     };
     //Check user
     // if (
@@ -196,14 +198,14 @@ router.post("/location/:id/:location_id", auth, async (req, res) => {
     res.json(group.locations);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@routes       DELETE api/group/location
 //@desc         Delete a location from a post
 //@access       private
-router.delete("/location/:id/:location_id", auth, async (req, res) => {
+router.delete('/location/:id/:location_id', auth, async (req, res) => {
   try {
     const group = await Group.findById(req.params.id);
 
@@ -211,7 +213,7 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
       location => location.id == req.params.location_id
     );
     console.log(location);
-    if (!location) return res.status(404).json({ msg: "Location not found" });
+    if (!location) return res.status(404).json({ msg: 'Location not found' });
 
     //Check user
     if (
@@ -220,9 +222,9 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
     ) {
       return res.status(401).json({
         msg:
-          "User not authorized, " +
+          'User not authorized, ' +
           req.user.id +
-          " : " +
+          ' : ' +
           location.user.toString()
       });
     }
@@ -236,7 +238,7 @@ router.delete("/location/:id/:location_id", auth, async (req, res) => {
     res.json(group.locations);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 

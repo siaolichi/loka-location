@@ -11,14 +11,9 @@ export const receivePublicGroups = () => async dispatch => {
       payload: res.data
     });
   } catch (err) {
-    console.log(err);
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
     dispatch({
       type: GROUP_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.data, status: err.response.status }
     });
   }
 };
@@ -31,7 +26,7 @@ export const addLocationToGroup = (group_id, location) => async dispatch => {
       }
     };
     await axios.post(`/api/group/location/${group_id}`, location, config);
-    dispatch(receivePublicGroups());
+    await dispatch(receivePublicGroups());
     dispatch(setAlert('Location added', 'success'));
   } catch (err) {
     console.log(err);
@@ -81,14 +76,10 @@ export const changeLocationDetail = (group_id, location) => async dispatch => {
       location,
       config
     );
-    dispatch(receivePublicGroups());
+    await dispatch(receivePublicGroups());
     dispatch(setAlert('Location updated', 'success'));
   } catch (err) {
     console.log(err);
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
     dispatch({
       type: GROUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
@@ -107,14 +98,10 @@ export const removeLocation = (group_id, location_id) => async dispatch => {
       `/api/group/location/${group_id}/${location_id}`,
       config
     );
-    dispatch(receivePublicGroups());
+    await dispatch(receivePublicGroups());
     dispatch(setAlert('Location updated', 'success'));
   } catch (err) {
     console.log(err);
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
     dispatch({
       type: GROUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
@@ -131,14 +118,10 @@ export const removeGroupFromAllGroups = group => async dispatch => {
     };
     await axios.delete(`/api/group/${group._id}`, config);
     await dispatch(removeGroupToProfile(group.name));
-    dispatch(receivePublicGroups());
+    await dispatch(receivePublicGroups());
     dispatch(setAlert('Group deleted', 'success'));
   } catch (err) {
     console.log(err);
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-    }
     dispatch({
       type: GROUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }

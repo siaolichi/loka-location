@@ -34,7 +34,7 @@ export const createProfile = (
       setAlert(isCreated ? 'Profile Updated' : 'Profile Created', 'success')
     );
   } catch (err) {
-    if (err.response) {
+    if (err.response && err.response.data) {
       const errors = err.response.data.errors;
       if (errors)
         errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));

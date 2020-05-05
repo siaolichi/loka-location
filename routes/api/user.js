@@ -1,31 +1,31 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const gravatar = require("gravatar");
-const bcrypet = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
-const User = require("../../models/User");
+const gravatar = require('gravatar');
+const bcrypet = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
+const User = require('../../models/User');
 
 //@routes       GET api/user
 //@desc         Test route
 //@access       public
-router.get("/", (req, res) => {
-  res.send("user route.");
-});
+// router.get("/", (req, res) => {
+//   res.send("user route.");
+// });
 
 //@routes       POST api/user
 //@desc         Register user
 //@access       public
 router.post(
-  "/",
+  '/',
   [
-    check("name", "Name is required.")
+    check('name', 'Name is required.')
       .not()
       .isEmpty(),
-    check("email", "Plesase enter a valid E-mail").isEmail(),
+    check('email', 'Plesase enter a valid E-mail').isEmail(),
     check(
-      "password",
-      "Please enter a password with 6 or more characters."
+      'password',
+      'Please enter a password with 6 or more characters.'
     ).isLength({ min: 6 })
   ],
   async (req, res) => {
@@ -39,11 +39,11 @@ router.post(
       //See if user exists
       let user = await User.findOne({ email });
       if (user) {
-        res.status(400).json({ errors: [{ msg: "User already exists." }] });
+        res.status(400).json({ errors: [{ msg: 'User already exists.' }] });
       }
 
       //Get user gravatar
-      const avatar = gravatar.url(email, { s: "200", r: "pg", d: "mm" });
+      const avatar = gravatar.url(email, { s: '200', r: 'pg', d: 'mm' });
       user = new User({
         name,
         email,
@@ -74,7 +74,7 @@ router.post(
       );
     } catch (err) {
       console.error(err);
-      res.status(500).send("Server error.");
+      res.status(500).send('Server error.');
     }
   }
 );

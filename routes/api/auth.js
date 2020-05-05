@@ -1,22 +1,22 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const bcrypet = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
-const auth = require("../../middleware/auth");
-const User = require("../../models/User");
+const bcrypet = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
+const auth = require('../../middleware/auth');
+const User = require('../../models/User');
 
 //@routes       GET api/auth
-//@desc         Test route
-//@access       public
-router.get("/", auth, async (req, res) => {
+//@desc         Load user
+//@access       private
+router.get('/', auth, async (req, res) => {
   try {
     console.log(req.user);
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id).select('-password');
     console.log(user);
     res.json(user);
   } catch (err) {
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
@@ -24,12 +24,12 @@ router.get("/", auth, async (req, res) => {
 //@desc         Login user
 //@access       public
 router.post(
-  "/",
+  '/',
   [
-    check("email", "Plesase enter a valid E-mail").isEmail(),
+    check('email', 'Plesase enter a valid E-mail').isEmail(),
     check(
-      "password",
-      "Please enter a password with 6 or more characters."
+      'password',
+      'Please enter a password with 6 or more characters.'
     ).isLength({ min: 6 })
   ],
   async (req, res) => {
@@ -43,13 +43,13 @@ router.post(
       //See if user exists
       let user = await User.findOne({ email });
       if (!user) {
-        res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+        res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
       //Match E-mail and password
       const isMatched = await bcrypet.compare(password, user.password);
       if (!isMatched) {
-        res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+        res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
       //Return json webtoken
@@ -70,7 +70,7 @@ router.post(
       );
     } catch (err) {
       console.error(err);
-      res.status(500).send("Server error.");
+      res.status(500).send('Server error.');
     }
   }
 );

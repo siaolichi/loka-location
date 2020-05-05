@@ -1,7 +1,6 @@
-import { GET_GROUPS, GROUP_ERROR } from "../actions/types";
+import { GET_GROUPS, GROUP_ERROR } from '../actions/types';
 const initialState = {
   allGroups: [],
-  myGroups: [],
   error: {},
   loading: true
 };

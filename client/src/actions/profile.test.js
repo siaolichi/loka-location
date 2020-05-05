@@ -11,6 +11,7 @@ import { storeFactory } from '../utils';
 // This sets the mock adapter on the default instance
 var mock = new MockAdapter(axios);
 const store = storeFactory();
+
 describe('getCurrentProfile', () => {
   describe('success', () => {
     let newState;

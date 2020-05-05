@@ -1,5 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+/*eslint-disable react-hooks/exhaustive-deps*/
+import React, { useEffect, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { TweenMax } from 'gsap';
+
 import PrivateRoute from './routing/PrivateRoute';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
@@ -9,8 +12,8 @@ import Alert from './components/layout/Alert';
 import Dashboard from './components/layout/Dashboard';
 import Three from './components/elements/Three';
 import GoogleMap from './components/layout/Map';
-import { Provider } from 'react-redux';
-import store from './store';
+import ProfileModal from './components/layout/ProfileModal';
+import { connect } from 'react-redux';
 import { loadUser } from './actions/auth';
 
 import './style/App.scss';
@@ -21,43 +24,50 @@ import '@material/react-checkbox/dist/checkbox.css';
 import '@material/react-card/dist/card.css';
 import '@material/react-select/dist/select.css';
 
-function App() {
+function App({ loadUser, isAuthenticated }) {
+  const [openAccount, setOpenAccount] = useState(false);
   useEffect(() => {
-    store.dispatch(loadUser());
+    loadUser();
   }, []);
+  useEffect(() => {
+    if (isAuthenticated) {
+      TweenMax.to('.container', 2, {
+        background:
+          'linear-gradient(to bottom, rgb(23, 1, 58) 40%, rgb(212, 104, 216) 100%)'
+      });
+    } else {
+      TweenMax.to('.container', 2, {
+        background:
+          'linear-gradient(to bottom, rgba(93,255,250,1) 0%, rgba(251,121,187,1) 100%)'
+      });
+    }
+  }, [isAuthenticated]);
   return (
-    <Provider store={store}>
-      <Router>
-        <Fragment>
-          <div className='container app' data-test='component-app'>
-            {/* <div className="dark-overlay" /> */}
-            <Three />
-            <Navbar />
-            <Alert />
-            <Switch>
-              <Route exact path='/' component={Landing} />
-              <Route exact path='/login' component={Login} />
-              <Route exact path='/signup' component={Signup} />
-              <Route
-                exact
-                path='/map'
-                component={() => <GoogleMap match={null} />}
-              />
-              <Route
-                exact
-                path='/map/:groupId'
-                component={({ match, location }) => {
-                  // console.log(match, location);
-                  return <GoogleMap match={match} />;
-                }}
-              />
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
-            </Switch>
-          </div>
-        </Fragment>
-      </Router>
-    </Provider>
+    <div className='container app' data-test='component-app'>
+      {/* <div className="dark-overlay" /> */}
+      <Three />
+      <Navbar setOpenAccount={setOpenAccount} />
+      <Alert />
+      <ProfileModal openAccount={openAccount} setOpenAccount={setOpenAccount} />
+      <Switch>
+        <Route exact path='/' component={Landing} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/signup' component={Signup} />
+        <Route exact path='/map' component={() => <GoogleMap match={null} />} />
+        <Route
+          exact
+          path='/map/:groupId'
+          component={({ match, location }) => {
+            // console.log(match, location);
+            return <GoogleMap match={match} />;
+          }}
+        />
+        <PrivateRoute exact path='/dashboard' component={Dashboard} />
+      </Switch>
+    </div>
   );
 }
-
-export default App;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+export default connect(mapStateToProps, { loadUser })(App);

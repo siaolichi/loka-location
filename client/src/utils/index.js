@@ -1,4 +1,5 @@
 export * from './testUtils';
+export * from './animation';
 export const copyStringToClipboard = str => {
   // Create new element
   var el = document.createElement('textarea');
