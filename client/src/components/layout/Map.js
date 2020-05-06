@@ -103,12 +103,15 @@ const GoogleMap = ({
       infowindowContent.children[0].textContent = location.name;
       infowindowContent.children[1].textContent = location.address;
       infowindowContent.children[3].textContent = location.description;
-      if (location.url)
+      console.log(location.ulr);
+      if (location.url) {
         infowindowContent.children[4].setAttribute('href', location.url);
-      infowindowContent.children[4].setAttribute(
-        'href',
-        `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
-      );
+      } else {
+        infowindowContent.children[4].setAttribute(
+          'href',
+          `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
+        );
+      }
       infowindow.open(map, marker);
       map.setZoom(15);
       map.setCenter(marker.getPosition());

@@ -11,10 +11,10 @@ const User = require('../../models/User');
 //@access       public
 router.get('/', async (req, res) => {
   try {
-    const posts = await Group.find()
+    const groups = await Group.find()
       .populate('user', ['name', 'avatar'])
       .sort({ date: -1 });
-    res.json(posts);
+    res.json(groups);
   } catch (err) {
     console.error(err);
     res.status(404).send('Server Error');
