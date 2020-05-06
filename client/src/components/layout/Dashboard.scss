@@ -12,6 +12,8 @@
         // position: relative;
         flex-grow: 1;
         height: calc(100vh - 120px);
+        display: flex;
+        flex-direction: column;
     }
     @media screen and (max-width: 870px) {
         .left-section{
@@ -20,7 +22,6 @@
         }
         .right-section{
             width: 100%;
-            height: max-content;
         }
         
     }

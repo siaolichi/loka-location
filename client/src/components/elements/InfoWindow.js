@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import TextField, { Input } from '@material/react-text-field';
 import { Button } from '@material/react-button';
+import './InfoWIndow.scss';
 
 const InfoWindow = ({
   infoWindowRef,

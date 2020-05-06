@@ -7,17 +7,9 @@ import Select, { Option } from '@material/react-select';
 import { Button } from '@material/react-button';
 
 import { receivePublicGroups } from '../../actions/group';
-
-import { setAlert } from '../../actions/alert';
 import { copyStringToClipboard } from '../../utils';
 import '../../style/Map.scss';
 import InfoWindow from '../elements/InfoWindow';
-
-const mapContainerStyle = {
-  height: 'calc( 100vh - 250px )',
-  width: '100%',
-  transition: 'none'
-};
 
 const GoogleMap = ({
   match,
@@ -28,13 +20,17 @@ const GoogleMap = ({
 }) => {
   const { google } = window;
   const infowindow = new google.maps.InfoWindow();
-  const [map, setMap] = useState(null);
-  const [markers] = useState([]);
+
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
+  const shareBtn = useRef(null);
+
+  const [map, setMap] = useState(null);
+  const [markers] = useState([]);
   const [mapValue, setMapValue] = useState(
-    profile ? profile.groups[0] : 'Bubble Tea in Berlin'
+    profile ? profile.groups[0] : '5e78c3f54b3a273ff0edec7d'
   );
+
   useEffect(() => {
     receivePublicGroups();
     setMap(
@@ -58,8 +54,12 @@ const GoogleMap = ({
     if (groupId) {
       changeGroupMap(groupId);
     }
-    // let bounds = new google.maps.LatLngBounds();
+
     new google.maps.LatLngBounds();
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(
+      shareBtn.current
+    );
+    // let bounds = new google.maps.LatLngBounds();
     // map.fitBounds(bounds);
   };
   const changeGroupMap = groupId => {
@@ -125,7 +125,7 @@ const GoogleMap = ({
   };
 
   return (
-    <div className='fade-in '>
+    <div className='fade-in' style={{ flexGrow: 1 }}>
       {!groupId && (
         <Select
           value={mapValue}
@@ -146,26 +146,25 @@ const GoogleMap = ({
         </Select>
       )}
 
-      <div
-        ref={containerRef}
-        style={mapContainerStyle}
-        className='map-container'
-      ></div>
+      <div ref={containerRef} className='map-container'></div>
       <InfoWindow infoWindowRef={infoWindowRef} />
-      <div className='share-map-container'>
-        <Button
-          className='button'
-          onClick={() => {
-            copyStringToClipboard(
-              `https://loka-location.herokuapp.com/map/${mapValue}`
-            );
-            alert('Link is copied to your clipboard');
-          }}
-        >
-          <Link to={`/map/${mapValue}`} className='button'>
-            SHARE THIS MAP!!
-          </Link>
-        </Button>
+      <div style={{ display: 'none' }}>
+        <div className='share-map-container' ref={shareBtn}>
+          <Button
+            outlined
+            className='button'
+            onClick={() => {
+              copyStringToClipboard(
+                `https://loka-location.herokuapp.com/map/${mapValue}`
+              );
+              alert('Link is copied to your clipboard');
+            }}
+          >
+            <Link to={`/map/${mapValue}`} className='button'>
+              SHARE THIS MAP!!
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

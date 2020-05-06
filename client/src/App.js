@@ -11,7 +11,7 @@ import Signup from './components/auth/Signup';
 import Alert from './components/layout/Alert';
 import Dashboard from './components/layout/Dashboard';
 import Three from './components/elements/Three';
-import GoogleMap from './components/layout/Map';
+import MapPage from './components/layout/MapPage';
 import ProfileModal from './components/layout/ProfileModal';
 import { connect } from 'react-redux';
 import { loadUser } from './actions/auth';
@@ -53,13 +53,12 @@ function App({ loadUser, isAuthenticated }) {
         <Route exact path='/' component={Landing} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Signup} />
-        <Route exact path='/map' component={() => <GoogleMap match={null} />} />
+        <Route exact path='/map' component={() => <MapPage match={null} />} />
         <Route
           exact
           path='/map/:groupId'
           component={({ match, location }) => {
-            // console.log(match, location);
-            return <GoogleMap match={match} />;
+            return <MapPage match={match} />;
           }}
         />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />

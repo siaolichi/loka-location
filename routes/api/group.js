@@ -146,11 +146,9 @@ router.post(
         description: req.body.description,
         url: req.body.url
       };
-
       group.locations.unshift(newLocation);
-
-      const location = await group.save();
-      res.json(location);
+      const newGroup = await group.save();
+      res.json(newGroup);
     } catch (err) {
       console.error(err);
       res.status(500).send('Server Error');
@@ -178,7 +176,7 @@ router.post('/location/:id/:location_id', auth, async (req, res) => {
       photo: location.photo,
       latLng: location.latLng,
       description: req.body.description,
-      url: req.body.url
+      url: location.url
     };
     //Check user
     // if (

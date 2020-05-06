@@ -21,3 +21,8 @@
         // background-color: rgba($color: #fff, $alpha: 1) !important;
     }
 }
+.map-container{
+    height: calc(100% - 50px);
+    width: 100%;
+    transition: none;
+}

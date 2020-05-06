@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const GroupSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user"
+    ref: 'user'
   },
   name: {
     type: String,
@@ -18,7 +18,7 @@ const GroupSchema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "user"
+        ref: 'user'
       },
       name: {
         type: String,
@@ -27,6 +27,9 @@ const GroupSchema = new Schema({
       address: {
         type: String,
         required: true
+      },
+      url: {
+        type: String
       },
       latLng: {
         type: Object,
@@ -42,4 +45,4 @@ const GroupSchema = new Schema({
   ]
 });
 
-module.exports = mongoose.model("group", GroupSchema);
+module.exports = mongoose.model('group', GroupSchema);

@@ -45,31 +45,33 @@ export const GroupDetail = ({
   };
   return (
     <div id='group-detail' className='fade-in'>
-      <div className='title'>{group.name}</div>
-      {group.selected ? (
+      <div className='header'>
+        <div className='title'>{group.name}</div>
+        {group.selected ? (
+          <MaterialIcon
+            icon='favorite'
+            className='icon-button favorite'
+            onClick={() => {
+              onLeaveGroup(group.name);
+            }}
+          />
+        ) : (
+          <MaterialIcon
+            icon='favorite_border'
+            className='icon-button favorite'
+            onClick={() => {
+              onJoinGroup(group.name);
+            }}
+          />
+        )}
         <MaterialIcon
-          icon='favorite'
-          className='icon-button favorite'
+          icon='arrow_back'
+          className='icon-button'
           onClick={() => {
-            onLeaveGroup(group.name);
+            onBack();
           }}
         />
-      ) : (
-        <MaterialIcon
-          icon='favorite_border'
-          className='icon-button favorite'
-          onClick={() => {
-            onJoinGroup(group.name);
-          }}
-        />
-      )}
-      <MaterialIcon
-        icon='arrow_back'
-        className='icon-button'
-        onClick={() => {
-          onBack();
-        }}
-      />
+      </div>
       <div className='group-wrapper' ref={groupRef}>
         {group.locations &&
           group.locations.map((location, index) => (
@@ -81,7 +83,7 @@ export const GroupDetail = ({
             />
           ))}
         <div className='footer'>
-          <div className='text'>created by {group.user.name}</div>
+          <div className='text'>this map is created by {group.user.name}</div>
           {userId === group.user._id && (
             <Button
               onClick={e => {
@@ -91,6 +93,8 @@ export const GroupDetail = ({
               Delete Map Completely
             </Button>
           )}
+          <br />
+          <br />
         </div>
       </div>
     </div>

@@ -3,15 +3,20 @@
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    .header{
+        width: 100%;
+        float: right;
+        padding: 20px;
+    }
     .title {
         color: var(--mdc-theme-primary);
         font-weight: bold;
         text-transform: uppercase;
-        float: right;
-        width: calc(100% - 35px);
-        margin: 20px;
-        padding-left: 15px;
+        width: 100%;
         font-size: 1.2rem;
+        margin: 20px 0;
     }
     .icon-button {
         height: 40px;
@@ -20,7 +25,6 @@
         vertical-align: middle;
         text-align: center;
         border-radius: 20px;
-        margin: 30px;
         line-height: 40px;
         font-size: 20px;
         color: white;
@@ -33,9 +37,9 @@
         }
     }
     .group-wrapper{
-        position: absolute;
+        // position: absolute;
         width: calc(100% + 15px);
-        height: 100%;
+        // height: calc(100% - 180px);
         overflow-y: scroll;
         flex-wrap: wrap;
         color: white;
