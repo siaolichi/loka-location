@@ -105,14 +105,21 @@ const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
     address.join('');
     let infowindowContent = infoWindowRef.current;
     infowindow.setContent(infowindowContent);
-    infowindowContent.children[0].textContent = place.name;
-    infowindowContent.children[1].textContent = address;
-    infowindowContent.children[2].textContent =
+    if (place.photos)
+      infowindowContent.children[0].setAttribute(
+        'src',
+        place.photos[0].getUrl()
+      );
+    infowindowContent.children[1].textContent = place.name;
+    infowindowContent.children[2].textContent = address;
+    infowindowContent.children[3].textContent =
       place.geometry.location.lat() + ',' + place.geometry.location.lng();
-    infowindowContent.children[3].setAttribute('href', place.url);
-    infowindowContent.children[5].addEventListener('click', function () {
+    infowindowContent.children[4].setAttribute('href', place.url);
+
+    infowindowContent.children[6].addEventListener('click', function () {
       infowindow.close(map, marker);
     });
+
     infowindow.open(map, marker);
   };
 
@@ -129,13 +136,14 @@ const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
     const parent = e.currentTarget.parentNode;
     const location = {};
     const latLng = {
-      lat: parseFloat(parent.children[2].textContent.split(',')[0]),
-      lng: parseFloat(parent.children[2].textContent.split(',')[1])
+      lat: parseFloat(parent.children[3].textContent.split(',')[0]),
+      lng: parseFloat(parent.children[3].textContent.split(',')[1])
     };
-    location.name = parent.children[0].textContent;
-    location.address = parent.children[1].textContent;
+    location.photo = parent.children[0].getAttribute('src');
+    location.name = parent.children[1].textContent;
+    location.address = parent.children[2].textContent;
     location.latLng = latLng;
-    location.url = parent.children[3].getAttribute('href');
+    location.url = parent.children[4].getAttribute('href');
     location.description = description;
     await addLocationToGroup(groupId, location);
     await setDescription('');

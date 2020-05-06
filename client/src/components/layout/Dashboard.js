@@ -73,28 +73,31 @@ export const Dashboard = ({
   return (
     <div id='dashboard'>
       <div className='left-section'>{leftSection(modal)}</div>
-      <div className='right-section'>
-        {modal.showModal && (
-          <Button
-            outlined
-            onClick={() => {
-              setEditMap(true);
-            }}
-            style={{ margin: '10px' }}
-          >
-            Add New Location
-          </Button>
-        )}
-        {modal.showModal && <Map groupId={modal.showModal._id} />}
-        {modal.showModal && editMap && (
-          <CardModal
-            groupId={modal.showModal._id}
-            groupName={modal.showModal.name}
-            editMap={editMap}
-            setEditMap={setEditMap}
-          />
-        )}
-      </div>
+      {modal.showModal && (
+        <div className='right-section'>
+          <div>
+            <Button
+              outlined
+              onClick={() => {
+                setEditMap(true);
+              }}
+              style={{ margin: '10px' }}
+            >
+              Add New Location
+            </Button>
+          </div>
+
+          <Map groupId={modal.showModal._id} />
+          {editMap && (
+            <CardModal
+              groupId={modal.showModal._id}
+              groupName={modal.showModal.name}
+              editMap={editMap}
+              setEditMap={setEditMap}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

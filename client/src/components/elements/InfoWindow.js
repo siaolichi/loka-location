@@ -11,11 +11,11 @@ const InfoWindow = ({
 }) => {
   return (
     <div style={{ display: 'none' }}>
-      <div ref={infoWindowRef} style={{ minWidth: '250px' }}>
+      <div ref={infoWindowRef} className='infowindow'>
+        <img className='photo' src='' />
         <b className='title'></b>
         <p className='address'></p>
         <p className='lat-lng'></p>
-
         {addLocation ? (
           <Fragment>
             <a target='_blank' href='!#'>

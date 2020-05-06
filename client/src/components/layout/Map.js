@@ -56,7 +56,7 @@ const GoogleMap = ({
     }
 
     new google.maps.LatLngBounds();
-    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(
+    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
       shareBtn.current
     );
     // let bounds = new google.maps.LatLngBounds();
@@ -100,14 +100,17 @@ const GoogleMap = ({
     infowindow.close();
 
     google.maps.event.addListener(marker, 'click', function () {
-      infowindowContent.children[0].textContent = location.name;
-      infowindowContent.children[1].textContent = location.address;
-      infowindowContent.children[3].textContent = location.description;
-      console.log(location.ulr);
+      if (location.photo) {
+        infowindowContent.children[0].setAttribute('src', location.photo);
+      }
+      infowindowContent.children[1].textContent = location.name;
+      infowindowContent.children[2].textContent = location.address;
+      infowindowContent.children[4].textContent = location.description;
+
       if (location.url) {
-        infowindowContent.children[4].setAttribute('href', location.url);
+        infowindowContent.children[5].setAttribute('href', location.url);
       } else {
-        infowindowContent.children[4].setAttribute(
+        infowindowContent.children[5].setAttribute(
           'href',
           `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
         );
@@ -154,7 +157,7 @@ const GoogleMap = ({
       <div style={{ display: 'none' }}>
         <div className='share-map-container' ref={shareBtn}>
           <Button
-            outlined
+            raised
             className='button'
             onClick={() => {
               copyStringToClipboard(
@@ -163,7 +166,7 @@ const GoogleMap = ({
               alert('Link is copied to your clipboard');
             }}
           >
-            <Link to={`/map/${mapValue}`} className='button'>
+            <Link to={`/map/${mapValue}`} style={{ color: 'white' }}>
               SHARE THIS MAP!!
             </Link>
           </Button>
