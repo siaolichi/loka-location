@@ -63,9 +63,9 @@ function App({ loadUser, isAuthenticated }) {
         />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
       </Switch>
-      <div className='footer'>
+      <footer>
         <small>&copy; Copyright 2020, Hsiao Li-Chi</small>
-      </div>
+      </footer>
     </div>
   );
 }
