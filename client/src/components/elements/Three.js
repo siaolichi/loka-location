@@ -1,7 +1,7 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
-import OrbitControls from 'three-orbitcontrols';
+// import OrbitControls from 'three-orbitcontrols';
 import { connect } from 'react-redux';
 import { TweenMax } from 'gsap';
 const FBXLoader = require('three-fbxloader-offical');
@@ -70,10 +70,10 @@ export function Three({ isAuthenticated }) {
     camera.position.set(0, 0, 250);
 
     //Setup Control
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
-    controls.enableZoom = false;
+    // controls = new OrbitControls(camera, renderer.domElement);
+    // controls.enableDamping = true;
+    // controls.dampingFactor = 0.25;
+    // controls.enableZoom = false;
 
     renderer.setClearColor(0xffffff, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
