@@ -75,18 +75,19 @@ export const Dashboard = ({
       <div className='left-section'>{leftSection(modal)}</div>
       {modal.showModal && (
         <div className='right-section'>
-          <div>
-            <Button
-              outlined
-              onClick={() => {
-                setEditMap(true);
-              }}
-              style={{ margin: '10px' }}
-            >
-              Add New Location
-            </Button>
-          </div>
-
+          {modal.showModal.selected === true && (
+            <div>
+              <Button
+                outlined
+                onClick={() => {
+                  setEditMap(true);
+                }}
+                style={{ margin: '10px' }}
+              >
+                Add New Location
+              </Button>
+            </div>
+          )}
           <Map groupId={modal.showModal._id} />
           {editMap && (
             <CardModal

@@ -99,7 +99,6 @@ const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
     markers.push(marker);
   };
   const setInfoWindow = (map, marker, infowindow, place, infoWindowRef) => {
-    console.log(place);
     let address = place.formatted_address.split(',');
     if (address.length > 1) address.pop();
     address.join('');

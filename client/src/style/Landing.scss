@@ -2,8 +2,11 @@
 @import "./_variable.scss";
 
 .landing-inner {
+
+  --nav-height: $nav-height;
+  --footer-height: $footer-height;
   color: #fff;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 150px);
   width: 80%;
   overflow: hidden;
   margin: auto;
@@ -21,7 +24,7 @@
   @media screen and (max-width: 760px) {
     right: 10%;
   }
-  top: 300px;
+  top: 250px;
   cursor: pointer;
   .bubble {
     background-color: #ffffff;

@@ -5,13 +5,13 @@
     width: 100%;
     .left-section{
         width: 400px;
-        height: calc(100vh - 120px);
+        height: calc(100vh - 130px);
         // position: relative;
     }
     .right-section{
         // position: relative;
         flex-grow: 1;
-        height: calc(100vh - 120px);
+        height: calc(100vh - 130px);
         display: flex;
         flex-direction: column;
     }
