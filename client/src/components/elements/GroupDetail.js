@@ -8,6 +8,7 @@ import { addGroupToProfile, removeGroupToProfile } from '../../actions/profile';
 import { removeGroupFromAllGroups } from '../../actions/group';
 import LocationCard from './LocationCard';
 import './GroupDetail.scss';
+import LocationList from './LocationList';
 
 export const GroupDetail = ({
   group,
@@ -73,29 +74,16 @@ export const GroupDetail = ({
         />
       </div>
       <div className='group-wrapper' ref={groupRef}>
-        {group.locations &&
-          group.locations.map((location, index) => (
-            <LocationCard
-              location={location}
-              groupId={group._id}
-              selected={group.selected}
-              key={index}
-            />
-          ))}
-        <div className='footer'>
-          <div className='text'>this map is created by {group.user.name}</div>
-          {userId === group.user._id && (
-            <Button
-              onClick={e => {
-                removeGroupFromAllGroups(group);
-              }}
-            >
-              Delete Map Completely
-            </Button>
-          )}
-          <br />
-          <br />
-        </div>
+        <LocationList group={group} />
+        {userId === group.user._id && (
+          <Button
+            onClick={e => {
+              removeGroupFromAllGroups(group);
+            }}
+          >
+            Delete Map Completely
+          </Button>
+        )}
       </div>
     </div>
   );

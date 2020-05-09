@@ -12,7 +12,7 @@ const InfoWindow = ({
   return (
     <div style={{ display: 'none' }}>
       <div ref={infoWindowRef} className='infowindow'>
-        <img className='photo' src='' />
+        <img className='photo' src='' style={{ display: 'none' }} />
         <b className='title'></b>
         <p className='address'></p>
         <p className='lat-lng'></p>

@@ -53,14 +53,7 @@ function App({ loadUser, isAuthenticated }) {
         <Route exact path='/' component={Landing} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Signup} />
-        <Route exact path='/map' component={() => <MapPage match={null} />} />
-        <Route
-          exact
-          path='/map/:groupId'
-          component={({ match, location }) => {
-            return <MapPage match={match} />;
-          }}
-        />
+        <Route path='/map' component={MapPage} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
       </Switch>
       <footer>

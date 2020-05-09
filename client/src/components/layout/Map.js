@@ -1,85 +1,50 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Select, { Option } from '@material/react-select';
 import { Button } from '@material/react-button';
 
-import { receivePublicGroups } from '../../actions/group';
 import { copyStringToClipboard } from '../../utils';
 import '../../style/Map.scss';
 import InfoWindow from '../elements/InfoWindow';
 
-const GoogleMap = ({
-  match,
-  groupId,
-  receivePublicGroups,
-  allGroups,
-  profile: { profile, loading }
-}) => {
+const GoogleMap = ({ group }) => {
   const { google } = window;
+  let map;
   const infowindow = new google.maps.InfoWindow();
-
+  const groupId = group._id;
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const shareBtn = useRef(null);
 
-  const [map, setMap] = useState(null);
+  // const [map, setMap] = useState(null);
   const [markers] = useState([]);
-  const [mapValue, setMapValue] = useState(
-    profile ? profile.groups[0] : '5e78c3f54b3a273ff0edec7d'
-  );
 
   useEffect(() => {
-    receivePublicGroups();
-    setMap(
-      new google.maps.Map(containerRef.current, {
-        zoom: 12
-      })
-    );
+    map = new google.maps.Map(containerRef.current, {
+      zoom: 11
+    });
+    initSetting();
   }, []);
   useEffect(() => {
-    if (map) initSetting();
-  }, [allGroups]);
-  useEffect(() => {
-    if (groupId && map) {
-      changeGroupMap(groupId);
-    }
-  }, [groupId]);
+    if (group.length > 0) initSetting();
+  }, [group]);
   const initSetting = () => {
-    if (match) {
-      changeGroupMap(match.params.groupId);
-    }
-    if (groupId) {
-      changeGroupMap(groupId);
-    }
-
+    const locations = group.locations;
     new google.maps.LatLngBounds();
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
       shareBtn.current
     );
-    // let bounds = new google.maps.LatLngBounds();
-    // map.fitBounds(bounds);
-  };
-  const changeGroupMap = groupId => {
     clearMarkers();
-    let selectedGroup = allGroups.filter(group => group._id === groupId);
-    setMapValue(groupId);
-    if (selectedGroup.length === 0) {
-      selectedGroup = allGroups[0];
+    if (locations[0]) {
+      map.setCenter(locations[0].latLng);
     } else {
-      selectedGroup = selectedGroup[0];
+      map.setCenter({ lat: '120', lng: '120' });
     }
-
-    if (selectedGroup.locations[0]) {
-      map.setCenter(selectedGroup.locations[0].latLng);
-    } else if (allGroups[0].locations[0]) {
-      map.setCenter(allGroups[0].locations[0].latLng);
-    }
-    selectedGroup.locations.forEach(location => {
+    locations.forEach(location => {
       addMarker(map, location, 'marker');
     });
+    // let bounds = new google.maps.LatLngBounds();
+    // map.fitBounds(bounds);
   };
   const addMarker = (map, location, type = 'marker') => {
     // Marker
@@ -102,6 +67,8 @@ const GoogleMap = ({
     google.maps.event.addListener(marker, 'click', function () {
       if (location.photo) {
         infowindowContent.children[0].setAttribute('src', location.photo);
+      } else {
+        infowindowContent.children[0].setAttribute('style', 'display: none');
       }
       infowindowContent.children[1].textContent = location.name;
       infowindowContent.children[2].textContent = location.address;
@@ -132,26 +99,6 @@ const GoogleMap = ({
 
   return (
     <div className='fade-in' style={{ flexGrow: 1 }}>
-      {!groupId && (
-        <Select
-          value={mapValue}
-          label='Select Groups'
-          className='map-selection'
-          outlined
-          onChange={evt => {
-            console.log(evt.target.value);
-            changeGroupMap(evt.target.value);
-          }}
-        >
-          {/* <Option value="Home">Home</Option> */}
-          {allGroups.map((group, i) => (
-            <Option key={group._id} value={group._id}>
-              {group.name}
-            </Option>
-          ))}
-        </Select>
-      )}
-
       <div ref={containerRef} className='map-container'></div>
       <InfoWindow infoWindowRef={infoWindowRef} />
       <div style={{ display: 'none' }}>
@@ -160,13 +107,11 @@ const GoogleMap = ({
             raised
             className='button'
             onClick={() => {
-              copyStringToClipboard(
-                `https://loka-location.herokuapp.com/map/${mapValue}`
-              );
+              copyStringToClipboard(`https://loka-location.com/map/${groupId}`);
               alert('Link is copied to your clipboard');
             }}
           >
-            <Link to={`/map/${mapValue}`} style={{ color: 'white' }}>
+            <Link to={`/map/${groupId}`} style={{ color: 'white' }}>
               SHARE THIS MAP!!
             </Link>
           </Button>
@@ -175,14 +120,4 @@ const GoogleMap = ({
     </div>
   );
 };
-GoogleMap.propTypes = {
-  allGroups: PropTypes.array.isRequired,
-  receivePublicGroups: PropTypes.func.isRequired,
-  profile: PropTypes.object
-};
-
-const mapStateToProps = state => ({
-  allGroups: state.group.allGroups,
-  profile: state.profile
-});
-export default connect(mapStateToProps, { receivePublicGroups })(GoogleMap);
+export default GoogleMap;

@@ -13,8 +13,9 @@ const LocationCard = ({
   selected,
   removeLocation,
   changeLocationDetail,
-  userId
+  profile
 }) => {
+  const userId = profile ? profile.user._id : null;
   const [locationEdit, setLocationEdit] = useState(false);
   const [formData, setFormData] = useState(location);
   useEffect(() => {
@@ -86,13 +87,13 @@ const LocationCard = ({
 };
 
 LocationCard.propTypes = {
-  userId: PropTypes.string.isRequired,
+  profile: PropTypes.object,
   removeLocation: PropTypes.func.isRequired,
   changeLocationDetail: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  userId: state.profile.profile.user._id
+  profile: state.profile.profile
 });
 
 const mapDispatchToProps = { removeLocation, changeLocationDetail };

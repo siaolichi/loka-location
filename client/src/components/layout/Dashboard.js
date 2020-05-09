@@ -88,7 +88,7 @@ export const Dashboard = ({
               </Button>
             </div>
           )}
-          <Map groupId={modal.showModal._id} />
+          <Map group={modal.showModal} />
           {editMap && (
             <CardModal
               groupId={modal.showModal._id}

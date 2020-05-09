@@ -1,0 +1,12 @@
+.location-footer{
+    font-weight: 100;
+    opacity: 0;
+    float: right;
+    width: calc(100% - 35px);
+    font-size: 12px;
+    margin: 10px;
+    padding-left: 15px;
+    .text{
+        margin: 10px;
+    }
+}
