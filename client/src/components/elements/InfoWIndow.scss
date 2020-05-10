@@ -14,5 +14,8 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: 50% 50%;
+        @media screen and (max-width: 670px) {
+            width: 100%;
+        }
     }
 }
