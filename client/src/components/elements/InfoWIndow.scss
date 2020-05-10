@@ -19,3 +19,17 @@
         }
     }
 }
+
+@media screen and (max-width: 670px) {
+    .infowindow{
+        .photo{
+            width: 100%;
+        }
+    }
+    .gm-style-iw-c{
+        border-radius: 0 !important;
+        width: 90vw !important;
+        max-height: 600px;
+        background-color: rgba($color: #ffffff, $alpha: 0.9) !important;
+    }
+}

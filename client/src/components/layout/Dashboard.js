@@ -9,7 +9,6 @@ import GroupDetail from '../elements/GroupDetail';
 import Map from './Map';
 import './Dashboard.scss';
 import { receivePublicGroups } from '../../actions/group';
-import { getLocationDetail } from '../../utils';
 import CardModal from '../elements/CardModal';
 
 export const Dashboard = ({

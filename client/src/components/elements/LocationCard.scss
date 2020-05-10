@@ -9,6 +9,7 @@
     float: right;
     display: flex;
     flex-wrap: wrap;
+    font-weight: 300;
     * {
         transition: none;
     }
@@ -29,7 +30,7 @@
         cursor: pointer;
     }
     .location-title{
-        font-weight: bold;
+        font-weight: 700;
     }
     .location-addr{
         font-size: 0.8rem;

@@ -88,6 +88,7 @@ export function Three({ isAuthenticated }) {
     if (status !== -1) {
       if (isAuthenticated) setStatus(2);
       if (!isAuthenticated) setStatus(1);
+      if (window.location.pathname === '/map') setStatus(2);
     }
     switch (status) {
       case 1:

@@ -18,6 +18,7 @@ export const copyStringToClipboard = str => {
 };
 
 export const editInfowindowContent = (infowindowContent, location) => {
+  console.log(location);
   if (location.photo) {
     infowindowContent.children[0].setAttribute(
       'style',
@@ -28,8 +29,9 @@ export const editInfowindowContent = (infowindowContent, location) => {
   }
   infowindowContent.getElementsByClassName('title')[0].textContent =
     location.name;
-  infowindowContent.getElementsByClassName('address')[0].textContext =
+  infowindowContent.getElementsByClassName('address')[0].textContent =
     location.address;
+  console.log(infowindowContent.getElementsByClassName('address'));
   infowindowContent.getElementsByClassName('description')[0].textContent =
     location.description;
 
