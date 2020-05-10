@@ -1,3 +1,4 @@
+/*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,6 +9,7 @@ import GroupDetail from '../elements/GroupDetail';
 import Map from './Map';
 import './Dashboard.scss';
 import { receivePublicGroups } from '../../actions/group';
+import { getLocationDetail } from '../../utils';
 import CardModal from '../elements/CardModal';
 
 export const Dashboard = ({
@@ -35,7 +37,7 @@ export const Dashboard = ({
       for (let group of allGroups) {
         if (modal.showModal && group._id === modal.showModal._id) {
           showModal = Object.assign({}, modal.showModal, group);
-          console.log(showModal);
+          // console.log(showModal);
         }
         let index = profile.groups.indexOf(group.name);
         if (index > -1) selected.push(group);
@@ -53,6 +55,7 @@ export const Dashboard = ({
   if (!modal.showModal && modal.status === 'group-detail') {
     setModal(m => ({ ...m, status: 'selected', showModal: null }));
   }
+
   const leftSection = modal => {
     switch (modal.status) {
       case 'selected':
@@ -65,7 +68,6 @@ export const Dashboard = ({
           return <GroupList modal={modal} setModal={setModal} />;
         }
         return <GroupDetail group={modal.showModal} setModal={setModal} />;
-        break;
       default:
         break;
     }

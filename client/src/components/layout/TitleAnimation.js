@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
 
-import '../../style/Animation.scss';
+import './TitleAnimation.scss';
 const TitleAnimation = ({ login }) => {
   const bubble = useRef(null);
 

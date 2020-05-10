@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import TitleAnimation from './TitleAnimation';
 import Dashboard from './Dashboard';
-import '../../style/Landing.scss';
+import './Landing.scss';
 
 const Landing = ({ isAuthenticated }) => {
   if (!isAuthenticated) return <TitleAnimation />;

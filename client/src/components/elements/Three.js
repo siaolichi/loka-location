@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { connect } from 'react-redux';
 import { TweenMax } from 'gsap';
 const FBXLoader = require('three-fbxloader-offical');
-let loader, scene, renderer, clock, camera, container, earth, controls;
+let loader, scene, renderer, clock, camera, container, earth;
 /**
  * status:
  *  -1 - loading

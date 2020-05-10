@@ -6,7 +6,6 @@ import MaterialIcon from '@material/react-material-icon';
 import { staggerIn, fadeOut } from '../../utils';
 import { addGroupToProfile, removeGroupToProfile } from '../../actions/profile';
 import { removeGroupFromAllGroups } from '../../actions/group';
-import LocationCard from './LocationCard';
 import './GroupDetail.scss';
 import LocationList from './LocationList';
 

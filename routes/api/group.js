@@ -141,7 +141,7 @@ router.post(
         avatar: user.avatar,
         name: req.body.name,
         address: req.body.address,
-        photo: req.body.photo,
+        placeId: req.body.placeId,
         latLng: req.body.latLng,
         description: req.body.description,
         url: req.body.url
@@ -173,7 +173,7 @@ router.post('/location/:id/:location_id', auth, async (req, res) => {
       avatar: location.avatar,
       name: location.name,
       address: location.address,
-      photo: location.photo,
+      placeId: location.placeId,
       latLng: location.latLng,
       description: req.body.description,
       url: location.url

@@ -106,8 +106,8 @@ const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
     infowindow.setContent(infowindowContent);
     if (place.photos)
       infowindowContent.children[0].setAttribute(
-        'src',
-        place.photos[0].getUrl()
+        'style',
+        `background-image: url(${place.photos[0].getUrl()})`
       );
     infowindowContent.children[1].textContent = place.name;
     infowindowContent.children[2].textContent = address;
@@ -118,7 +118,7 @@ const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
     infowindowContent.children[6].addEventListener('click', function () {
       infowindow.close(map, marker);
     });
-
+    infowindowContent.children[7].textContent = place.place_id;
     infowindow.open(map, marker);
   };
 
@@ -144,6 +144,7 @@ const GMap = ({ addLocationToGroup, groupId, closeModal }) => {
     location.latLng = latLng;
     location.url = parent.children[4].getAttribute('href');
     location.description = description;
+    location.placeId = parent.children[7].textContent;
     await addLocationToGroup(groupId, location);
     await setDescription('');
     closeModal();

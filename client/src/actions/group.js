@@ -11,6 +11,7 @@ export const receivePublicGroups = () => async dispatch => {
       payload: res.data
     });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: GROUP_ERROR,
       payload: { msg: err.response.data, status: err.response.status }

@@ -40,6 +40,9 @@ const GroupSchema = new Schema({
       },
       description: {
         type: String
+      },
+      placeId: {
+        type: String
       }
     }
   ]

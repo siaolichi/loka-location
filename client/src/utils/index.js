@@ -16,3 +16,33 @@ export const copyStringToClipboard = str => {
   // Remove temporary element
   document.body.removeChild(el);
 };
+
+export const editInfowindowContent = (infowindowContent, location) => {
+  if (location.photo) {
+    infowindowContent.children[0].setAttribute(
+      'style',
+      `background-image: url(${location.photo})`
+    );
+  } else {
+    infowindowContent.children[0].setAttribute('style', 'display: none');
+  }
+  infowindowContent.getElementsByClassName('title')[0].textContent =
+    location.name;
+  infowindowContent.getElementsByClassName('address')[0].textContext =
+    location.address;
+  infowindowContent.getElementsByClassName('description')[0].textContent =
+    location.description;
+
+  if (location.url) {
+    infowindowContent
+      .getElementsByClassName('link')[0]
+      .setAttribute('href', location.url);
+  } else {
+    infowindowContent
+      .getElementsByClassName('link')[0]
+      .setAttribute(
+        'href',
+        `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
+      );
+  }
+};

@@ -3,91 +3,107 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@material/react-button';
 
-import { copyStringToClipboard } from '../../utils';
-import '../../style/Map.scss';
+import { copyStringToClipboard, editInfowindowContent } from '../../utils';
 import InfoWindow from '../elements/InfoWindow';
+
+import './Map.scss';
 
 const GoogleMap = ({ group }) => {
   const { google } = window;
-  let map;
+  let map, service;
   const infowindow = new google.maps.InfoWindow();
   const groupId = group._id;
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const shareBtn = useRef(null);
 
-  // const [map, setMap] = useState(null);
   const [markers] = useState([]);
 
   useEffect(() => {
-    map = new google.maps.Map(containerRef.current, {
-      zoom: 11
-    });
     initSetting();
   }, []);
+
   useEffect(() => {
     if (group.length > 0) initSetting();
   }, [group]);
+
   const initSetting = () => {
+    map = new google.maps.Map(containerRef.current, { zoom: 11 });
+    service = new window.google.maps.places.PlacesService(map);
     const locations = group.locations;
     new google.maps.LatLngBounds();
+
+    // Put share button at the bottom of the map
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
       shareBtn.current
     );
+
+    // Clear marker before new markers are set
     clearMarkers();
+
+    // If group have already location, other wise set map center to a static number
     if (locations[0]) {
       map.setCenter(locations[0].latLng);
     } else {
       map.setCenter({ lat: '120', lng: '120' });
     }
-    locations.forEach(location => {
+
+    // Marker setup
+    locations.forEach(async location => {
       addMarker(map, location, 'marker');
     });
-    // let bounds = new google.maps.LatLngBounds();
-    // map.fitBounds(bounds);
   };
-  const addMarker = (map, location, type = 'marker') => {
-    // Marker
+
+  const addMarker = async (map, location, type = 'marker') => {
+    // Marker inital setup
     const icon = {
       url: require(`../../img/${type}.png`),
       scaledSize: new google.maps.Size(50, 50),
       origin: new google.maps.Point(0, 0)
-      // anchor: new google.maps.Point(0, 32)
     };
     const marker = new google.maps.Marker({
       position: location.latLng,
       icon: icon,
       map: map
     });
-    // InfoWindow
+
+    // InfoWindow, defined outside so it will closed automatically after another marker is clicked
     const infowindowContent = infoWindowRef.current;
     infowindow.setContent(infowindowContent);
     infowindow.close();
 
+    //Get Place detail when marker is clicked
     google.maps.event.addListener(marker, 'click', function () {
-      if (location.photo) {
-        infowindowContent.children[0].setAttribute('src', location.photo);
-      } else {
-        infowindowContent.children[0].setAttribute('style', 'display: none');
-      }
-      infowindowContent.children[1].textContent = location.name;
-      infowindowContent.children[2].textContent = location.address;
-      infowindowContent.children[4].textContent = location.description;
+      if (location.placeId) {
+        var request = {
+          placeId: location.placeId,
+          fields: ['name', 'photo', 'formatted_address']
+        };
 
-      if (location.url) {
-        infowindowContent.children[5].setAttribute('href', location.url);
+        //Get place detail through api
+        service.getDetails(request, (placeDetail, status) => {
+          if (placeDetail) {
+            location.address = placeDetail.formatted_address;
+            location.photo = placeDetail.photos[0].getUrl();
+
+            editInfowindowContent(infowindowContent, location);
+          } else if (status === 'OVER_QUERY_LIMIT') {
+            console.log(`${location.name} error: ${'OVER_QUERY_LIMIT'}`);
+          }
+        });
       } else {
-        infowindowContent.children[5].setAttribute(
-          'href',
-          `https://www.google.com/maps/search/?api=1&query=${location.latLng.lat},${location.latLng.lng}`
-        );
+        editInfowindowContent(infowindowContent, location);
       }
+
+      //open infoWindow after got location details
       infowindow.open(map, marker);
       map.setZoom(15);
       map.setCenter(marker.getPosition());
     });
+
     markers.push(marker);
   };
+
   const clearMarkers = () => {
     for (let i = 0; i < markers.length; i++) {
       markers[i].setMap(null);

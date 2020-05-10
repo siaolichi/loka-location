@@ -3,12 +3,12 @@
     flex-wrap: wrap;
     z-index: 2;
     width: 100%;
-    .left-section{
+    >.left-section{
         width: 400px;
         height: calc(100vh - 130px);
         // position: relative;
     }
-    .right-section{
+    >.right-section{
         // position: relative;
         flex-grow: 1;
         height: calc(100vh - 130px);
@@ -16,11 +16,11 @@
         flex-direction: column;
     }
     @media screen and (max-width: 870px) {
-        .left-section{
+        >.left-section{
             width: 100%;
             height: max-content;
         }
-        .right-section{
+        >.right-section{
             width: 100%;
         }
         

@@ -1,15 +1,18 @@
+/*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useEffect, useState, useRef } from 'react';
-import Map from './Map';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Select, { Option } from '@material/react-select';
 import PropTypes from 'prop-types';
+import Select, { Option } from '@material/react-select';
 
-import { receivePublicGroups } from '../../actions/group';
-import './MapPage.scss';
+import Map from './Map';
 import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
+
+import { receivePublicGroups } from '../../actions/group';
 import { staggerIn } from '../../utils';
+
+import './MapPage.scss';
 
 const MapPage = ({
   match,
@@ -18,20 +21,31 @@ const MapPage = ({
   isAuthenticated
 }) => {
   const listRef = useRef(null);
-  const [groupId, setGroupId] = useState('5e7b564e1e97b17df5768734');
+  const [groupId, setGroupId] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState(null);
+
   useEffect(() => {
     receivePublicGroups();
   }, []);
+
   useEffect(() => {
-    console.log(listRef);
     if (listRef.current) staggerIn(listRef.current.childNodes);
-  }, [listRef.current]);
+  }, [groupId]);
+
   useEffect(() => {
     if (allGroups.length > 0) {
-      changeGroup(groupId);
+      changeGroup(allGroups[0]._id);
+      setTimeout(() => {
+        if (listRef.current) staggerIn(listRef.current.childNodes);
+      }, 500);
     }
   }, [allGroups]);
+
+  useEffect(() => {
+    if (setSelectedGroup && listRef.current)
+      staggerIn(listRef.current.childNodes);
+  }, [setSelectedGroup]);
+
   const changeGroup = groupId => {
     setGroupId(groupId);
     let tmpGroup = allGroups.filter(group => group._id === groupId);
@@ -42,11 +56,9 @@ const MapPage = ({
       setSelectedGroup(tmpGroup[0]);
     }
   };
-  useEffect(() => {
-    if (setSelectedGroup && listRef.current)
-      staggerIn(listRef.current.childNodes);
-  }, [setSelectedGroup]);
+
   if (!selectedGroup || !allGroups) return <Spinner />;
+
   return (
     <div id='map-page'>
       <div className='left-section'>
@@ -59,7 +71,6 @@ const MapPage = ({
             changeGroup(evt.target.value);
           }}
         >
-          {/* <Option value="Home">Home</Option> */}
           {allGroups.map((group, i) => (
             <Option key={group._id} value={group._id}>
               {group.name}

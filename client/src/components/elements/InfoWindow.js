@@ -12,7 +12,7 @@ const InfoWindow = ({
   return (
     <div style={{ display: 'none' }}>
       <div ref={infoWindowRef} className='infowindow'>
-        <img className='photo' src='' style={{ display: 'none' }} />
+        <div className='photo'></div>
         <b className='title'></b>
         <p className='address'></p>
         <p className='lat-lng'></p>
@@ -41,11 +41,12 @@ const InfoWindow = ({
         ) : (
           <Fragment>
             <p className='description' style={{ margin: '10px' }}></p>
-            <a target='_blank' href='!#'>
+            <a className='link' target='_blank' href='!#'>
               <b>Show on google map</b>
             </a>
           </Fragment>
         )}
+        <div style={{ display: 'none' }} className='placeId'></div>
       </div>
     </div>
   );

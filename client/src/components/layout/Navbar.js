@@ -39,6 +39,7 @@ const Navbar = ({
       </li>
       <li className='account'>
         <a
+          href='#!'
           onClick={e => {
             e.preventDefault();
             setOpenAccount(true);
@@ -49,6 +50,7 @@ const Navbar = ({
       </li>
       <li onClick={logout} className='logout'>
         <a
+          href='#!'
           onClick={e => {
             e.preventDefault();
             logout();

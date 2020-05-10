@@ -2,13 +2,13 @@
     font-weight: 100;
     margin: 10px;
     margin-right: 25px;
-    vertical-align: top;
-    line-height: 1.5rem;
     padding-left: 15px;
     border-bottom: .5px solid rgba(255, 255, 255, 0.5);
     color: white;
     width: calc(100% - 35px);
     float: right;
+    display: flex;
+    flex-wrap: wrap;
     * {
         transition: none;
     }
@@ -16,7 +16,11 @@
         cursor: pointer;
         // margin-right: '100px';
     }
-
+    .right-section{
+        line-height: 1.5rem;
+        vertical-align: top;
+        flex-grow: 1;
+    }
     .edit-button{
         color: white;
         vertical-align: middle;
@@ -29,5 +33,9 @@
     }
     .location-addr{
         font-size: 0.8rem;
+    }
+    .location-img{
+        max-height: 300px;
+        max-width: 300px;
     }
 }

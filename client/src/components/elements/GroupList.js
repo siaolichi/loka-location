@@ -1,3 +1,4 @@
+/*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useEffect, useRef, useState } from 'react';
 import './GroupList.scss';
 import MaterialIcon from '@material/react-material-icon';
