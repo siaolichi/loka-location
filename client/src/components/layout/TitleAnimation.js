@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TweenMax } from 'gsap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+
 import { login } from '../../actions/auth';
 
 import './TitleAnimation.scss';
 const TitleAnimation = ({ login }) => {
+  const [redirecet, setRedirecet] = useState(false);
   const bubble = useRef(null);
 
   useEffect(() => {
@@ -19,9 +22,10 @@ const TitleAnimation = ({ login }) => {
 
   const onClick = async e => {
     e.preventDefault();
-    login({ email: 'testUser@gmail.com', password: '12345678' });
+    setRedirecet(true);
   };
 
+  if (redirecet) return <Redirect to='/signup' />;
   return (
     <div className='landing-inner fade-in'>
       <div className='bubble-container' onClick={onClick}>

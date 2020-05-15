@@ -38,7 +38,7 @@ function App({ loadUser, isAuthenticated }) {
     } else {
       TweenMax.to('.container', 2, {
         background:
-          'linear-gradient(to bottom, rgba(93,255,250,1) 0%, rgba(251,121,187,1) 100%)'
+          'linear-gradient(to bottom, rgb(251,121,187) 0%, rgb(93,255,250) 100%)'
       });
     }
   }, [isAuthenticated]);
