@@ -37,19 +37,33 @@
     </script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet">
+
+    <!-- GOOGLE ANALYSICS -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRQ724G9Z7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QRQ724G9Z7');
+    </script> -->
+
+    <!-- PRIVACY WIDGE -->
+    <script>
+      (function(d,s,i,w,o){
+      var js,cjs=d.getElementsByTagName(s)[0];
+      if(d.getElementById(i))return;
+      js=d.createElement('script');
+      js.id=i;
+      js.src="https://widget.clym-sdk.net/clym.js";
+      js.onload=function(){Clym&&Clym.load(i,w,o);};
+      cjs.parentNode.insertBefore(js, cjs);
+      }(document,'script','clym-privacy','d9ca38acadc6461c98c7d37emsvqnonl'));
+  </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
