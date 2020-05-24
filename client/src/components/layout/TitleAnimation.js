@@ -16,13 +16,14 @@ const TitleAnimation = ({ login }) => {
       y: -50,
       opacity: 1,
       duration: 1,
-      delay: 2
+      delay: 2,
     });
   }, []);
 
-  const onClick = async e => {
+  const onClick = async (e) => {
     e.preventDefault();
-    setRedirecet(true);
+    login({ email: 'testUser@gmail.com', password: '12345678' });
+    // setRedirecet(true);
   };
 
   if (redirecet) return <Redirect to='/signup' />;
@@ -54,7 +55,7 @@ const TitleAnimation = ({ login }) => {
 };
 TitleAnimation.propType = {
   login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
 };
 // const mapStateToProp = state => ({
 //   isAuthenticated: state.auth.isAuthenticated
