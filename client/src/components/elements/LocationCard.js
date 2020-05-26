@@ -13,7 +13,7 @@ const LocationCard = ({
   selected,
   removeLocation,
   changeLocationDetail,
-  profile
+  profile,
 }) => {
   const userId = profile ? profile.user._id : null;
   const [locationEdit, setLocationEdit] = useState(false);
@@ -38,7 +38,7 @@ const LocationCard = ({
         <div className='input-wrapper'>
           <input
             value={formData.name}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, name: e.currentTarget.value });
             }}
           />
@@ -48,7 +48,7 @@ const LocationCard = ({
         <div className='input-wrapper' style={{ height: '80px' }}>
           <textarea
             value={formData.description}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, description: e.currentTarget.value });
             }}
           />
@@ -65,13 +65,13 @@ const LocationCard = ({
   ) : (
     <div className='group-content location'>
       <div className='left-section'>
-        {location.photo && (
+        {/* {location.photo && (
           <img
             src={location.photo}
             alt={location.name}
             className='location-img'
           />
-        )}
+        )} */}
       </div>
       <div className='right-section'>
         <div className='location-title'>{location.name}</div>
@@ -103,11 +103,11 @@ const LocationCard = ({
 LocationCard.propTypes = {
   profile: PropTypes.object,
   removeLocation: PropTypes.func.isRequired,
-  changeLocationDetail: PropTypes.func.isRequired
+  changeLocationDetail: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  profile: state.profile.profile
+const mapStateToProps = (state) => ({
+  profile: state.profile.profile,
 });
 
 const mapDispatchToProps = { removeLocation, changeLocationDetail };
