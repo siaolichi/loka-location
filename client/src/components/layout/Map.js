@@ -49,7 +49,7 @@ const GoogleMap = ({ group }) => {
     }
 
     // Marker setup
-    locations.forEach(async location => {
+    locations.forEach(async (location) => {
       addMarker(map, location, 'marker');
     });
   };
@@ -59,12 +59,12 @@ const GoogleMap = ({ group }) => {
     const icon = {
       url: require(`../../img/${type}.png`),
       scaledSize: new google.maps.Size(50, 50),
-      origin: new google.maps.Point(0, 0)
+      origin: new google.maps.Point(0, 0),
     };
     const marker = new google.maps.Marker({
       position: location.latLng,
       icon: icon,
-      map: map
+      map: map,
     });
 
     // InfoWindow, defined outside so it will closed automatically after another marker is clicked
@@ -77,7 +77,7 @@ const GoogleMap = ({ group }) => {
       if (location.placeId) {
         var request = {
           placeId: location.placeId,
-          fields: ['name', 'photo', 'formatted_address']
+          fields: ['name', 'photo', 'formatted_address'],
         };
 
         //Get place detail through api
@@ -114,7 +114,7 @@ const GoogleMap = ({ group }) => {
   };
 
   return (
-    <div className='fade-in' style={{ flexGrow: 1 }}>
+    <div className='fade-in' style={{ flexGrow: 1, position: 'relative' }}>
       <div ref={containerRef} className='map-container'></div>
       <InfoWindow infoWindowRef={infoWindowRef} />
       <div style={{ display: 'none' }}>

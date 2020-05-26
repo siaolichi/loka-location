@@ -15,8 +15,7 @@
     height: calc(100% - 50px);
     width: 100%;
     transition: none;
-    @media not all and (min-resolution:.001dpcm) { @media {
-
+    @media not all and (min-resolution:.001dpcm) { 
         height: calc(100vh - 200px);
-    }}
+    }
 }
