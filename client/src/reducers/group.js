@@ -1,8 +1,8 @@
-import { GET_GROUPS, GROUP_ERROR } from '../actions/types';
+import { GET_GROUPS, GROUP_ERROR, EDIT_GROUP } from '../actions/types';
 const initialState = {
   allGroups: [],
   error: {},
-  loading: true
+  loading: true,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -11,13 +11,25 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         allGroups: payload,
-        loading: false
+        loading: false,
       };
     case GROUP_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false
+        loading: false,
+      };
+    case EDIT_GROUP:
+      const newGroup = state.allGroups.map((el) => {
+        if (el._id === payload._id) {
+          return payload;
+        } else {
+          return el;
+        }
+      });
+      return {
+        ...state,
+        allGroups: newGroup,
       };
     default:
       return state;

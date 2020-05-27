@@ -1,48 +1,70 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@material/react-button';
 import MaterialIcon from '@material/react-material-icon';
 import { staggerIn, fadeOut } from '../../utils';
 import { addGroupToProfile, removeGroupToProfile } from '../../actions/profile';
-import { removeGroupFromAllGroups } from '../../actions/group';
+import {
+  changeGroupDetail,
+  removeGroupFromAllGroups,
+} from '../../actions/group';
 import './GroupDetail.scss';
 import LocationList from './LocationList';
+import Spinner from '../layout/Spinner';
 
 export const GroupDetail = ({
-  group,
+  allGroups,
+  groupId,
   userId,
   setModal,
+  changeGroupDetail,
   addGroupToProfile,
   removeGroupToProfile,
-  removeGroupFromAllGroups
+  removeGroupFromAllGroups,
 }) => {
-  const groupRef = useRef(null);
+  const [group, setGroup] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    staggerIn(groupRef.current.childNodes);
+    changeGroupDetail(allGroups.filter((el) => el._id === groupId)[0]);
   }, []);
-  if (!group) {
-    setModal(m => ({ ...m, status: 'selected', showModal: null }));
+  const groupRef = useRef(null);
+
+  useEffect(() => {
+    setGroup(allGroups.filter((el) => el._id === groupId)[0]);
+  }, [allGroups]);
+
+  useEffect(() => {
+    if (group && group.locations[0].photo) setLoaded(true);
+  }, [group]);
+
+  useEffect(() => {
+    if (loaded) {
+      staggerIn(groupRef.current.childNodes);
+    }
+  }, [loaded]);
+
+  if (!groupId) {
+    setModal((m) => ({ ...m, currentGroupId: null }));
     return '';
   }
+  if (!loaded) return <Spinner />;
+
   const onBack = () => {
     const callback = () => {
-      if (group.selected) {
-        setModal(m => ({ ...m, status: 'selected', showModal: null }));
-      } else {
-        setModal(m => ({ ...m, status: 'other', showModal: null }));
-      }
+      setModal((m) => ({ ...m, currentGroupId: null }));
     };
     fadeOut(groupRef.current.childNodes, callback);
   };
-  const onJoinGroup = name => {
+  const onJoinGroup = (name) => {
     addGroupToProfile(name);
     group.selected = true;
   };
-  const onLeaveGroup = name => {
+  const onLeaveGroup = (name) => {
     removeGroupToProfile(name);
     group.selected = false;
   };
+
   return (
     <div id='group-detail' className='fade-in'>
       <div className='header'>
@@ -76,7 +98,7 @@ export const GroupDetail = ({
         <LocationList group={group} />
         {userId === group.user._id && (
           <Button
-            onClick={e => {
+            onClick={(e) => {
               removeGroupFromAllGroups(group);
             }}
           >
@@ -92,15 +114,19 @@ GroupDetail.propTypes = {
   useId: PropTypes.string,
   group: PropTypes.object,
   addGroupToProfile: PropTypes.func.isRequired,
-  removeGroupToProfile: PropTypes.func.isRequired
+  removeGroupToProfile: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ userId: state.profile.profile.user._id });
+const mapStateToProps = (state) => ({
+  userId: state.profile.profile.user._id,
+  allGroups: state.group.allGroups,
+});
 
 const mapDispatchToProps = {
+  changeGroupDetail,
   addGroupToProfile,
   removeGroupToProfile,
-  removeGroupFromAllGroups
+  removeGroupFromAllGroups,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupDetail);

@@ -74,26 +74,7 @@ const GoogleMap = ({ group }) => {
 
     //Get Place detail when marker is clicked
     google.maps.event.addListener(marker, 'click', function () {
-      if (location.placeId) {
-        var request = {
-          placeId: location.placeId,
-          fields: ['name', 'photo', 'formatted_address'],
-        };
-
-        //Get place detail through api
-        service.getDetails(request, (placeDetail, status) => {
-          if (placeDetail) {
-            location.address = placeDetail.formatted_address;
-            location.photo = placeDetail.photos[0].getUrl();
-
-            editInfowindowContent(infowindowContent, location);
-          } else if (status === 'OVER_QUERY_LIMIT') {
-            console.log(`${location.name} error: ${'OVER_QUERY_LIMIT'}`);
-          }
-        });
-      } else {
-        editInfowindowContent(infowindowContent, location);
-      }
+      editInfowindowContent(infowindowContent, location);
 
       //open infoWindow after got location details
       infowindow.open(map, marker);

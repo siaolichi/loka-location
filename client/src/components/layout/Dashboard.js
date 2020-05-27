@@ -1,5 +1,5 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@material/react-button';
@@ -10,20 +10,19 @@ import Map from './Map';
 import './Dashboard.scss';
 import { receivePublicGroups } from '../../actions/group';
 import CardModal from '../elements/CardModal';
+import { OtherCroups } from '../elements/OtherCroups';
 
 export const Dashboard = ({
   profile: { profile, loading },
   allGroups,
-  receivePublicGroups
+  receivePublicGroups,
 }) => {
   const [modal, setModal] = useState({
     selected: [],
     other: [],
-    status: 'selected',
-    showModal: null
+    currentGroupId: null,
   });
   const [editMap, setEditMap] = useState(false);
-
   useEffect(() => {
     receivePublicGroups();
   }, []);
@@ -32,18 +31,13 @@ export const Dashboard = ({
     const updateGroup = () => {
       const selected = [],
         other = [];
-      let showModal = null;
       for (let group of allGroups) {
-        if (modal.showModal && group._id === modal.showModal._id) {
-          showModal = Object.assign({}, modal.showModal, group);
-          // console.log(showModal);
-        }
         let index = profile.groups.indexOf(group.name);
         if (index > -1) selected.push(group);
         else other.push(group);
       }
-      setModal(m => {
-        return { ...m, selected, other, showModal };
+      setModal((m) => {
+        return { ...m, selected, other };
       });
     };
 
@@ -51,66 +45,62 @@ export const Dashboard = ({
   }, [allGroups, profile]);
 
   if (!profile || loading) return <Spinner />;
-  if (!modal.showModal && modal.status === 'group-detail') {
-    setModal(m => ({ ...m, status: 'selected', showModal: null }));
-  }
 
-  const leftSection = modal => {
-    switch (modal.status) {
-      case 'selected':
-        return <GroupList modal={modal} setModal={setModal} />;
-      case 'other':
-        return <GroupList modal={modal} setModal={setModal} />;
-      case 'group-detail':
-        if (!modal.showModal) {
-          setModal(m => ({ ...m, status: 'selected', showModal: null }));
-          return <GroupList modal={modal} setModal={setModal} />;
-        }
-        return <GroupDetail group={modal.showModal} setModal={setModal} />;
-      default:
-        break;
+  const leftSection = (modal) => {
+    if (!modal.currentGroupId) {
+      return <GroupList modal={modal} setModal={setModal} />;
     }
+    return <GroupDetail groupId={modal.currentGroupId} setModal={setModal} />;
   };
   return (
     <div id='dashboard'>
       <div className='left-section'>{leftSection(modal)}</div>
-      {modal.showModal && (
-        <div className='right-section'>
-          {modal.showModal.selected === true && (
-            <div>
-              <Button
-                outlined
-                onClick={() => {
-                  setEditMap(true);
-                }}
-                style={{ margin: '10px' }}
-              >
-                Add New Location
-              </Button>
-            </div>
-          )}
-          <Map group={modal.showModal} />
-          {editMap && (
-            <CardModal
-              groupId={modal.showModal._id}
-              groupName={modal.showModal.name}
-              editMap={editMap}
-              setEditMap={setEditMap}
+      <div className='right-section'>
+        {modal.currentGroupId ? (
+          <Fragment>
+            {modal.selected
+              .map((el) => el._id)
+              .includes(modal.currentGroupId) && (
+              <div>
+                <Button
+                  outlined
+                  onClick={() => {
+                    setEditMap(true);
+                  }}
+                  style={{ margin: '10px' }}
+                >
+                  Add New Location
+                </Button>
+              </div>
+            )}
+            <Map
+              group={
+                allGroups.filter((el) => el._id === modal.currentGroupId)[0]
+              }
             />
-          )}
-        </div>
-      )}
+            {editMap && (
+              <CardModal
+                groupId={modal.showGroup}
+                editMap={editMap}
+                setEditMap={setEditMap}
+              />
+            )}
+          </Fragment>
+        ) : (
+          <OtherCroups other={modal.other} setModal={setModal} />
+        )}
+      </div>
     </div>
   );
 };
 
 Dashboard.propTypes = {
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   profile: state.profile,
-  allGroups: state.group.allGroups
+  allGroups: state.group.allGroups,
 });
 
 const mapDispatchToProps = { receivePublicGroups };

@@ -65,13 +65,13 @@ const LocationCard = ({
   ) : (
     <div className='group-content location'>
       <div className='left-section'>
-        {/* {location.photo && (
+        {location.photo && (
           <img
             src={location.photo}
             alt={location.name}
             className='location-img'
           />
-        )} */}
+        )}
       </div>
       <div className='right-section'>
         <div className='location-title'>{location.name}</div>
