@@ -7,12 +7,7 @@ const LocationList = ({ group, style }) => {
     <Fragment>
       {group.locations &&
         group.locations.map((location, index) => (
-          <LocationCard
-            location={location}
-            groupId={group._id}
-            selected={group.selected}
-            key={index}
-          />
+          <LocationCard location={location} groupId={group._id} key={index} />
         ))}
       <div className='location-footer'>
         <div className='text'>this map is created by {group.user.name}</div>

@@ -1,6 +1,6 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useEffect, useRef } from 'react';
-import './GroupList.scss';
+import './SelectedGroupList.scss';
 
 import { staggerIn, staggerOut } from '../../utils';
 import { connect } from 'react-redux';

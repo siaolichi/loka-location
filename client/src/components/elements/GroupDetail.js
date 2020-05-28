@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+/*eslint-disable react-hooks/exhaustive-deps*/
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@material/react-button';
@@ -16,7 +17,7 @@ import Spinner from '../layout/Spinner';
 export const GroupDetail = ({
   allGroups,
   groupId,
-  userId,
+  profile,
   setModal,
   changeGroupDetail,
   addGroupToProfile,
@@ -25,10 +26,11 @@ export const GroupDetail = ({
 }) => {
   const [group, setGroup] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const groupRef = useRef(null);
+
   useEffect(() => {
     changeGroupDetail(allGroups.filter((el) => el._id === groupId)[0]);
   }, []);
-  const groupRef = useRef(null);
 
   useEffect(() => {
     setGroup(allGroups.filter((el) => el._id === groupId)[0]);
@@ -69,7 +71,7 @@ export const GroupDetail = ({
     <div id='group-detail' className='fade-in'>
       <div className='header'>
         <div className='title'>{group.name}</div>
-        {group.selected ? (
+        {profile.groups.indexOf(group.name) !== -1 ? (
           <MaterialIcon
             icon='favorite'
             className='icon-button favorite'
@@ -96,7 +98,7 @@ export const GroupDetail = ({
       </div>
       <div className='group-wrapper' ref={groupRef}>
         <LocationList group={group} />
-        {userId === group.user._id && (
+        {profile.user._id === group.user._id && (
           <Button
             onClick={(e) => {
               removeGroupFromAllGroups(group);
@@ -111,14 +113,14 @@ export const GroupDetail = ({
 };
 
 GroupDetail.propTypes = {
-  useId: PropTypes.string,
+  profile: PropTypes.object,
   group: PropTypes.object,
   addGroupToProfile: PropTypes.func.isRequired,
   removeGroupToProfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  userId: state.profile.profile.user._id,
+  profile: state.profile.profile,
   allGroups: state.group.allGroups,
 });
 

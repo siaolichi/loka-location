@@ -6,7 +6,7 @@
     >.left-section{
         width: 400px;
         height: calc(100vh - 130px);
-        // position: relative;
+        position: relative;
     }
     >.right-section{
         position: relative;
@@ -19,7 +19,7 @@
     @media screen and (max-width: 870px) {
         >.left-section{
             width: 100%;
-            height: max-content;
+            height: 60vh;
         }
         >.right-section{
             width: 100%;

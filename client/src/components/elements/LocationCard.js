@@ -6,11 +6,11 @@ import Button from '@material/react-button';
 
 import './LocationCard.scss';
 import { removeLocation, changeLocationDetail } from '../../actions/group';
+import { imageExists } from '../../utils';
 
 const LocationCard = ({
   location,
   groupId,
-  selected,
   removeLocation,
   changeLocationDetail,
   profile,
@@ -69,6 +69,9 @@ const LocationCard = ({
           <img
             src={location.photo}
             alt={location.name}
+            onError={(e) => {
+              console.log(e);
+            }}
             className='location-img'
           />
         )}
@@ -77,7 +80,7 @@ const LocationCard = ({
         <div className='location-title'>{location.name}</div>
         <div className='location-addr'>{location.address}</div>
         <div className='location-desc'>{location.description}</div>
-        {selected && userId === location.user && (
+        {userId === location.user && (
           <div>
             <MaterialIcon
               icon='delete'

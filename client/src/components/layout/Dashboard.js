@@ -3,14 +3,14 @@ import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from '@material/react-button';
-import GroupList from '../elements/GroupList';
+import SelectedGroupList from '../elements/SelectedGroupList';
 import Spinner from './Spinner';
 import GroupDetail from '../elements/GroupDetail';
 import Map from './Map';
 import './Dashboard.scss';
 import { receivePublicGroups } from '../../actions/group';
 import CardModal from '../elements/CardModal';
-import { OtherCroups } from '../elements/OtherCroups';
+import { OtherGroupsList } from '../elements/OtherGroupsList';
 
 export const Dashboard = ({
   profile: { profile, loading },
@@ -48,7 +48,7 @@ export const Dashboard = ({
 
   const leftSection = (modal) => {
     if (!modal.currentGroupId) {
-      return <GroupList modal={modal} setModal={setModal} />;
+      return <SelectedGroupList modal={modal} setModal={setModal} />;
     }
     return <GroupDetail groupId={modal.currentGroupId} setModal={setModal} />;
   };
@@ -80,14 +80,14 @@ export const Dashboard = ({
             />
             {editMap && (
               <CardModal
-                groupId={modal.showGroup}
+                groupId={modal.currentGroupId}
                 editMap={editMap}
                 setEditMap={setEditMap}
               />
             )}
           </Fragment>
         ) : (
-          <OtherCroups other={modal.other} setModal={setModal} />
+          <OtherGroupsList other={modal.other} setModal={setModal} />
         )}
       </div>
     </div>

@@ -26,7 +26,7 @@
         display: flex;
         float: right;
         width: 100%;
-        justify-content: space-between;
+        // justify-content: space-between;
         align-items: flex-start;
         flex-wrap: wrap;
     }
@@ -55,7 +55,7 @@
         cursor: pointer;
     }
     .input-wrapper {
-        width: calc(50% - 27px);
+        width: calc(100% - 15px);
         float: left;
     }
     input{
@@ -97,8 +97,8 @@
     }
     @media screen and(max-width: 870px) {
         height: calc(100vh - 120px);
-        .list-wrapper{
-            width: calc(100% - 15px);
+        .list-wrapper .group-content{
+            width: 100%;
         }
     }
 }

@@ -77,3 +77,9 @@ const getPhoto = (location) => {
     });
   });
 };
+
+export const imageExists = (image_url) => {
+  var img = new Image();
+  img.src = image_url;
+  return img.height !== 0;
+};
