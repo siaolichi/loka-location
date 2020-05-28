@@ -23,7 +23,9 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
 
   const groupFilter = (string) => {
     setShowGroup(
-      other.filter((el) => el.name.toLowerCase().indexOf(string) !== -1)
+      other.filter(
+        (el) => el.name.toLowerCase().indexOf(string.toLowerCase()) !== -1
+      )
     );
   };
   return (
