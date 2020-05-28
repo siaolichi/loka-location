@@ -39,7 +39,7 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
         </div>
         <input
           onChange={(e) => {
-            groupFilter(e.currentTarget.value);
+            groupFilter(e.target.value);
           }}
         />
         {/* <MaterialIcon
@@ -55,7 +55,7 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
         <input
           value={createInput}
           onChange={(e) => {
-            setCreateInput(e.currentTarget.value);
+            setCreateInput(e.target.value);
           }}
           style={{ width: 'calc( 100% - 50px)' }}
         />
