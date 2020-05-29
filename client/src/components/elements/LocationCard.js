@@ -70,7 +70,7 @@ const LocationCard = ({
             src={location.photo}
             alt={location.name}
             onError={(e) => {
-              console.log(e);
+              e.target.setAttribute('style', 'display: none;');
             }}
             className='location-img'
           />

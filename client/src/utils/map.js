@@ -65,11 +65,15 @@ const getPhoto = (location) => {
     placeId: location.placeId,
     fields: ['name', 'photo', 'formatted_address'],
   };
+  if (location.photo) {
+    return location;
+  }
   return new Promise((resolve, reject) => {
     service.getDetails(request, async (placeDetail, status) => {
       if (placeDetail) {
         const address = await placeDetail.formatted_address;
-        const photo = await placeDetail.photos[0].getUrl();
+        let photo;
+        if (placeDetail.photos) photo = await placeDetail.photos[0].getUrl();
         resolve({ ...location, address, photo });
       } else if (status === 'OVER_QUERY_LIMIT') {
         reject(status);

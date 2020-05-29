@@ -9,55 +9,52 @@ import Map from './Map';
 import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
 
-import { receivePublicGroups } from '../../actions/group';
-import { staggerIn } from '../../utils';
+import { receivePublicGroups, changeGroupDetail } from '../../actions/group';
+import { staggerIn, staggerOut } from '../../utils';
 
 import './MapPage.scss';
 
 const MapPage = ({
   match,
   receivePublicGroups,
+  changeGroupDetail,
   allGroups,
-  isAuthenticated
+  loading,
+  isAuthenticated,
 }) => {
   const listRef = useRef(null);
   const [groupId, setGroupId] = useState(null);
-  const [selectedGroup, setSelectedGroup] = useState(null);
 
   useEffect(() => {
     receivePublicGroups();
   }, []);
 
   useEffect(() => {
-    if (listRef.current) staggerIn(listRef.current.childNodes);
+    if (listRef.current) {
+      setTimeout(() => {
+        staggerIn(listRef.current.childNodes);
+      }, 100);
+    }
   }, [groupId]);
 
   useEffect(() => {
-    if (allGroups.length > 0) {
+    if (loading === false) {
       changeGroup(allGroups[0]._id);
-      setTimeout(() => {
-        if (listRef.current) staggerIn(listRef.current.childNodes);
-      }, 500);
     }
-  }, [allGroups]);
+  }, [loading]);
 
-  useEffect(() => {
-    if (setSelectedGroup && listRef.current)
-      staggerIn(listRef.current.childNodes);
-  }, [setSelectedGroup]);
-
-  const changeGroup = groupId => {
-    setGroupId(groupId);
-    let tmpGroup = allGroups.filter(group => group._id === groupId);
-    if (tmpGroup.length === 0) {
-      setSelectedGroup(allGroups[0]);
-      setGroupId(allGroups[0]._id);
-    } else {
-      setSelectedGroup(tmpGroup[0]);
-    }
+  const changeGroup = async (groupId) => {
+    let group =
+      allGroups.filter((group) => group._id === groupId)[0] || allGroups[0];
+    await changeGroupDetail(group);
+    setGroupId(group._id);
   };
-
-  if (!selectedGroup || !allGroups) return <Spinner />;
+  if (
+    groupId &&
+    !allGroups.filter((group) => group._id === groupId)[0].locations[0].photo
+  )
+    return <Spinner />;
+  if (!groupId || !allGroups) return <Spinner />;
 
   return (
     <div id='map-page'>
@@ -67,7 +64,7 @@ const MapPage = ({
           label='Select Groups'
           className={isAuthenticated ? 'map-selection' : 'map-selection dark'}
           outlined
-          onChange={evt => {
+          onChange={(evt) => {
             changeGroup(evt.target.value);
           }}
         >
@@ -81,7 +78,9 @@ const MapPage = ({
           className={isAuthenticated ? 'list-wrapper' : 'list-wrapper dark'}
           ref={listRef}
         >
-          <LocationList group={selectedGroup} />
+          <LocationList
+            group={allGroups.filter((group) => group._id === groupId)[0]}
+          />
           <div></div>
         </div>
       </div>
@@ -90,7 +89,12 @@ const MapPage = ({
           exact
           path={match.path}
           component={({ match }) => {
-            return <Map group={selectedGroup} match={match} />;
+            return (
+              <Map
+                group={allGroups.filter((group) => group._id === groupId)[0]}
+                match={match}
+              />
+            );
           }}
         />
         <Route
@@ -98,7 +102,12 @@ const MapPage = ({
           path={`${match.path}/:groupId`}
           component={({ match }) => {
             changeGroup(match.params.groupId);
-            return <Map group={selectedGroup} match={match} />;
+            return (
+              <Map
+                group={allGroups.filter((group) => group._id === groupId)[0]}
+                match={match}
+              />
+            );
           }}
         />
       </div>
@@ -108,12 +117,18 @@ const MapPage = ({
 
 MapPage.propTypes = {
   allGroups: PropTypes.array.isRequired,
-  receivePublicGroups: PropTypes.func.isRequired
+  loading: PropTypes.bool.isRequired,
+  receivePublicGroups: PropTypes.func.isRequired,
+  changeGroupDetail: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   allGroups: state.group.allGroups,
-  isAuthenticated: state.auth.isAuthenticated
+  loading: state.group.loading,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { receivePublicGroups })(MapPage);
+export default connect(mapStateToProps, {
+  receivePublicGroups,
+  changeGroupDetail,
+})(MapPage);
