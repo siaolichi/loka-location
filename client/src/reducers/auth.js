@@ -19,7 +19,7 @@ export default function (state = initialState, action) {
   switch (type) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      console.log('Auth success');
+      // console.log('Auth success');
       localStorage.setItem('token', payload.token);
       return {
         ...state,
@@ -28,7 +28,7 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case USER_LOADED:
-      console.log('user logged');
+      // console.log('user logged');
       return {
         ...state,
         isAuthenticated: true,

@@ -59,7 +59,6 @@ export const loadUser = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    // console.log('User not loaded');
     dispatch({
       type: AUTH_ERROR,
     });
@@ -74,6 +73,34 @@ export const login = ({ email, password }) => async (dispatch) => {
   };
   try {
     const res = await axios.post('/api/auth', { email, password }, config);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    await dispatch(loadUser());
+  } catch (err) {
+    if (err.response && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: LOGIN_FAILED,
+    });
+  }
+};
+
+export const facebookLogin = (fbResponse) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  try {
+    const res = await axios.post(
+      '/api/auth/facebook',
+      { accessToken: fbResponse.accessToken },
+      config
+    );
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,

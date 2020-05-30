@@ -5,15 +5,16 @@ const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User');
+const FacebookUser = require('../../models/FacebookUser');
+const axios = require('axios');
 
 //@routes       GET api/auth
 //@desc         Load user
 //@access       private
 router.get('/', auth, async (req, res) => {
   try {
-    console.log(req.user);
     const user = await User.findById(req.user.id).select('-password');
-    console.log(user);
+    console.log('Load User: ', user);
     res.json(user);
   } catch (err) {
     res.status(500).send('Server Error');
@@ -30,7 +31,7 @@ router.post(
     check(
       'password',
       'Please enter a password with 6 or more characters.'
-    ).isLength({ min: 6 })
+    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -55,8 +56,8 @@ router.post(
       //Return json webtoken
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(
@@ -74,5 +75,75 @@ router.post(
     }
   }
 );
+
+//@routes       POST api/auth/facebook
+//@desc         Load user
+//@access       private
+router.post('/facebook', async (req, res) => {
+  const { accessToken } = req.body;
+  try {
+    axios
+      .get(
+        `https://graph.facebook.com/v7.0/me?fields=email,id,first_name,name&access_token=${accessToken}`
+      )
+      .then(async function (response) {
+        // handle success
+        const { email, id, name } = response.data;
+        let user = await FacebookUser.findOne({ email });
+        if (!user) {
+          user = new FacebookUser({
+            name,
+            email,
+            facebook_id: id,
+          });
+          await user.save();
+          console.log('register: ' + user);
+        } else {
+          console.log('log in:' + user);
+        }
+        const payload = {
+          user: {
+            id: user.id,
+          },
+        };
+        jwt.sign(
+          payload,
+          process.env.JWT_SECRET,
+          { expiresIn: 3600000 },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token });
+          }
+        );
+      })
+      .catch(function (error) {
+        console.error(error);
+        res.status(500).send('Server error.');
+      });
+
+    // let user = await User.findOne({ email });
+    //   if (!user) {
+    //     res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+    //   }
+    // //Return json webtoken
+    // const payload = {
+    //   user: {
+    //     id: user.id,
+    //   },
+    // };
+
+    // jwt.sign(
+    //   payload,
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: 3600000 },
+    //   (err, token) => {
+    //     if (err) throw err;
+    //     res.json({ token });
+    //   }
+    // );
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;

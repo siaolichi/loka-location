@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const FacebookUser = require('../../models/FacebookUser');
 
 const auth = require('../../middleware/auth');
 //@routes       GET api/profiles/me
@@ -10,10 +11,24 @@ const auth = require('../../middleware/auth');
 router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      user: req.user.id
+      user: req.user.id,
     }).populate('user', ['name', 'email', 'avatar']);
-    if (!profile)
+    // ).populate('facebook_user', ['name', 'email', 'avatar']);
+    if (!profile) {
+      const facebookUser = FacebookUser.findById(req.user.id);
+      if (facebookUser) {
+        console.log('create facebook profile');
+        const profile = new Profile({
+          user: req.user.id,
+          provider: 'facebook_user',
+        });
+        await profile.save();
+        return res.json(profile);
+      }
+
       return res.status(400).json({ msg: 'No profile for this user' });
+    }
+    console.log(profile);
     return res.json(profile);
   } catch (err) {
     console.log(err);
@@ -33,7 +48,7 @@ router.post('/', auth, async (req, res) => {
     facebook,
     twitter,
     instagram,
-    groups
+    groups,
   } = req.body;
   const profileFields = {};
   profileFields.user = req.user.id;
@@ -49,7 +64,8 @@ router.post('/', auth, async (req, res) => {
 
   try {
     let profile = await Profile.findOne({ user: req.user.id });
-
+    //Check provider is there!!
+    profileFields.provider = profileFields.provider || 'user';
     // Update if profile already exist
     if (profile) {
       profile = await Profile.findOneAndUpdate(
@@ -91,9 +107,13 @@ router.post('/', auth, async (req, res) => {
 // @access       public
 router.get('/user/:user_id', async (req, res) => {
   try {
-    const profiles = await Profile.findOne({
-      user: req.params.user_id
-    }).populate('user', ['name', 'avatar']);
+    const profiles =
+      (await Profile.findOne({
+        user: req.params.user_id,
+      }).populate('user', ['name', 'avatar'])) ||
+      Profile.findOne({
+        user: req.params.user_id,
+      }).populate('facebook_user', ['name', 'avatar']);
 
     if (!profiles)
       return res.status(400).json({ msg: 'No profile for this user' });
