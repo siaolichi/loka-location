@@ -6,7 +6,7 @@ import FacebookLogin from 'react-facebook-login';
 // import { GoogleLogin } from 'react-google-login';
 
 import { login, facebookLogin } from '../../actions/auth';
-import { Spinner } from '../layout/Spinner';
+import Spinner from '../layout/Spinner';
 
 /*----- Thank "https://medium.com/@alexanderleon/implement-social-authentication-with-react-restful-api-9b44f4714fa" for the guide ------*/
 
