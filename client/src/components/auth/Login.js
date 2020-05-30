@@ -10,7 +10,7 @@ import Spinner from '../layout/Spinner';
 
 /*----- Thank "https://medium.com/@alexanderleon/implement-social-authentication-with-react-restful-api-9b44f4714fa" for the guide ------*/
 
-const Login = ({ login, loading, isAuthenticated, facebookLogin }) => {
+const Login = ({ login, isAuthenticated, facebookLogin }) => {
   const [LoginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -37,7 +37,6 @@ const Login = ({ login, loading, isAuthenticated, facebookLogin }) => {
     e.preventDefault();
     await login({ email, password });
   };
-  // if (loading) return <Spinner />;
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
   }
@@ -138,7 +137,6 @@ Login.propTypes = {
 };
 const mapStateToProp = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading,
 });
 export default connect(mapStateToProp, { login, facebookLogin, setLoading })(
   Login

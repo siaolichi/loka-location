@@ -23,6 +23,7 @@ import '@material/react-list/dist/list.css';
 import '@material/react-checkbox/dist/checkbox.css';
 import '@material/react-card/dist/card.css';
 import '@material/react-select/dist/select.css';
+import Spinner from './components/layout/Spinner';
 
 function App({ loadUser, isAuthenticated, redirect }) {
   const [openAccount, setOpenAccount] = useState(false);
@@ -47,6 +48,7 @@ function App({ loadUser, isAuthenticated, redirect }) {
     <div className='container app' data-test='component-app'>
       {/* <div className="dark-overlay" /> */}
       <Three />
+      {!url.includes('https://loka-location.com/login?code=') && <Spinner />}
       <Navbar setOpenAccount={setOpenAccount} />
       <Alert />
       <ProfileModal openAccount={openAccount} setOpenAccount={setOpenAccount} />
