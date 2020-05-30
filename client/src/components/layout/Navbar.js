@@ -13,7 +13,7 @@ library.add(faSignOutAlt);
 const Navbar = ({
   logout,
   auth: { isAuthenticated, loading },
-  setOpenAccount
+  setOpenAccount,
 }) => {
   const guestLink = (
     <ul>
@@ -40,7 +40,7 @@ const Navbar = ({
       <li className='account'>
         <a
           href='#!'
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
             setOpenAccount(true);
           }}
@@ -51,7 +51,7 @@ const Navbar = ({
       <li onClick={logout} className='logout'>
         <a
           href='#!'
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
             logout();
           }}
@@ -68,20 +68,18 @@ const Navbar = ({
           <div className='logo'></div> LOKA
         </Link>
       </h1>
-      {!loading && (
-        <Fragment>{isAuthenticated ? memberLink : guestLink}</Fragment>
-      )}
+      {loading || !isAuthenticated ? guestLink : memberLink}
     </nav>
   );
 };
 
 Navbar.propTypes = {
   logout: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProp = state => ({
-  auth: state.auth
+const mapStateToProp = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProp, { logout })(Navbar);

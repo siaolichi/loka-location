@@ -13,7 +13,7 @@ import Spinner from '../layout/Spinner';
 const Login = ({
   login,
   setLoading,
-  loading,
+  redirect,
   isAuthenticated,
   facebookLogin,
 }) => {
@@ -22,7 +22,6 @@ const Login = ({
     password: '',
     check: false,
   });
-  const [toFacebook, setToFacebook] = useState(false);
   useEffect(() => {
     const listener = (event) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
@@ -44,9 +43,9 @@ const Login = ({
     e.preventDefault();
     await login({ email, password });
   };
-  if (loading) return <Spinner />;
-  if (isAuthenticated || toFacebook) {
-    return <Redirect to='/' />;
+  if (redirect) return <Spinner />;
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
   }
   return (
     <div className='fade-in'>
@@ -116,7 +115,6 @@ const Login = ({
                   fields='name,email,picture'
                   callback={(e) => {
                     setLoading();
-                    setToFacebook(true);
                     facebookLogin(e);
                   }}
                 />
