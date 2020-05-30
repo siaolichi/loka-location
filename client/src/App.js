@@ -49,7 +49,6 @@ function App({ loadUser, isAuthenticated, redirect }) {
       {/* <div className="dark-overlay" /> */}
       <Three />
       {url.includes('https://loka-location.com/login?code=') && <Spinner />}
-      <Spinner />
       <Navbar setOpenAccount={setOpenAccount} />
       <Alert />
       <ProfileModal openAccount={openAccount} setOpenAccount={setOpenAccount} />
