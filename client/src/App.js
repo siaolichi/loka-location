@@ -27,7 +27,8 @@ import '@material/react-select/dist/select.css';
 function App({ loadUser, isAuthenticated, redirect }) {
   const [openAccount, setOpenAccount] = useState(false);
   useEffect(() => {
-    if (!redirect) loadUser();
+    const url = window.location.href;
+    if (!url.includes('https://loka-location.com/login?code=')) loadUser();
   }, []);
   useEffect(() => {
     if (isAuthenticated) {
