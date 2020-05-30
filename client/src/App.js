@@ -27,8 +27,8 @@ import Spinner from './components/layout/Spinner';
 
 function App({ loadUser, isAuthenticated, redirect }) {
   const [openAccount, setOpenAccount] = useState(false);
+  const url = window.location.href;
   useEffect(() => {
-    const url = window.location.href;
     if (!url.includes('https://loka-location.com/login?code=')) loadUser();
   }, []);
   useEffect(() => {
