@@ -113,8 +113,8 @@ const Login = ({
                   appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                   autoLoad={false}
                   fields='name,email,picture'
+                  onClick={setLoading}
                   callback={(e) => {
-                    setLoading();
                     facebookLogin(e);
                   }}
                 />
