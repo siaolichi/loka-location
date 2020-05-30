@@ -29,9 +29,9 @@ function App({ loadUser, isAuthenticated }) {
   const [openAccount, setOpenAccount] = useState(false);
   const [redirect, setRedirect] = useState(false);
   if (window.location.href.includes('https://loka-location.com/login?code=')) {
-    setRedirect(true);
+    if (!redirect) setRedirect(true);
   } else {
-    setRedirect(false);
+    if (redirect) setRedirect(false);
   }
   useEffect(() => {
     if (!redirect) loadUser();
