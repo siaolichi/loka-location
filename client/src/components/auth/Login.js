@@ -115,9 +115,9 @@ const Login = ({ login, isAuthenticated, facebookLogin }) => {
                   onFailure={this.googleResponse}
                 />
               </div> */}
-              <div className='foot-lnk'>
+              {/* <div className='foot-lnk'>
                 <a href='#forgot'>Forgot Password?</a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

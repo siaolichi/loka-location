@@ -4,20 +4,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
-import { signup } from '../../actions/auth';
+import { signup, facebookLogin } from '../../actions/auth';
 import '../../style/Signup.scss';
+import FacebookLogin from 'react-facebook-login';
+import { GoogleLogin } from 'react-google-login';
 
 const Signup = ({ setAlert, signup, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    password2: ''
+    password2: '',
   });
-  const onChange = e => {
+  const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     const { name, email, password, password2 } = formData;
     if (password !== password2) {
       console.log('password do not match');
@@ -26,7 +28,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
       const newUser = {
         name,
         email,
-        password
+        password,
       };
       signup(newUser);
     }
@@ -49,7 +51,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   name='name'
                   type='text'
                   className='input'
-                  onChange={e => onChange(e)}
+                  onChange={(e) => onChange(e)}
                 />
               </div>
               <div className='group'>
@@ -60,7 +62,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   name='email'
                   type='text'
                   className='input'
-                  onChange={e => onChange(e)}
+                  onChange={(e) => onChange(e)}
                 />
               </div>
               <div className='group'>
@@ -72,7 +74,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   type='password'
                   className='input'
                   data-type='password'
-                  onChange={e => onChange(e)}
+                  onChange={(e) => onChange(e)}
                 />
               </div>
               <div className='group'>
@@ -84,7 +86,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   type='password'
                   className='input'
                   data-type='password'
-                  onChange={e => onChange(e)}
+                  onChange={(e) => onChange(e)}
                 />
               </div>
               <div className='group'>
@@ -92,13 +94,35 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   type='submit'
                   className='button'
                   value='Sign Up'
-                  onClick={e => onSubmit(e)}
+                  onClick={(e) => onSubmit(e)}
                 />
               </div>
               <div className='hr'></div>
-              <div className='foot-lnk'>
-                <Link to='/login'>Already Member?</Link>
+              <div
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  margin: '10px auto',
+                }}
+              >
+                or
               </div>
+              <div style={{ margin: '10px auto', width: 'max-content' }}>
+                <FacebookLogin
+                  appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+                  autoLoad={false}
+                  fields='name,email,picture'
+                  callback={facebookLogin}
+                />
+              </div>
+              {/* <div style={{ margin: '10px auto', width: 'max-content' }}>
+                <GoogleLogin
+                  clientId='XXXXXXXXXX'
+                  buttonText='Login with Google'
+                  onSuccess={this.googleResponse}
+                  onFailure={this.googleResponse}
+                />
+              </div> */}
             </div>
           </div>
         </div>
@@ -110,10 +134,10 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
 Signup.propTypes = {
   setAlert: PropTypes.func.isRequired,
   signup: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
 };
-const mapStateToProp = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProp = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProp, { setAlert, signup })(Signup);
