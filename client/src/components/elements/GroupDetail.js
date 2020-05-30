@@ -37,7 +37,10 @@ export const GroupDetail = ({
   }, [allGroups]);
 
   useEffect(() => {
-    if (group && group.locations[0].photo) setLoaded(true);
+    if (group) {
+      if (group.locations.length === 0 || group.locations[0].photo)
+        setLoaded(true);
+    }
   }, [group]);
 
   useEffect(() => {
@@ -102,6 +105,7 @@ export const GroupDetail = ({
           <Button
             onClick={(e) => {
               removeGroupFromAllGroups(group);
+              setModal((m) => ({ ...m, currentGroupId: null }));
             }}
           >
             Delete Map Completely

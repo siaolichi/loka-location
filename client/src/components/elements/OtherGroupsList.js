@@ -20,7 +20,12 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
       setModal((m) => ({ ...m, currentGroupId: group._id }));
     });
   };
-
+  const enterListener = (event) => {
+    console.log(event.key);
+    if (event.key === 'Enter' || event.key === 'NumpadEnter') {
+      document.getElementById('create-group-button').click();
+    }
+  };
   const groupFilter = (string) => {
     setShowGroup(
       other.filter(
@@ -59,6 +64,7 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
           onChange={(e) => {
             setCreateInput(e.target.value);
           }}
+          onKeyDown={enterListener}
           style={{ width: 'calc( 100% - 50px)' }}
         />
         <MaterialIcon
@@ -68,6 +74,7 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
             createGroup({ name: createInput, public: true });
             setCreateInput('');
           }}
+          id='create-group-button'
           className='search-button'
         />
       </div>

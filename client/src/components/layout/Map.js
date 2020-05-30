@@ -12,7 +12,6 @@ const GoogleMap = ({ group }) => {
   const { google } = window;
   let map, service;
   const infowindow = new google.maps.InfoWindow();
-  const groupId = group._id;
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const shareBtn = useRef(null);
@@ -123,11 +122,13 @@ const GoogleMap = ({ group }) => {
             raised
             className='button'
             onClick={() => {
-              copyStringToClipboard(`https://loka-location.com/map/${groupId}`);
+              copyStringToClipboard(
+                `https://loka-location.com/map/${group._id}`
+              );
               alert('Link is copied to your clipboard');
             }}
           >
-            <Link to={`/map/${groupId}`} style={{ color: 'white' }}>
+            <Link to={`/map/${group._id}`} style={{ color: 'white' }}>
               SHARE THIS MAP!!
             </Link>
           </Button>

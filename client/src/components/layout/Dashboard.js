@@ -10,7 +10,7 @@ import Map from './Map';
 import './Dashboard.scss';
 import { receivePublicGroups } from '../../actions/group';
 import CardModal from '../elements/CardModal';
-import { OtherGroupsList } from '../elements/OtherGroupsList';
+import OtherGroupsList from '../elements/OtherGroupsList';
 
 export const Dashboard = ({
   profile: { profile, loading },
