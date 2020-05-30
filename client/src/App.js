@@ -24,21 +24,21 @@ import '@material/react-checkbox/dist/checkbox.css';
 import '@material/react-card/dist/card.css';
 import '@material/react-select/dist/select.css';
 
-function App({ loadUser, isAuthenticated }) {
+function App({ loadUser, isAuthenticated, redirect }) {
   const [openAccount, setOpenAccount] = useState(false);
   useEffect(() => {
-    loadUser();
+    if (!redirect) loadUser();
   }, []);
   useEffect(() => {
     if (isAuthenticated) {
       TweenMax.to('.container', 2, {
         background:
-          'linear-gradient(to bottom, rgb(23, 1, 58) 40%, rgb(212, 104, 216) 100%)'
+          'linear-gradient(to bottom, rgb(23, 1, 58) 40%, rgb(212, 104, 216) 100%)',
       });
     } else {
       TweenMax.to('.container', 2, {
         background:
-          'linear-gradient(to bottom, rgb(251,121,187) 0%, rgb(93,255,250) 100%)'
+          'linear-gradient(to bottom, rgb(251,121,187) 0%, rgb(93,255,250) 100%)',
       });
     }
   }, [isAuthenticated]);
@@ -62,7 +62,8 @@ function App({ loadUser, isAuthenticated }) {
     </div>
   );
 }
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  redirect: state.auth.redirect,
 });
 export default connect(mapStateToProps, { loadUser })(App);

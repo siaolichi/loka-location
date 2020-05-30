@@ -43,7 +43,7 @@ const Login = ({
     e.preventDefault();
     await login({ email, password });
   };
-  if (redirect) return <Redirect to='/' />;
+  if (redirect) return <Spinner />;
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
   }
