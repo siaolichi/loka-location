@@ -39,7 +39,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
   return (
     <div className='fade-in'>
       <div className='login-wrap'>
-        <div className='login-html'>
+        <div className='login-html' style={{ paddingTop: '50px' }}>
           <div className='tab'>Sign Up</div>
           <div className='login-form'>
             <div className='sign-up-htm'>
@@ -98,15 +98,6 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                 />
               </div>
               <div className='hr'></div>
-              <div
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  margin: '10px auto',
-                }}
-              >
-                or
-              </div>
               <div style={{ margin: '10px auto', width: 'max-content' }}>
                 <FacebookLogin
                   appId={process.env.REACT_APP_FACEBOOK_APP_ID}
