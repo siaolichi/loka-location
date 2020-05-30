@@ -37,7 +37,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
   return (
     <div className='fade-in'>
       <div className='login-wrap'>
-        <div className='login-html>
+        <div className='login-html'>
           <div className='tab'>Sign Up</div>
           <div className='login-form'>
             <div className='sign-up-htm'>
@@ -94,6 +94,10 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   value='Sign Up'
                   onClick={(e) => onSubmit(e)}
                 />
+              </div>
+              <div className='hr'></div>
+              <div className='foot-lnk'>
+                <Link to='/login'>Already Member?</Link>
               </div>
             </div>
           </div>
