@@ -43,8 +43,8 @@ const Login = ({
     e.preventDefault();
     await login({ email, password });
   };
-  var pathname = window.location.pathname;
-  console.log(pathname);
+  var url = window.location.href;
+  console.log(url);
   if (redirect) return <Spinner />;
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
@@ -115,7 +115,6 @@ const Login = ({
                   appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                   autoLoad={false}
                   fields='name,email,picture'
-                  onClick={setLoading}
                   callback={(e) => {
                     facebookLogin(e);
                   }}
