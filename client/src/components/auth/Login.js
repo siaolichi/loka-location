@@ -22,6 +22,7 @@ const Login = ({
     password: '',
     check: false,
   });
+  const [toFacebook, setToFacebook] = useState(false);
   useEffect(() => {
     const listener = (event) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
@@ -44,7 +45,7 @@ const Login = ({
     await login({ email, password });
   };
   if (loading) return <Spinner />;
-  if (isAuthenticated) {
+  if (isAuthenticated || toFacebook) {
     return <Redirect to='/dashboard' />;
   }
   return (
@@ -115,6 +116,7 @@ const Login = ({
                   fields='name,email,picture'
                   callback={(e) => {
                     setLoading();
+                    setToFacebook(true);
                     facebookLogin(e);
                   }}
                 />
