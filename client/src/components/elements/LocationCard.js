@@ -6,7 +6,6 @@ import Button from '@material/react-button';
 
 import './LocationCard.scss';
 import { removeLocation, changeLocationDetail } from '../../actions/group';
-import { imageExists } from '../../utils';
 
 const LocationCard = ({
   location,

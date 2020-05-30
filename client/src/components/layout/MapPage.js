@@ -10,7 +10,7 @@ import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
 
 import { receivePublicGroups, changeGroupDetail } from '../../actions/group';
-import { staggerIn, staggerOut } from '../../utils';
+import { staggerIn } from '../../utils';
 
 import './MapPage.scss';
 

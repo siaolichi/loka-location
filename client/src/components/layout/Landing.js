@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TitleAnimation from './TitleAnimation';
-import Dashboard from './Dashboard';
 import './Landing.scss';
 import { Redirect } from 'react-router-dom';
 
