@@ -146,7 +146,7 @@ Login.propTypes = {
 };
 const mapStateToProp = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading,
+  redirect: state.auth.redirect,
 });
 export default connect(mapStateToProp, { login, facebookLogin, setLoading })(
   Login
