@@ -21,7 +21,6 @@ export const OtherGroupsList = ({ createGroup, setModal, other }) => {
     });
   };
   const enterListener = (event) => {
-    console.log(event.key);
     if (event.key === 'Enter' || event.key === 'NumpadEnter') {
       document.getElementById('create-group-button').click();
     }

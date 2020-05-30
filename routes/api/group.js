@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
   try {
     const post = await Group.findById(req.params.id).populate('user', [
       'name',
-      'avatar'
+      'avatar',
     ]);
     if (!post) return res.status(404).json({ msg: 'post not found' });
     res.json(post);
@@ -48,13 +48,9 @@ router.post(
   [
     auth,
     [
-      check('name', 'Text is required')
-        .not()
-        .isEmpty(),
-      check('public', 'Choose public or private')
-        .not()
-        .isEmpty()
-    ]
+      check('name', 'Text is required').not().isEmpty(),
+      check('public', 'Choose public or private').not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const result = validationResult(req);
@@ -63,12 +59,10 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
       const newGroup = new Group({
-        user: user.id,
-        avatar: user.avatar,
+        user: req.user.id,
         name: req.body.name,
-        public: req.body.public
+        public: req.body.public,
       });
       const group = await newGroup.save();
       res.json(group);
@@ -86,7 +80,7 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const group = await Group.findById(req.params.id).populate('user', [
       'name',
-      'avatar'
+      'avatar',
     ]);
     //Check if group exist
     if (!group) return res.status(404).json({ msg: 'group not found' });
@@ -116,16 +110,10 @@ router.post(
   [
     auth,
     [
-      check('name', 'Name is required')
-        .not()
-        .isEmpty(),
-      check('address', 'Address is required')
-        .not()
-        .isEmpty(),
-      check('latLng', 'Address is required')
-        .not()
-        .isEmpty()
-    ]
+      check('name', 'Name is required').not().isEmpty(),
+      check('address', 'Address is required').not().isEmpty(),
+      check('latLng', 'Address is required').not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const result = validationResult(req);
@@ -144,7 +132,7 @@ router.post(
         placeId: req.body.placeId,
         latLng: req.body.latLng,
         description: req.body.description,
-        url: req.body.url
+        url: req.body.url,
       };
       group.locations.unshift(newLocation);
       const newGroup = await group.save();
@@ -164,7 +152,7 @@ router.post('/location/:id/:location_id', auth, async (req, res) => {
     const group = await Group.findById(req.params.id);
 
     const location = group.locations.find(
-      location => location.id == req.params.location_id
+      (location) => location.id == req.params.location_id
     );
     if (!location) return res.status(404).json({ msg: 'Location not found' });
 
@@ -176,7 +164,7 @@ router.post('/location/:id/:location_id', auth, async (req, res) => {
       placeId: location.placeId,
       latLng: location.latLng,
       description: req.body.description,
-      url: location.url
+      url: location.url,
     };
     //Check user
     // if (
@@ -188,7 +176,7 @@ router.post('/location/:id/:location_id', auth, async (req, res) => {
 
     //Get remove index
     const editIndex = group.locations
-      .map(location => location.id.toString())
+      .map((location) => location.id.toString())
       .indexOf(req.params.location_id);
     group.locations[editIndex] = newLocation;
     console.log(newLocation);
@@ -208,7 +196,7 @@ router.delete('/location/:id/:location_id', auth, async (req, res) => {
     const group = await Group.findById(req.params.id);
 
     const location = group.locations.find(
-      location => location.id == req.params.location_id
+      (location) => location.id == req.params.location_id
     );
     console.log(location);
     if (!location) return res.status(404).json({ msg: 'Location not found' });
@@ -223,13 +211,13 @@ router.delete('/location/:id/:location_id', auth, async (req, res) => {
           'User not authorized, ' +
           req.user.id +
           ' : ' +
-          location.user.toString()
+          location.user.toString(),
       });
     }
 
     //Get remove index
     const removeIndex = group.locations
-      .map(location => location.id.toString())
+      .map((location) => location.id.toString())
       .indexOf(req.params.location_id);
     group.locations.splice(removeIndex, 1);
     await group.save();
