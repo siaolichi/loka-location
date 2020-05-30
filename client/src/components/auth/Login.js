@@ -43,6 +43,8 @@ const Login = ({
     e.preventDefault();
     await login({ email, password });
   };
+  var pathname = window.location.pathname;
+  console.log(pathname);
   if (redirect) return <Spinner />;
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
