@@ -27,9 +27,9 @@ import Spinner from './components/layout/Spinner';
 
 function App({ loadUser, isAuthenticated, redirect }) {
   const [openAccount, setOpenAccount] = useState(false);
-  const url = window.location.href;
   useEffect(() => {
-    if (!url.includes('https://loka-location.com/login?code=')) loadUser();
+    if (!window.location.href.includes('https://loka-location.com/login?code='))
+      loadUser();
   }, []);
   useEffect(() => {
     if (isAuthenticated) {
@@ -48,7 +48,9 @@ function App({ loadUser, isAuthenticated, redirect }) {
     <div className='container app' data-test='component-app'>
       {/* <div className="dark-overlay" /> */}
       <Three />
-      {url.includes('https://loka-location.com/login?code=') && <Spinner />}
+      {window.location.href.includes(
+        'https://loka-location.com/login?code='
+      ) && <Spinner />}
       <Navbar setOpenAccount={setOpenAccount} />
       <Alert />
       <ProfileModal openAccount={openAccount} setOpenAccount={setOpenAccount} />
