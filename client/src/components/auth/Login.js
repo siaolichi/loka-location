@@ -37,8 +37,7 @@ const Login = ({ login, loading, isAuthenticated, facebookLogin }) => {
     e.preventDefault();
     await login({ email, password });
   };
-
-  if (loading) return <Spinner />;
+  // if (loading) return <Spinner />;
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
   }
