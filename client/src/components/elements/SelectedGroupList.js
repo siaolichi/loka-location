@@ -19,22 +19,20 @@ const GroupList = ({ modal, setModal }) => {
   }, [modal.other]);
 
   return (
-    <div id='group-list' className='fade-in'>
-      <div className='group-wrapper'>
-        <div className='list-wrapper' ref={selectedRef}>
-          <div className='title'>Ｍy Favorite</div>
-          {modal.selected.map((group, index) => (
-            <button
-              key={index}
-              className='group-content button'
-              onClick={(e) => {
-                hideAll(group._id);
-              }}
-            >
-              {group.name}
-            </button>
-          ))}
-        </div>
+    <div id='selected-group-list' className='fade-in'>
+      <div className='list-wrapper' ref={selectedRef}>
+        <div className='title'>Ｍy Favorite</div>
+        {modal.selected.map((group, index) => (
+          <button
+            key={index}
+            className='group-content button'
+            onClick={(e) => {
+              hideAll(group._id);
+            }}
+          >
+            {group.name}
+          </button>
+        ))}
       </div>
     </div>
   );

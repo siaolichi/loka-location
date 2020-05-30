@@ -57,7 +57,7 @@ export const Dashboard = ({
       <div className='left-section'>{leftSection(modal)}</div>
       <div className='right-section'>
         {modal.currentGroupId ? (
-          <Fragment>
+          <div className='map-section-wrapper'>
             {modal.selected
               .map((el) => el._id)
               .includes(modal.currentGroupId) && (
@@ -85,7 +85,7 @@ export const Dashboard = ({
                 setEditMap={setEditMap}
               />
             )}
-          </Fragment>
+          </div>
         ) : (
           <OtherGroupsList other={modal.other} setModal={setModal} />
         )}

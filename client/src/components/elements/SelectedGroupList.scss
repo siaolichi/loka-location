@@ -1,21 +1,12 @@
-#group-list {
+#selected-group-list {
     width: 100%;
     color: white;
     height: 100%;
-    overflow: hidden;
     position: relative;
+    margin: 0;
+    padding: 0;
     * {
         transition: none;
-    }
-    .group-wrapper{
-        top: 0;
-        left: 0;
-        position: absolute;
-        width: calc(100% + 15px);
-        height: 100%;
-        overflow-y: scroll;
-        margin: 0;
-        padding: 0;
     }
     .list-wrapper{
         width: 350px;
@@ -84,7 +75,6 @@
         font-weight: 100;
     }
     @media screen and(max-width: 870px) {
-        height: calc(100vh - 120px);
         .list-wrapper{
             width: calc(100% - 15px);
         }
