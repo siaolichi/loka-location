@@ -89,8 +89,8 @@ export const login = ({ email, password }) => async (dispatch) => {
     });
   }
 };
-export const setLoading = () => (dispatch) => {
-  dispatch({
+export const setLoading = () => async (dispatch) => {
+  await dispatch({
     type: LOGIN_LOADING,
   });
 };

@@ -43,10 +43,10 @@ const Login = ({
     e.preventDefault();
     await login({ email, password });
   };
+  if (loading) return <Spinner />;
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
   }
-  if (loading) return <Spinner />;
   return (
     <div className='fade-in'>
       <div className='login-wrap'>
