@@ -30,8 +30,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         ...payload,
-        isAuthenticated: true,
-        loading: false,
       };
     case USER_LOADED:
       // console.log('user logged');
