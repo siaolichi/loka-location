@@ -101,7 +101,7 @@ export const facebookLogin = (fbResponse) => async (dispatch) => {
       { accessToken: fbResponse.accessToken },
       config
     );
-    dispatch({
+    await dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
