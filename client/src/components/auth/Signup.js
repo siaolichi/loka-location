@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
-import { signup, facebookLogin } from '../../actions/auth';
+import { signup } from '../../actions/auth';
 import '../../style/Signup.scss';
-import FacebookLogin from 'react-facebook-login';
-import { GoogleLogin } from 'react-google-login';
 
 const Signup = ({ setAlert, signup, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -39,7 +37,7 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
   return (
     <div className='fade-in'>
       <div className='login-wrap'>
-        <div className='login-html' style={{ paddingTop: '50px' }}>
+        <div className='login-html>
           <div className='tab'>Sign Up</div>
           <div className='login-form'>
             <div className='sign-up-htm'>
@@ -97,23 +95,6 @@ const Signup = ({ setAlert, signup, isAuthenticated }) => {
                   onClick={(e) => onSubmit(e)}
                 />
               </div>
-              <div className='hr'></div>
-              <div style={{ margin: '10px auto', width: 'max-content' }}>
-                <FacebookLogin
-                  appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-                  autoLoad={false}
-                  fields='name,email,picture'
-                  callback={facebookLogin}
-                />
-              </div>
-              {/* <div style={{ margin: '10px auto', width: 'max-content' }}>
-                <GoogleLogin
-                  clientId='XXXXXXXXXX'
-                  buttonText='Login with Google'
-                  onSuccess={this.googleResponse}
-                  onFailure={this.googleResponse}
-                />
-              </div> */}
             </div>
           </div>
         </div>
