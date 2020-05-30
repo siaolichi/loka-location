@@ -25,11 +25,16 @@ import '@material/react-card/dist/card.css';
 import '@material/react-select/dist/select.css';
 import Spinner from './components/layout/Spinner';
 
-function App({ loadUser, isAuthenticated, redirect }) {
+function App({ loadUser, isAuthenticated }) {
   const [openAccount, setOpenAccount] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  if (window.location.href.includes('https://loka-location.com/login?code=')) {
+    setRedirect(true);
+  } else {
+    setRedirect(false);
+  }
   useEffect(() => {
-    if (!window.location.href.includes('https://loka-location.com/login?code='))
-      loadUser();
+    if (!redirect) loadUser();
   }, []);
   useEffect(() => {
     if (isAuthenticated) {
@@ -48,9 +53,7 @@ function App({ loadUser, isAuthenticated, redirect }) {
     <div className='container app' data-test='component-app'>
       {/* <div className="dark-overlay" /> */}
       <Three />
-      {window.location.href.includes(
-        'https://loka-location.com/login?code='
-      ) && <Spinner />}
+      {redirect && <Spinner />}
       <Navbar setOpenAccount={setOpenAccount} />
       <Alert />
       <ProfileModal openAccount={openAccount} setOpenAccount={setOpenAccount} />
@@ -69,6 +72,5 @@ function App({ loadUser, isAuthenticated, redirect }) {
 }
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  redirect: state.auth.redirect,
 });
 export default connect(mapStateToProps, { loadUser })(App);
