@@ -26,6 +26,8 @@
         >.left-section{
             width: 100%;
             height: initial;
+            max-height: 60vh;
+            min-height: 100px;
         }
         >.right-section{
             width: 100%;

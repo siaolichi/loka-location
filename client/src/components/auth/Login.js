@@ -5,12 +5,18 @@ import { Redirect } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
 // import { GoogleLogin } from 'react-google-login';
 
-import { login, facebookLogin } from '../../actions/auth';
+import { login, facebookLogin, setLoading } from '../../actions/auth';
 import Spinner from '../layout/Spinner';
 
 /*----- Thank "https://medium.com/@alexanderleon/implement-social-authentication-with-react-restful-api-9b44f4714fa" for the guide ------*/
 
-const Login = ({ login, loading, isAuthenticated, facebookLogin }) => {
+const Login = ({
+  login,
+  setLoading,
+  loading,
+  isAuthenticated,
+  facebookLogin,
+}) => {
   const [LoginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -107,7 +113,10 @@ const Login = ({ login, loading, isAuthenticated, facebookLogin }) => {
                   appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                   autoLoad={false}
                   fields='name,email,picture'
-                  callback={facebookLogin}
+                  callback={(e) => {
+                    setLoading();
+                    facebookLogin(e);
+                  }}
                 />
               </div>
               {/* <div style={{ margin: '10px auto', width: 'max-content' }}>
@@ -133,9 +142,12 @@ Login.propTypes = {
   login: PropTypes.func.isRequired,
   facebookLogin: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  setLoading: PropTypes.func.isRequired,
 };
 const mapStateToProp = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
 });
-export default connect(mapStateToProp, { login, facebookLogin })(Login);
+export default connect(mapStateToProp, { login, facebookLogin, setLoading })(
+  Login
+);

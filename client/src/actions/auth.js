@@ -89,16 +89,18 @@ export const login = ({ email, password }) => async (dispatch) => {
     });
   }
 };
-
+export const setLoading = () => (dispatch) => {
+  dispatch({
+    type: LOGIN_LOADING,
+  });
+};
 export const facebookLogin = (fbResponse) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
-  dispatch({
-    type: LOGIN_LOADING,
-  });
+  dispatch(setLoading());
   try {
     const res = await axios.post(
       '/api/auth/facebook',
