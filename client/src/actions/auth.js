@@ -11,6 +11,7 @@ import {
   LOGIN_FAILED,
   LOGOUT,
   CLEAR_PROFILE,
+  LOGIN_LOADING,
 } from './types';
 
 // Signup
@@ -95,6 +96,9 @@ export const facebookLogin = (fbResponse) => async (dispatch) => {
       'Content-Type': 'application/json',
     },
   };
+  dispatch({
+    type: LOGIN_LOADING,
+  });
   try {
     const res = await axios.post(
       '/api/auth/facebook',

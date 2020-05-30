@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login, facebookLogin } from '../../actions/auth';
 import { Redirect } from 'react-router-dom';
 import FacebookLogin from 'react-facebook-login';
-import { GoogleLogin } from 'react-google-login';
+// import { GoogleLogin } from 'react-google-login';
+
+import { login, facebookLogin } from '../../actions/auth';
+import { Spinner } from '../layout/Spinner';
 
 /*----- Thank "https://medium.com/@alexanderleon/implement-social-authentication-with-react-restful-api-9b44f4714fa" for the guide ------*/
 
-const Login = ({ login, isAuthenticated, facebookLogin }) => {
+const Login = ({ login, loading, isAuthenticated, facebookLogin }) => {
   const [LoginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -38,6 +40,7 @@ const Login = ({ login, isAuthenticated, facebookLogin }) => {
   if (isAuthenticated) {
     return <Redirect to='/dashboard' />;
   }
+  if (loading) return <Spinner />;
   return (
     <div className='fade-in'>
       <div className='login-wrap'>
@@ -133,5 +136,6 @@ Login.propTypes = {
 };
 const mapStateToProp = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading,
 });
 export default connect(mapStateToProp, { login, facebookLogin })(Login);

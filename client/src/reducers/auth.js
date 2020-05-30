@@ -1,4 +1,5 @@
 import {
+  LOGIN_LOADING,
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   USER_LOADED,
@@ -17,6 +18,11 @@ const initialState = {
 export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
+    case LOGIN_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       // console.log('Auth success');
