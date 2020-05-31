@@ -14,7 +14,7 @@ import Three from './components/elements/Three';
 import MapPage from './components/layout/MapPage';
 import ProfileModal from './components/layout/ProfileModal';
 import { connect } from 'react-redux';
-import { loadUser } from './actions/auth';
+import { loadUser, setLoading } from './actions/auth';
 
 import './style/App.scss';
 import '@material/react-button/dist/button.css';
@@ -25,16 +25,16 @@ import '@material/react-card/dist/card.css';
 import '@material/react-select/dist/select.css';
 import Spinner from './components/layout/Spinner';
 
-function App({ loadUser, isAuthenticated }) {
+function App({ loadUser, setLoading, loading, isAuthenticated }) {
   const [openAccount, setOpenAccount] = useState(false);
   const [redirect, setRedirect] = useState(false);
-  if (window.location.href.includes('https://loka-location.com/login?code=')) {
-    if (!redirect) setRedirect(true);
-  } else {
-    if (redirect) setRedirect(false);
-  }
+
   useEffect(() => {
-    if (!redirect) loadUser();
+    if (window.location.href.includes('?code=')) {
+      setLoading();
+    } else {
+      loadUser();
+    }
   }, []);
   useEffect(() => {
     if (isAuthenticated) {
@@ -53,7 +53,7 @@ function App({ loadUser, isAuthenticated }) {
     <div className='container app' data-test='component-app'>
       {/* <div className="dark-overlay" /> */}
       <Three />
-      {redirect && <Spinner />}
+      {loading && <Spinner />}
       <Navbar setOpenAccount={setOpenAccount} />
       <Alert />
       <ProfileModal openAccount={openAccount} setOpenAccount={setOpenAccount} />
@@ -72,5 +72,6 @@ function App({ loadUser, isAuthenticated }) {
 }
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading,
 });
 export default connect(mapStateToProps, { loadUser })(App);
