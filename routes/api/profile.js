@@ -13,7 +13,6 @@ router.get('/me', auth, async (req, res) => {
     const profile = await Profile.findOne({
       user: req.user.id,
     }).populate('user', ['name', 'email', 'avatar']);
-    // ).populate('facebook_user', ['name', 'email', 'avatar']);
     if (!profile) {
       const facebookUser = FacebookUser.findById(req.user.id);
       if (facebookUser) {
@@ -65,7 +64,7 @@ router.post('/', auth, async (req, res) => {
   try {
     let profile = await Profile.findOne({ user: req.user.id });
     //Check provider is there!!
-    profileFields.provider = profileFields.provider || 'user';
+    profileFields.provider = profile.provider || 'user';
     // Update if profile already exist
     if (profile) {
       profile = await Profile.findOneAndUpdate(
