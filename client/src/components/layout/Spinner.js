@@ -19,13 +19,13 @@ const Spinner = (props) => {
     >
       <svg width='64px' height='64px' viewBox='0 0 128 128'>
         <g>
-          <circle cx='16' cy='64' r='16' fill='#ea79bb' fill-opacity='1' />
+          <circle cx='16' cy='64' r='16' fill='#ea79bb' fillOpacity='1' />
           <circle
             cx='16'
             cy='64'
             r='16'
             fill='#f1a6d2'
-            fill-opacity='0.67'
+            fillOpacity='0.67'
             transform='rotate(45,64,64)'
           />
           <circle
@@ -33,7 +33,7 @@ const Spinner = (props) => {
             cy='64'
             r='16'
             fill='#f6c7e2'
-            fill-opacity='0.42'
+            fillOpacity='0.42'
             transform='rotate(90,64,64)'
           />
           <circle
@@ -41,7 +41,7 @@ const Spinner = (props) => {
             cy='64'
             r='16'
             fill='#fbe4f1'
-            fill-opacity='0.2'
+            fillOpacity='0.2'
             transform='rotate(135,64,64)'
           />
           <circle
@@ -49,7 +49,7 @@ const Spinner = (props) => {
             cy='64'
             r='16'
             fill='#fdeff7'
-            fill-opacity='0.12'
+            fillOpacity='0.12'
             transform='rotate(180,64,64)'
           />
           <circle
@@ -57,7 +57,7 @@ const Spinner = (props) => {
             cy='64'
             r='16'
             fill='#fdeff7'
-            fill-opacity='0.12'
+            fillOpacity='0.12'
             transform='rotate(225,64,64)'
           />
           <circle
@@ -65,7 +65,7 @@ const Spinner = (props) => {
             cy='64'
             r='16'
             fill='#fdeff7'
-            fill-opacity='0.12'
+            fillOpacity='0.12'
             transform='rotate(270,64,64)'
           />
           <circle
@@ -73,7 +73,7 @@ const Spinner = (props) => {
             cy='64'
             r='16'
             fill='#fdeff7'
-            fill-opacity='0.12'
+            fillOpacity='0.12'
             transform='rotate(315,64,64)'
           />
           <animateTransform

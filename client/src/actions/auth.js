@@ -123,7 +123,8 @@ export const facebookLogin = (fbResponse) => async (dispatch) => {
   }
 };
 
-export const logout = () => (dispatch) => {
-  dispatch({ type: CLEAR_PROFILE });
-  dispatch({ type: LOGOUT });
+export const logout = () => async (dispatch) => {
+  await dispatch({ type: CLEAR_PROFILE });
+  await dispatch({ type: LOGOUT });
+  window.location.reload();
 };

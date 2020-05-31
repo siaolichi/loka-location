@@ -29,7 +29,7 @@ function App({ loadUser, setLoading, loading, isAuthenticated }) {
   const [openAccount, setOpenAccount] = useState(false);
 
   useEffect(() => {
-    if (window.location.href.includes('?code=')) {
+    if (window.location.href.includes('login?code=')) {
       setLoading();
     } else {
       loadUser();
