@@ -27,7 +27,6 @@ import Spinner from './components/layout/Spinner';
 
 function App({ loadUser, setLoading, loading, isAuthenticated }) {
   const [openAccount, setOpenAccount] = useState(false);
-  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     if (window.location.href.includes('?code=')) {
@@ -74,4 +73,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
 });
-export default connect(mapStateToProps, { loadUser })(App);
+export default connect(mapStateToProps, { loadUser, setLoading })(App);
