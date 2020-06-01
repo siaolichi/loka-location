@@ -3,6 +3,7 @@
     color: white;
     height: 100%;
     position: relative;
+    overflow: hidden;
     margin: 0;
     padding: 0;
     * {
@@ -11,6 +12,9 @@
     .list-wrapper{
         width: 350px;
         position: relative;
+        width: calc(100% + 15px);
+        height: 100%;
+        overflow-y: scroll;
     }
     .title{
         // background: #0000002d;
@@ -74,9 +78,5 @@
         text-align: left;
         font-weight: 100;
     }
-    @media screen and(max-width: 870px) {
-        .list-wrapper{
-            width: calc(100% - 15px);
-        }
-    }
+
 }

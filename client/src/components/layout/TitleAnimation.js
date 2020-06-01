@@ -22,11 +22,11 @@ const TitleAnimation = ({ login }) => {
 
   const onClick = async (e) => {
     e.preventDefault();
-    login({ email: 'testUser@gmail.com', password: '12345678' });
-    // setRedirecet(true);
+    // login({ email: 'testUser@gmail.com', password: '12345678' });
+    setRedirecet(true);
   };
 
-  if (redirecet) return <Redirect to='/signup' />;
+  if (redirecet) return <Redirect to='/login' />;
   return (
     <div className='landing-inner fade-in'>
       <div className='bubble-container' onClick={onClick}>

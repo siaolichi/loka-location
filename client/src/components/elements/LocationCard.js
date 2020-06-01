@@ -13,10 +13,12 @@ const LocationCard = ({
   removeLocation,
   changeLocationDetail,
   profile,
+  onClick,
 }) => {
   const userId = profile ? profile.user._id : null;
   const [locationEdit, setLocationEdit] = useState(false);
   const [formData, setFormData] = useState(location);
+
   useEffect(() => {
     setFormData(location);
   }, [location]);
@@ -48,7 +50,10 @@ const LocationCard = ({
           <textarea
             value={formData.description}
             onChange={(e) => {
-              setFormData({ ...formData, description: e.currentTarget.value });
+              setFormData({
+                ...formData,
+                description: e.currentTarget.value,
+              });
             }}
           />
         </div>
@@ -62,7 +67,10 @@ const LocationCard = ({
       </div>
     </div>
   ) : (
-    <div className='group-content location'>
+    <div
+      className='group-content location location-clickable'
+      onClick={onClick}
+    >
       <div className='left-section'>
         {location.photo && (
           <img

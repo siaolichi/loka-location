@@ -2,16 +2,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@material/react-button';
+import { connect } from 'react-redux';
 
 import { copyStringToClipboard, editInfowindowContent } from '../../utils';
 import InfoWindow from '../elements/InfoWindow';
+import { initMap } from '../../actions/map';
 
 import './Map.scss';
 
-const GoogleMap = ({ group }) => {
+const Map = ({ group, map, infowindow, service, initMap }) => {
   const { google } = window;
-  let map, service;
-  const infowindow = new google.maps.InfoWindow();
   const containerRef = useRef(null);
   const infoWindowRef = useRef(null);
   const shareBtn = useRef(null);
@@ -19,19 +19,17 @@ const GoogleMap = ({ group }) => {
   const [markers] = useState([]);
 
   useEffect(() => {
-    initSetting();
+    initMap(new google.maps.Map(containerRef.current, { zoom: 11 }));
   }, []);
 
   useEffect(() => {
-    if (group.length > 0) initSetting();
-  }, [group]);
+    if (map) initSetting();
+  }, [map]);
 
   const initSetting = () => {
-    map = new google.maps.Map(containerRef.current, { zoom: 11 });
-    service = new window.google.maps.places.PlacesService(map);
     const locations = group.locations;
     new google.maps.LatLngBounds();
-
+    console.log(map, infowindow, service);
     // Put share button at the bottom of the map
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
       shareBtn.current
@@ -137,4 +135,15 @@ const GoogleMap = ({ group }) => {
     </div>
   );
 };
-export default GoogleMap;
+
+const mapStateToProps = (state) => ({
+  map: state.map.map,
+  infowindow: state.map.infowindow,
+  service: state.map.service,
+});
+
+const mapDispatchToProps = {
+  initMap,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

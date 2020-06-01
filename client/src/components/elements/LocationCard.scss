@@ -39,4 +39,11 @@
         max-height: 300px;
         max-width: 300px;
     }
+    &.location-clickable{
+        cursor: pointer;
+        &:hover{
+            background-color: rgba($color: #ffffff, $alpha: 0.2);
+        }
+        transition: all 0.5s;
+    }
 }

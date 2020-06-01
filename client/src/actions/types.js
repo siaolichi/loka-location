@@ -17,3 +17,4 @@ export const REMOVE_GROUP = 'REMOVE_GROUP';
 export const CREATE_LOCATION = 'CREATE_LOCATION';
 export const REMOVE_LOCAITON = 'REMOVE_LOCAITON';
 export const EDIT_GROUP = 'EDIT_GROUP';
+export const ADD_MAP = 'ADD_MAP';

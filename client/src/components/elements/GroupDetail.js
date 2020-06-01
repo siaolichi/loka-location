@@ -72,34 +72,34 @@ export const GroupDetail = ({
 
   return (
     <div id='group-detail' className='fade-in'>
-      <div className='header'>
-        <div className='title'>{group.name}</div>
-        {profile.groups.indexOf(group.name) !== -1 ? (
-          <MaterialIcon
-            icon='favorite'
-            className='icon-button favorite'
-            onClick={() => {
-              onLeaveGroup(group.name);
-            }}
-          />
-        ) : (
-          <MaterialIcon
-            icon='favorite_border'
-            className='icon-button favorite'
-            onClick={() => {
-              onJoinGroup(group.name);
-            }}
-          />
-        )}
-        <MaterialIcon
-          icon='arrow_back'
-          className='icon-button'
-          onClick={() => {
-            onBack();
-          }}
-        />
-      </div>
       <div className='group-wrapper' ref={groupRef}>
+        <div className='header'>
+          <div className='title'>{group.name}</div>
+          {profile.groups.indexOf(group.name) !== -1 ? (
+            <MaterialIcon
+              icon='favorite'
+              className='icon-button favorite'
+              onClick={() => {
+                onLeaveGroup(group.name);
+              }}
+            />
+          ) : (
+            <MaterialIcon
+              icon='favorite_border'
+              className='icon-button favorite'
+              onClick={() => {
+                onJoinGroup(group.name);
+              }}
+            />
+          )}
+          <MaterialIcon
+            icon='arrow_back'
+            className='icon-button'
+            onClick={() => {
+              onBack();
+            }}
+          />
+        </div>
         <LocationList group={group} />
         {profile.user._id === group.user._id && (
           <Button

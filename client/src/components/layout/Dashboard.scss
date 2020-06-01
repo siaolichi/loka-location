@@ -5,7 +5,7 @@
     width: 100%;
     >.left-section{
         width: 400px;
-        min-height: calc(100vh - 130px);
+        height: calc(100vh - 130px);
         position: relative;
     }
     >.right-section{
@@ -13,9 +13,7 @@
         flex-grow: 1;
         min-height: calc(100vh - 130px);
         width: 50%;
-        
         .map-section-wrapper{
-            position: relative;
             width: 100%;
             height: calc(100vh - 130px);
             display: flex;
