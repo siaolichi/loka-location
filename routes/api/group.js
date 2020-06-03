@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 const Group = require('../../models/Group');
 const User = require('../../models/User');
+const FacebookUser = require('../../models/FacebookUser');
 
 //@routes       GET api/group
 //@desc         Get all public group
@@ -122,7 +123,9 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const user =
+        (await User.findById(req.user.id).select('-password')) ||
+        (await FacebookUser.findById(req.user.id));
       const group = await Group.findById(req.params.id);
       const newLocation = {
         user: user.id,

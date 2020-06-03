@@ -89,11 +89,13 @@ export const login = ({ email, password }) => async (dispatch) => {
     });
   }
 };
-export const setLoading = () => async (dispatch) => {
-  await dispatch({
+
+export const setLoading = () => (dispatch) => {
+  dispatch({
     type: LOGIN_LOADING,
   });
 };
+
 export const facebookLogin = (fbResponse) => async (dispatch) => {
   const config = {
     headers: {

@@ -84,7 +84,7 @@ router.post('/facebook', async (req, res) => {
   try {
     axios
       .get(
-        `https://graph.facebook.com/v7.0/me?fields=email,id,first_name,name&access_token=${accessToken}`
+        `https://graph.facebook.com/v7.0/me?fields=email,id,name&access_token=${accessToken}`
       )
       .then(async function (response) {
         // handle success
@@ -120,27 +120,6 @@ router.post('/facebook', async (req, res) => {
         console.error(error);
         res.status(500).send('Server error.');
       });
-
-    // let user = await User.findOne({ email });
-    //   if (!user) {
-    //     res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
-    //   }
-    // //Return json webtoken
-    // const payload = {
-    //   user: {
-    //     id: user.id,
-    //   },
-    // };
-
-    // jwt.sign(
-    //   payload,
-    //   process.env.JWT_SECRET,
-    //   { expiresIn: 3600000 },
-    //   (err, token) => {
-    //     if (err) throw err;
-    //     res.json({ token });
-    //   }
-    // );
   } catch (err) {
     res.status(500).send('Server Error');
   }
