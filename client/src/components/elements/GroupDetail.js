@@ -37,6 +37,7 @@ export const GroupDetail = ({
   }, [allGroups]);
 
   useEffect(() => {
+    console.log(group);
     if (group) {
       if (group.locations.length === 0 || group.locations[0].photo)
         setLoaded(true);

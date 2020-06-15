@@ -125,6 +125,38 @@ export const facebookLogin = (fbResponse) => async (dispatch) => {
   }
 };
 
+export const googleLogin = (googleResponse) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  dispatch(setLoading());
+  try {
+    const res = await axios.post(
+      '/api/auth/google',
+      {
+        accessToken: googleResponse.accessToken,
+        profile: googleResponse.profileObj,
+      },
+      config
+    );
+    await dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    await dispatch(loadUser());
+  } catch (err) {
+    if (err.response && err.response.data.errors) {
+      const errors = err.response.data.errors;
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: LOGIN_FAILED,
+    });
+  }
+};
+
 export const logout = () => async (dispatch) => {
   await dispatch({ type: CLEAR_PROFILE });
   await dispatch({ type: LOGOUT });

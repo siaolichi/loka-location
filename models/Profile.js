@@ -9,7 +9,7 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'user',
-    enum: ['user', 'facebook_user'],
+    enum: ['user', 'facebook_user', 'google_user'],
   },
   website: {
     type: String,

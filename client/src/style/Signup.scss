@@ -122,3 +122,23 @@
         color: #aaa;
     }
 }
+.google-login-button{
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background-color: white;
+    height: 50px;
+    margin: 10px auto;
+}
+.facebook-login-button{
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background-color: #4c69ba;
+    color: white;
+    height: 50px;
+    margin: 10px auto;
+}
+.login-button {
+    width: 100px;
+}

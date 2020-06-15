@@ -6,6 +6,7 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User');
 const FacebookUser = require('../../models/FacebookUser');
+const GoogleUser = require('../../models/GoogleUser');
 const axios = require('axios');
 
 //@routes       GET api/auth
@@ -121,6 +122,47 @@ router.post('/facebook', async (req, res) => {
         res.status(500).send('Server error.');
       });
   } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+//@routes       POST api/auth/facebook
+//@desc         Load user
+//@access       private
+router.post('/google', async (req, res) => {
+  try {
+    const {
+      accessToken,
+      profile: { name, email, googleId },
+    } = req.body;
+    let user = await GoogleUser.findOne({ email });
+    if (!user) {
+      user = new GoogleUser({
+        name,
+        email,
+        google_id: googleId,
+      });
+      await user.save();
+      console.log('register: ' + user);
+    } else {
+      console.log('log in:' + user);
+    }
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: 3600000 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
+  } catch (err) {
+    console.log(err);
     res.status(500).send('Server Error');
   }
 });

@@ -3,8 +3,9 @@ const router = express.Router();
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const FacebookUser = require('../../models/FacebookUser');
-
+const GoogleUser = require('../../models/GoogleUser');
 const auth = require('../../middleware/auth');
+
 //@routes       GET api/profiles/me
 //@desc         Get user's profile
 //@access       private
@@ -14,18 +15,27 @@ router.get('/me', auth, async (req, res) => {
       user: req.user.id,
     }).populate('user', ['name', 'email', 'avatar']);
     if (!profile) {
-      const facebookUser = FacebookUser.findById(req.user.id);
+      const facebookUser = await FacebookUser.findById(req.user.id);
+      const googleUser = await GoogleUser.findById(req.user.id);
       if (facebookUser) {
-        console.log('create facebook profile');
+        console.log('create facebook profile: ');
         const profile = new Profile({
           user: req.user.id,
           provider: 'facebook_user',
         });
         await profile.save();
         return res.json(profile);
+      } else if (googleUser) {
+        const profile = new Profile({
+          user: req.user.id,
+          provider: 'google_user',
+        });
+        console.log('create google user');
+        await profile.save();
+        return res.json(profile);
+      } else {
+        return res.status(400).json({ msg: 'No profile for this user' });
       }
-
-      return res.status(400).json({ msg: 'No profile for this user' });
     }
     console.log(profile);
     return res.json(profile);
@@ -112,7 +122,10 @@ router.get('/user/:user_id', async (req, res) => {
       }).populate('user', ['name', 'avatar'])) ||
       Profile.findOne({
         user: req.params.user_id,
-      }).populate('facebook_user', ['name', 'avatar']);
+      }).populate('facebook_user', ['name', 'avatar']) ||
+      Profile.findOne({
+        user: req.params.user_id,
+      }).populate('google_user', ['name', 'avatar']);
 
     if (!profiles)
       return res.status(400).json({ msg: 'No profile for this user' });
