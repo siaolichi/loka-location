@@ -19,7 +19,7 @@ const Map = ({ group, map, infowindow, service, initMap }) => {
   const [markers] = useState([]);
   useEffect(() => {
     initMap(new google.maps.Map(containerRef.current, { zoom: 11 }));
-  }, []);
+  }, [group]);
 
   useEffect(() => {
     if (map) initSetting();
