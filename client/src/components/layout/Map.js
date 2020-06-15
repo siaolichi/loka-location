@@ -17,7 +17,6 @@ const Map = ({ group, map, infowindow, service, initMap }) => {
   const shareBtn = useRef(null);
 
   const [markers] = useState([]);
-
   useEffect(() => {
     initMap(new google.maps.Map(containerRef.current, { zoom: 11 }));
   }, []);
@@ -29,7 +28,6 @@ const Map = ({ group, map, infowindow, service, initMap }) => {
   const initSetting = () => {
     const locations = group.locations;
     new google.maps.LatLngBounds();
-    console.log(map, infowindow, service);
     // Put share button at the bottom of the map
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(
       shareBtn.current

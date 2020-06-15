@@ -60,7 +60,8 @@ function App({ loadUser, setLoading, loading, isAuthenticated }) {
         <Route exact path='/' component={Landing} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Signup} />
-        <Route path='/map' component={MapPage} />
+        <Route exact path='/map' component={MapPage} />
+        <Route exact path='/map/:group_id' component={MapPage} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
       </Switch>
       <footer>

@@ -123,7 +123,7 @@ const Login = ({ login, isAuthenticated, facebookLogin, googleLogin }) => {
                   >
                     <FontAwesomeIcon icon={faFacebookF} />
                     &nbsp;&nbsp;
-                    <span> Login with Facebook Custom</span>
+                    <span> Login with Facebook</span>
                   </button>
                 )}
               />

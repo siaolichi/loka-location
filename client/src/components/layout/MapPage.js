@@ -1,6 +1,5 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
 import React, { useEffect, useState, useRef } from 'react';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Select, { Option } from '@material/react-select';
@@ -39,7 +38,11 @@ const MapPage = ({
 
   useEffect(() => {
     if (loading === false) {
-      changeGroup(allGroups[0]._id);
+      if (match.params.group_id) {
+        changeGroup(match.params.group_id);
+      } else {
+        changeGroup(allGroups[0]._id);
+      }
     }
   }, [loading]);
 
@@ -85,30 +88,9 @@ const MapPage = ({
         </div>
       </div>
       <div className='right-section'>
-        <Route
-          exact
-          path={match.path}
-          component={({ match }) => {
-            return (
-              <Map
-                group={allGroups.filter((group) => group._id === groupId)[0]}
-                match={match}
-              />
-            );
-          }}
-        />
-        <Route
-          exact
-          path={`${match.path}/:groupId`}
-          component={({ match }) => {
-            changeGroup(match.params.groupId);
-            return (
-              <Map
-                group={allGroups.filter((group) => group._id === groupId)[0]}
-                match={match}
-              />
-            );
-          }}
+        <Map
+          group={allGroups.filter((group) => group._id === groupId)[0]}
+          match={match}
         />
       </div>
     </div>
