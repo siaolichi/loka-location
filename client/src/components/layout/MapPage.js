@@ -1,116 +1,90 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, { useEffect, useState, useRef } from 'react';
-import { connect } from 'react-redux';
+import React, {useEffect, useState, useRef} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Select, { Option } from '@material/react-select';
+import Select, {Option} from '@material/react-select';
 
 import Map from './Map';
 import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
 
-import { receivePublicGroups, changeGroupDetail } from '../../actions/group';
-import { staggerIn } from '../../utils';
+import {receivePublicGroups, changeGroupDetail} from '../../actions/group';
+import {staggerIn, getGroupDetail} from '../../utils';
 
 import './MapPage.scss';
 
-const MapPage = ({
-  match,
-  receivePublicGroups,
-  changeGroupDetail,
-  allGroups,
-  loading,
-  isAuthenticated,
-}) => {
-  const listRef = useRef(null);
-  const [groupId, setGroupId] = useState(null);
+const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, loading, isAuthenticated}) => {
+    const listRef = useRef(null);
+    const [currentGroup, setCurrentGroup] = useState(null);
 
-  useEffect(() => {
-    receivePublicGroups();
-  }, []);
+    useEffect(() => {
+        receivePublicGroups();
+    }, []);
 
-  useEffect(() => {
-    if (listRef.current) {
-      setTimeout(() => {
-        staggerIn(listRef.current.childNodes);
-      }, 100);
-    }
-  }, [groupId]);
+    useEffect(() => {
+        if (allGroups.length > 0) changeGroup(match.params.group_id || allGroups[0]._id);
+    }, [allGroups]);
 
-  useEffect(() => {
-    if (loading === false) {
-      if (match.params.group_id) {
-        changeGroup(match.params.group_id);
-      } else {
-        changeGroup(allGroups[0]._id);
-      }
-    }
-  }, [loading]);
+    useEffect(() => {
+        if (listRef.current && currentGroup) {
+            staggerIn(listRef.current.childNodes);
+        }
+    }, [currentGroup]);
 
-  const changeGroup = async (groupId) => {
-    let group =
-      allGroups.filter((group) => group._id === groupId)[0] || allGroups[0];
-    await changeGroupDetail(group);
-    setGroupId(group._id);
-  };
-  if (
-    groupId &&
-    !allGroups.filter((group) => group._id === groupId)[0].locations[0].photo
-  )
-    return <Spinner />;
-  if (!groupId || !allGroups) return <Spinner />;
+    const changeGroup = async (groupId) => {
+        // console.log(groupId);
+        // await changeGroupDetail(allGroups.filter((group) => group._id === groupId)[0]);
+        const newGroup = await getGroupDetail(allGroups.filter((group) => group._id === groupId)[0] || allGroups[0]);
+        setCurrentGroup(newGroup);
+    };
+    if (!currentGroup || !allGroups) return <Spinner />;
 
-  return (
-    <div id='map-page'>
-      <div className='left-section'>
-        <Select
-          value={groupId}
-          label='Select Groups'
-          className={isAuthenticated ? 'map-selection' : 'map-selection dark'}
-          outlined
-          onChange={(evt) => {
-            changeGroup(evt.target.value);
-          }}
-        >
-          {allGroups.map((group, i) => (
-            <Option key={group._id} value={group._id}>
-              {group.name}
-            </Option>
-          ))}
-        </Select>
-        <div
-          className={isAuthenticated ? 'list-wrapper' : 'list-wrapper dark'}
-          ref={listRef}
-        >
-          <LocationList
-            group={allGroups.filter((group) => group._id === groupId)[0]}
-          />
-          <div></div>
+    return (
+        <div id='map-page'>
+            <div className='left-section'>
+                <Select
+                    value={currentGroup._id}
+                    label='Select Groups'
+                    className={isAuthenticated ? 'map-selection' : 'map-selection dark'}
+                    outlined
+                    onChange={(evt) => {
+                        changeGroup(evt.target.value);
+                    }}
+                >
+                    {allGroups.map((group, i) => (
+                        <Option key={group._id} value={group._id}>
+                            {group.name}
+                        </Option>
+                    ))}
+                </Select>
+                <div className={isAuthenticated ? 'list-wrapper' : 'list-wrapper dark'} ref={listRef}>
+                    <LocationList group={currentGroup} />
+                    <div></div>
+                </div>
+            </div>
+            {
+                <div className='right-section'>
+                    <Map group={currentGroup} match={match} />
+                </div>
+            }
         </div>
-      </div>
-      <div className='right-section'>
-        <Map
-          group={allGroups.filter((group) => group._id === groupId)[0]}
-          match={match}
-        />
-      </div>
-    </div>
-  );
+    );
 };
 
 MapPage.propTypes = {
-  allGroups: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
-  receivePublicGroups: PropTypes.func.isRequired,
-  changeGroupDetail: PropTypes.func.isRequired,
+    allGroups: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    receivePublicGroups: PropTypes.func.isRequired,
+    changeGroupDetail: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  allGroups: state.group.allGroups,
-  loading: state.group.loading,
-  isAuthenticated: state.auth.isAuthenticated,
+    allGroups: state.group.allGroups,
+    loading: state.group.loading,
+    isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {
-  receivePublicGroups,
-  changeGroupDetail,
+    receivePublicGroups,
+    changeGroupDetail,
 })(MapPage);
