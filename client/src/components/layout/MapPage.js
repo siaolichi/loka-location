@@ -9,13 +9,13 @@ import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
 
 import {receivePublicGroups, changeGroupDetail} from '../../actions/group';
-import {staggerIn, getGroupDetail} from '../../utils';
+import {getGroupDetail} from '../../utils';
 
 import './MapPage.scss';
 
 const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, loading, isAuthenticated}) => {
-    const listRef = useRef(null);
     const [currentGroup, setCurrentGroup] = useState(null);
+    const [animIn, setAnimIn] = useState(false);
 
     useEffect(() => {
         receivePublicGroups();
@@ -25,17 +25,19 @@ const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, load
         if (allGroups.length > 0) changeGroup(match.params.group_id || allGroups[0]._id);
     }, [allGroups]);
 
-    useEffect(() => {
-        if (listRef.current && currentGroup) {
-            staggerIn(listRef.current.childNodes);
-        }
-    }, [currentGroup]);
+    // useEffect(() => {
+    //     if (currentGroup && !animIn) {
+    //         setAnimIn(true);
+    //     }
+    // }, [currentGroup]);
 
     const changeGroup = async (groupId) => {
-        // console.log(groupId);
-        // await changeGroupDetail(allGroups.filter((group) => group._id === groupId)[0]);
+        if (animIn) setAnimIn(false);
         const newGroup = await getGroupDetail(allGroups.filter((group) => group._id === groupId)[0] || allGroups[0]);
-        setCurrentGroup(newGroup);
+        setTimeout(async () => {
+            setCurrentGroup(newGroup);
+            setAnimIn(true);
+        }, 1500);
     };
     if (!currentGroup || !allGroups) return <Spinner />;
 
@@ -57,10 +59,8 @@ const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, load
                         </Option>
                     ))}
                 </Select>
-                <div className={isAuthenticated ? 'list-wrapper' : 'list-wrapper dark'} ref={listRef}>
-                    <LocationList group={currentGroup} />
-                    <div></div>
-                </div>
+                <LocationList group={currentGroup} animIn={animIn} isAuthenticated={isAuthenticated} />
+                <div></div>
             </div>
             {
                 <div className='right-section'>

@@ -1,7 +1,6 @@
 .group-content{
     font-weight: 100;
     margin: 10px;
-    margin-right: 25px;
     padding-left: 15px;
     border-bottom: .5px solid rgba(255, 255, 255, 0.5);
     color: white;
@@ -10,6 +9,8 @@
     display: flex;
     flex-wrap: wrap;
     font-weight: 300;
+    margin-right: 100px;
+    opacity: 0;
     * {
         transition: none;
     }

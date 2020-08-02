@@ -32,18 +32,6 @@
         overflow: hidden;
         margin: 10px;
         position: relative;
-        .list-wrapper{
-            
-            overflow-y: scroll;
-            width: calc( 100% + 15px);
-            height: calc(100% - 80px);
-            margin-top: 20px;
-        }
-        .dark{
-            *{
-                color: var(--primary-color) !important;
-            }
-        }
     }
     >.right-section{
         height: calc(100vh - 150px);

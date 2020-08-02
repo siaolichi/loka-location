@@ -6,7 +6,21 @@
     font-size: 12px;
     margin: 10px;
     padding-left: 15px;
+    
     .text{
         margin: 10px;
+        color: 'white';
+    }
+}
+.list-wrapper{
+            
+    overflow-y: scroll;
+    width: calc( 100% + 15px);
+    height: calc(100% - 80px);
+    margin-top: 20px;
+}
+.dark{
+    *{
+        color: var(--primary-color) !important;
     }
 }
