@@ -39,7 +39,7 @@ const LocationList = ({group, map, infowindow, animIn, isAuthenticated}) => {
                 }
             }}
         >
-            <div className={isAuthenticated ? 'list-wrapper' : 'list-wrapper dark'}>
+            <div className={isAuthenticated ? 'location-list-wrapper' : 'location-list-wrapper dark'}>
                 {group.locations &&
                     group.locations.map((location, index) => (
                         <LocationCard
