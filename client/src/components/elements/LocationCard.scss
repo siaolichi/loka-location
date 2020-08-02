@@ -1,50 +1,52 @@
-.location-card > .group-content{
-    font-weight: 100;
-    margin: 10px;
-    padding-left: 15px;
-    border-bottom: .5px solid rgba(255, 255, 255, 0.5);
-    color: white;
-    width: calc(100% - 35px);
-    float: right;
-    display: flex;
-    flex-wrap: wrap;
-    font-weight: 300;
-    margin-right: 100px;
-    opacity: 0;
-    * {
-        transition: none;
-    }
-    &.button{
-        cursor: pointer;
-        // margin-right: '100px';
-    }
-    .right-section{
-        line-height: 1.5rem;
-        vertical-align: top;
-        flex-grow: 1;
-    }
-    .edit-button{
+.location-card {
+    &.group-content{
+        font-weight: 100;
+        margin: 10px;
+        padding-left: 15px;
+        border-bottom: .5px solid rgba(255, 255, 255, 0.5);
         color: white;
-        vertical-align: middle;
+        width: calc(100% - 35px);
         float: right;
-        padding: 10px;
-        cursor: pointer;
-    }
-    .location-title{
-        font-weight: 700;
-    }
-    .location-addr{
-        font-size: 0.8rem;
-    }
-    .location-img{
-        max-height: 300px;
-        max-width: 300px;
-    }
-    &.location-clickable{
-        cursor: pointer;
-        &:hover{
-            background-color: rgba($color: #ffffff, $alpha: 0.2);
+        display: flex;
+        flex-wrap: wrap;
+        font-weight: 300;
+        margin-right: 100px;
+        opacity: 0;
+        * {
+            transition: none;
         }
-        transition: all 0.5s;
+        &.button{
+            cursor: pointer;
+            // margin-right: '100px';
+        }
+        .right-section{
+            line-height: 1.5rem;
+            vertical-align: top;
+            flex-grow: 1;
+        }
+        .edit-button{
+            color: white;
+            vertical-align: middle;
+            float: right;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .location-title{
+            font-weight: 700;
+        }
+        .location-addr{
+            font-size: 0.8rem;
+        }
+        .location-img{
+            max-height: 300px;
+            max-width: 300px;
+        }
+        &.location-clickable{
+            cursor: pointer;
+            &:hover{
+                background-color: rgba($color: #ffffff, $alpha: 0.2);
+            }
+            transition: all 0.5s;
+        }
     }
 }

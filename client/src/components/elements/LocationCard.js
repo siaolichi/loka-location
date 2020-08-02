@@ -60,7 +60,7 @@ const LocationCard = ({location, groupId, removeLocation, changeLocationDetail, 
             </div>
         </div>
     ) : (
-        <div className='group-content location location-clickable' onClick={onClick}>
+        <div className='location-card group-content location-clickable' onClick={onClick}>
             <div className='left-section'>
                 {location.photo && (
                     <img
