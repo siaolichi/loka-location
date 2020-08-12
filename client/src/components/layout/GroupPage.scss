@@ -1,0 +1,87 @@
+#group-page{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    .map-selection{ 
+        width: 100%;
+        margin-top: 8px;
+        background-color: rgba($color: #fff, $alpha: 0.1) !important;
+        border-radius: 10px !important;
+        .mdc-select__native-control{
+            color: var(--mdc-theme-primary) !important;
+        }
+        .mdc-floating-label{
+            color: var(--mdc-theme-primary) !important;
+        }
+    }
+    .map-selection .dark{ 
+        width: 100%;
+        margin-top: 8px;
+        // background-color: rgba($color: #fff, $alpha: 0.) !important;
+        border-radius: 10px !important;
+        .mdc-select__native-control{
+            color: var(--primary-color) !important;
+        }
+        .mdc-floating-label{
+            color: var(--primary-color) !important;
+        }
+    }
+    >.left-section{
+        width: calc(49% - 20px);
+        height: calc(100vh - 150px);
+        overflow: hidden;
+        margin: 10px;
+        position: relative;
+    }
+    >.right-section{
+        height: calc(100vh - 150px);
+        display: flex;
+        flex-direction: column;
+        width: calc(49% - 20px);
+        margin: 0 10px;
+        .map-section-wrapper{
+            width: 100%;
+            height: calc(100vh - 130px);
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    >.select-button-wrapper {
+        display: none;
+    }
+    @media screen and (max-width: 670px) {
+        >.select-button-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            width: 100%;
+            .select-button{
+                flex: 1;
+                background-color: rgba($color: #ffffff, $alpha: 0.2);
+                font-size: 16px;
+                font-weight: regular;
+                margin: 10px;
+                &.selected{
+                    border-bottom: white 5px solid;
+                }
+            }
+        }
+        >.left-section{
+            display: none;
+            &.selected{
+                display: block;
+                width: 100%;
+                height: initial;
+            }
+            
+        }
+        >.right-section{
+            display: none;
+            &.selected{
+                display: block;
+                width: 100%;
+                height: initial;
+            }
+        }
+    }
+}
