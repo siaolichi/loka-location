@@ -1,21 +1,23 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, {useEffect, useState, useRef} from 'react';
-import {connect} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Select, {Option} from '@material/react-select';
+import Select, { Option } from '@material/react-select';
 
 import Map from './Map';
 import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
 
-import {receivePublicGroups, changeGroupDetail} from '../../actions/group';
-import {getGroupDetail} from '../../utils';
+import { receivePublicGroups, changeGroupDetail } from '../../actions/group';
+import { getGroupDetail } from '../../utils';
 
 import './MapPage.scss';
+import { Button } from '@material/react-button';
 
-const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, loading, isAuthenticated}) => {
+const MapPage = ({ match, receivePublicGroups, allGroups, isAuthenticated }) => {
     const [currentGroup, setCurrentGroup] = useState(null);
     const [animIn, setAnimIn] = useState(false);
+    const [show, setShow] = useState('list');
 
     useEffect(() => {
         receivePublicGroups();
@@ -43,7 +45,25 @@ const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, load
 
     return (
         <div id='map-page'>
-            <div className='left-section'>
+            <div className='select-button-wrapper'>
+                <Button
+                    onClick={() => {
+                        setShow('list');
+                    }}
+                    className={show === 'list' ? 'select-button selected' : 'select-button'}
+                >
+                    List
+                </Button>
+                <Button
+                    onClick={() => {
+                        setShow('map');
+                    }}
+                    className={show === 'map' ? 'select-button selected' : 'select-button'}
+                >
+                    Map
+                </Button>
+            </div>
+            <div className={show === 'list' ? 'left-section selected' : 'left-section'}>
                 <Select
                     value={currentGroup._id}
                     label='Select Groups'
@@ -59,11 +79,16 @@ const MapPage = ({match, receivePublicGroups, changeGroupDetail, allGroups, load
                         </Option>
                     ))}
                 </Select>
-                <LocationList group={currentGroup} animIn={animIn} isAuthenticated={isAuthenticated} />
+                <LocationList
+                    group={currentGroup}
+                    animIn={animIn}
+                    isAuthenticated={isAuthenticated}
+                    setShow={setShow}
+                />
                 <div></div>
             </div>
             {
-                <div className='right-section'>
+                <div className={show === 'map' ? 'right-section selected' : 'right-section'}>
                     <Map group={currentGroup} match={match} />
                 </div>
             }

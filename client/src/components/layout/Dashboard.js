@@ -2,105 +2,61 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from '@material/react-button';
-import SelectedGroupList from '../elements/SelectedGroupList';
+
 import Spinner from './Spinner';
-import GroupDetail from '../elements/GroupDetail';
-import Map from './Map';
-import './Dashboard.scss';
+import GroupPage from './GroupPage';
+import MenuPage from './MenuPage';
 import { receivePublicGroups } from '../../actions/group';
-import CardModal from '../elements/CardModal';
-import OtherGroupsList from '../elements/OtherGroupsList';
+import './Dashboard.scss';
 
-export const Dashboard = ({
-  profile: { profile, loading },
-  allGroups,
-  receivePublicGroups,
-}) => {
-  const [modal, setModal] = useState({
-    selected: [],
-    other: [],
-    currentGroupId: null,
-  });
-  const [editMap, setEditMap] = useState(false);
-  useEffect(() => {
-    receivePublicGroups();
-  }, []);
+export const Dashboard = ({ profile: { profile, loading }, allGroups, receivePublicGroups }) => {
+    const [modal, setModal] = useState({
+        selected: [],
+        other: [],
+        currentGroupId: null,
+    });
 
-  useEffect(() => {
-    const updateGroup = () => {
-      const selected = [],
-        other = [];
-      for (let group of allGroups) {
-        let index = profile.groups.indexOf(group.name);
-        if (index > -1) selected.push(group);
-        else other.push(group);
-      }
-      setModal((m) => {
-        return { ...m, selected, other };
-      });
-    };
+    useEffect(() => {
+        receivePublicGroups();
+    }, []);
 
-    if (allGroups.length > 0 && profile) updateGroup();
-  }, [allGroups, profile]);
+    useEffect(() => {
+        const updateGroup = () => {
+            const selected = [],
+                other = [];
+            for (let group of allGroups) {
+                let index = profile.groups.indexOf(group.name);
+                if (index > -1) selected.push(group);
+                else other.push(group);
+            }
+            setModal((m) => {
+                return { ...m, selected, other };
+            });
+        };
 
-  if (!profile || loading) return <Spinner />;
+        if (allGroups.length > 0 && profile) updateGroup();
+    }, [allGroups, profile]);
 
-  const leftSection = (modal) => {
-    if (!modal.currentGroupId) {
-      return <SelectedGroupList modal={modal} setModal={setModal} />;
-    }
-    return <GroupDetail groupId={modal.currentGroupId} setModal={setModal} />;
-  };
-  return (
-    <div id='dashboard'>
-      <div className='left-section'>{leftSection(modal)}</div>
-      <div className='right-section'>
-        {modal.currentGroupId ? (
-          <div className='map-section-wrapper'>
-            {modal.selected
-              .map((el) => el._id)
-              .includes(modal.currentGroupId) && (
-              <div>
-                <Button
-                  outlined
-                  onClick={() => {
-                    setEditMap(true);
-                  }}
-                  style={{ margin: '10px' }}
-                >
-                  Add New Location
-                </Button>
-              </div>
+    if (!profile || loading) return <Spinner />;
+
+    return (
+        <div id='dashboard'>
+            {modal.currentGroupId ? (
+                <GroupPage modal={modal} setModal={setModal} allGroups={allGroups} />
+            ) : (
+                <MenuPage modal={modal} setModal={setModal} />
             )}
-            <Map
-              group={
-                allGroups.filter((el) => el._id === modal.currentGroupId)[0]
-              }
-            />
-            {editMap && (
-              <CardModal
-                groupId={modal.currentGroupId}
-                editMap={editMap}
-                setEditMap={setEditMap}
-              />
-            )}
-          </div>
-        ) : (
-          <OtherGroupsList other={modal.other} setModal={setModal} />
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 Dashboard.propTypes = {
-  profile: PropTypes.object.isRequired,
+    profile: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  profile: state.profile,
-  allGroups: state.group.allGroups,
+    profile: state.profile,
+    allGroups: state.group.allGroups,
 });
 
 const mapDispatchToProps = { receivePublicGroups };

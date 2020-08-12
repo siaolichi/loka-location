@@ -1,12 +1,12 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {Button} from '@material/react-button';
+import { connect } from 'react-redux';
+import { Button } from '@material/react-button';
 import MaterialIcon from '@material/react-material-icon';
-import {getGroupDetail} from '../../utils';
-import {addGroupToProfile, removeGroupToProfile} from '../../actions/profile';
-import {changeGroupDetail, removeGroupFromAllGroups} from '../../actions/group';
+import { getGroupDetail } from '../../utils';
+import { addGroupToProfile, removeGroupToProfile } from '../../actions/profile';
+import { changeGroupDetail, removeGroupFromAllGroups } from '../../actions/group';
 import './GroupDetail.scss';
 import LocationList from './LocationList';
 import Spinner from '../layout/Spinner';
@@ -16,6 +16,7 @@ export const GroupDetail = ({
     groupId,
     profile,
     setModal,
+    setShow,
     addGroupToProfile,
     removeGroupToProfile,
     removeGroupFromAllGroups,
@@ -43,13 +44,13 @@ export const GroupDetail = ({
     }, [loaded]);
 
     if (!groupId) {
-        setModal((m) => ({...m, currentGroupId: null}));
+        setModal((m) => ({ ...m, currentGroupId: null }));
         return '';
     }
     if (!loaded) return <Spinner />;
 
     const onBack = () => {
-        setModal((m) => ({...m, currentGroupId: null}));
+        setModal((m) => ({ ...m, currentGroupId: null }));
         setAnimIn(false);
     };
     const onJoinGroup = (name) => {
@@ -90,12 +91,12 @@ export const GroupDetail = ({
                     }}
                 />
             </div>
-            <LocationList group={group} animIn={animIn} isAuthenticated={true} />
+            <LocationList group={group} animIn={animIn} isAuthenticated={true} setShow={setShow} />
             {profile.user._id === group.user._id && (
                 <Button
                     onClick={(e) => {
                         removeGroupFromAllGroups(group);
-                        setModal((m) => ({...m, currentGroupId: null}));
+                        setModal((m) => ({ ...m, currentGroupId: null }));
                     }}
                 >
                     Delete Map Completely

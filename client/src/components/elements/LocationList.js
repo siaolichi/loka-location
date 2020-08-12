@@ -1,16 +1,17 @@
-import React, {Fragment, useRef} from 'react';
+import React, { useRef } from 'react';
 import Transition from 'react-transition-group/Transition';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import LocationCard from './LocationCard';
 import InfoWindow from '../elements/InfoWindow';
-import {editInfowindowContent, staggerIn, staggerOut} from '../../utils';
+import { editInfowindowContent, staggerIn, staggerOut } from '../../utils';
 
 import './LocationList.scss';
 
-const LocationList = ({group, map, infowindow, animIn, isAuthenticated}) => {
+const LocationList = ({ group, map, infowindow, animIn, isAuthenticated, setShow }) => {
     const infoWindowRef = useRef(null);
     const onCardClick = (location) => {
+        setShow('map');
         const infowindowContent = infoWindowRef.current;
         infowindow.setContent(infowindowContent);
         editInfowindowContent(infowindowContent, location);
