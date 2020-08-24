@@ -140,3 +140,22 @@ export const removeGroupFromAllGroups = (group) => async (dispatch) => {
         });
     }
 };
+
+export const editGroupInfo = (group) => async (dispatch) => {
+    try {
+        const config = {
+            header: {
+                'content-type': 'application/json',
+            },
+        };
+        await axios.post(`/api/group/${group._id}`, group, config);
+        await dispatch(receivePublicGroups());
+        dispatch(setAlert('Group edited', 'success'));
+    } catch (err) {
+        console.log(err);
+        dispatch({
+            type: GROUP_ERROR,
+            payload: {msg: err.response.statusText, status: err.response.status},
+        });
+    }
+};

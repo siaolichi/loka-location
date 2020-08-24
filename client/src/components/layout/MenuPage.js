@@ -33,7 +33,7 @@ export const MenuPage = ({modal, setModal}) => {
                 <SelectedGroupList modal={modal} setModal={setModal} />
             </div>
             <div className={show === 'other' ? 'right-section selected' : 'right-section'}>
-                <OtherGroupsList other={modal.other} setModal={setModal} />
+                <OtherGroupsList setModal={setModal} />
             </div>
         </div>
     );

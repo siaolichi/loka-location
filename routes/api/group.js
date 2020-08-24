@@ -25,11 +25,24 @@ router.get('/', async (req, res) => {
 //@access       public
 router.get('/:id', async (req, res) => {
     try {
-        const post = await Group.findById(req.params.id).populate('user', ['name', 'avatar']);
-        if (!post) return res.status(404).json({msg: 'post not found'});
-        res.json(post);
+        const group = await Group.findById(req.params.id).populate('user', ['name', 'avatar']);
+        if (!group.user.name) {
+            const facebookUser = await FacebookUser.findById(group.user);
+            const googleUser = await GoogleUser.findById(group.user);
+            const user = await User.findById(group.user);
+            if (user) {
+                group.user = user;
+            } else if (facebookUser) {
+                group.user = facebookUser;
+            } else if (googleUser) {
+                group.user = googleUser;
+            }
+        }
+
+        if (!group) return res.status(404).json({msg: 'group not found'});
+        res.json(group);
     } catch (err) {
-        if (err.kind === 'ObjectId') return res.status(404).json({msg: 'post not found'});
+        if (err.kind === 'ObjectId') return res.status(404).json({msg: 'group not found'});
         console.error(err);
         res.status(404).send('Server Error');
     }
@@ -68,6 +81,20 @@ router.post(
     }
 );
 
+//@routes       POST api/group/:id
+//@desc         Edit group infos
+//@access       private
+router.post('/:id', auth, async (req, res) => {
+    try {
+        console.log(req.params.id);
+        const group = await Group.findByIdAndUpdate(req.params.id, req.body);
+        res.json(group);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 //@routes       DELETE api/group/:id
 //@desc         Get group by ID
 //@access       private
@@ -76,7 +103,6 @@ router.delete('/:id', auth, async (req, res) => {
         const group = await Group.findById(req.params.id).populate('user', ['name', 'avatar']);
         //Check if group exist
         if (!group) return res.status(404).json({msg: 'group not found'});
-
         //Check user
         if (group.user.id !== req.user.id) {
             console.log(group.user.id, ' ? ', req.user.id);

@@ -1,35 +1,29 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Button } from '@material/react-button';
+import {connect} from 'react-redux';
 import MaterialIcon from '@material/react-material-icon';
-import { getGroupDetail } from '../../utils';
-import { addGroupToProfile, removeGroupToProfile } from '../../actions/profile';
-import { changeGroupDetail, removeGroupFromAllGroups } from '../../actions/group';
+import {addGroupToProfile, removeGroupToProfile} from '../../actions/profile';
 import './GroupDetail.scss';
 import LocationList from './LocationList';
 import Spinner from '../layout/Spinner';
+import EditGroupModal from './EditGroupModal';
 
 export const GroupDetail = ({
-    allGroups,
-    groupId,
+    group,
+    setGroup,
+    initGroup,
     profile,
-    setModal,
+    clearGroup,
     setShow,
     addGroupToProfile,
     removeGroupToProfile,
-    removeGroupFromAllGroups,
 }) => {
-    const [group, setGroup] = useState(null);
     const [loaded, setLoaded] = useState(false);
     const [animIn, setAnimIn] = useState(false);
+    const [edit, setEdit] = useState(false);
 
     useEffect(() => {
-        const initGroup = async () => {
-            const displayGroup = await getGroupDetail(allGroups.filter((el) => el._id === groupId)[0]);
-            setGroup(displayGroup);
-        };
         initGroup();
     }, []);
 
@@ -43,14 +37,10 @@ export const GroupDetail = ({
         if (!animIn && loaded) setAnimIn(true);
     }, [loaded]);
 
-    if (!groupId) {
-        setModal((m) => ({ ...m, currentGroupId: null }));
-        return '';
-    }
     if (!loaded) return <Spinner />;
 
     const onBack = () => {
-        setModal((m) => ({ ...m, currentGroupId: null }));
+        clearGroup();
         setAnimIn(false);
     };
     const onJoinGroup = (name) => {
@@ -65,7 +55,20 @@ export const GroupDetail = ({
     return (
         <div id='group-detail' className='fade-in'>
             <div className='header'>
-                <div className='title'>{group.name}</div>
+                <div className='title'>
+                    {group.name}
+                    {profile.user._id === group.user._id && (
+                        <MaterialIcon
+                            icon='edit'
+                            className='icon-button edit'
+                            onClick={() => {
+                                setEdit(true);
+                            }}
+                        />
+                    )}
+                    <p>{group.introduction}</p>
+                </div>
+
                 {profile.groups.indexOf(group.name) !== -1 ? (
                     <MaterialIcon
                         icon='favorite'
@@ -92,16 +95,13 @@ export const GroupDetail = ({
                 />
             </div>
             <LocationList group={group} animIn={animIn} isAuthenticated={true} setShow={setShow} />
-            {profile.user._id === group.user._id && (
-                <Button
-                    onClick={(e) => {
-                        removeGroupFromAllGroups(group);
-                        setModal((m) => ({ ...m, currentGroupId: null }));
-                    }}
-                >
-                    Delete Map Completely
-                </Button>
-            )}
+            <EditGroupModal
+                group={group}
+                clearGroup={clearGroup}
+                show={profile.user._id === group.user._id && edit}
+                setShow={setEdit}
+                setGroup={setGroup}
+            />
         </div>
     );
 };
@@ -119,10 +119,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    changeGroupDetail,
     addGroupToProfile,
     removeGroupToProfile,
-    removeGroupFromAllGroups,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupDetail);

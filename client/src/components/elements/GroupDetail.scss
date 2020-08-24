@@ -17,6 +17,14 @@
         width: 100%;
         font-size: 1.2rem;
         margin: 20px 0;
+        padding: 10px;
+        border-bottom: solid var(--mdc-theme-primary) 1px;
+        p{
+            text-transform: none;
+            color: white;
+            font-size: 12px;
+        }
+        
     }
     .icon-button {
         height: 40px;
@@ -34,6 +42,14 @@
             float: right;
             border: none;
             font-size: 2.5rem;
+        }
+        &.edit{
+            vertical-align: middle;
+            line-height: 1.5rem;
+            color: var(--mdc-theme-primary);
+            border: none;
+            font-size: 1.5rem;
+            float: right;
         }
     }
     .group-wrapper{
