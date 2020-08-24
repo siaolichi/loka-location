@@ -67,6 +67,7 @@ export const createGroup = (group) => async (dispatch) => {
                 'content-type': 'application/json',
             },
         };
+        console.log('create group: ', group);
         await axios.post('/api/group', group, config);
         await dispatch(receivePublicGroups());
         dispatch(addGroupToProfile(group.name));
@@ -131,7 +132,7 @@ export const removeGroupFromAllGroups = (group) => async (dispatch) => {
         await axios.delete(`/api/group/${group._id}`, config);
         await dispatch(removeGroupToProfile(group.name));
         await dispatch(receivePublicGroups());
-        dispatch(setAlert('Group deleted', 'success'));
+        dispatch(setAlert('Map deleted', 'success'));
     } catch (err) {
         console.log(err);
         dispatch({
@@ -150,7 +151,7 @@ export const editGroupInfo = (group) => async (dispatch) => {
         };
         await axios.post(`/api/group/${group._id}`, group, config);
         await dispatch(receivePublicGroups());
-        dispatch(setAlert('Group edited', 'success'));
+        dispatch(setAlert('Map saved', 'success'));
     } catch (err) {
         console.log(err);
         dispatch({

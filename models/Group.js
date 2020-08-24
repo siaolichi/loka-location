@@ -19,10 +19,11 @@ const GroupSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
+    city: {
+        type: String,
+    },
     introduction: {
         type: String,
-        required: true,
-        default: '',
     },
     locations: [
         {

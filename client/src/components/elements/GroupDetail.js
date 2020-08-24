@@ -10,6 +10,7 @@ import Spinner from '../layout/Spinner';
 import EditGroupModal from './EditGroupModal';
 
 export const GroupDetail = ({
+    allGroups,
     group,
     setGroup,
     initGroup,
@@ -25,7 +26,7 @@ export const GroupDetail = ({
 
     useEffect(() => {
         initGroup();
-    }, []);
+    }, [allGroups]);
 
     useEffect(() => {
         if (group) {

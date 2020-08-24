@@ -60,8 +60,8 @@ const LocationCard = ({location, groupId, removeLocation, changeLocationDetail, 
             </div>
         </div>
     ) : (
-        <div className='location-card group-content location-clickable' onClick={onClick}>
-            <div className='left-section'>
+        <div className='location-card group-content location-clickable'>
+            <div className='left-section' onClick={onClick}>
                 {location.photo && (
                     <img
                         src={location.photo}
@@ -74,7 +74,9 @@ const LocationCard = ({location, groupId, removeLocation, changeLocationDetail, 
                 )}
             </div>
             <div className='right-section'>
-                <div className='location-title'>{location.name}</div>
+                <div className='location-title' onClick={onClick}>
+                    {location.name}
+                </div>
                 <div className='location-addr'>{location.address}</div>
                 <div className='location-desc'>{location.description}</div>
                 {userId === location.user && (

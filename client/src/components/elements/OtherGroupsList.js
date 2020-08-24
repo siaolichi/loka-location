@@ -1,13 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import MaterialIcon from '@material/react-material-icon';
+import Button from '@material/react-button';
 import {staggerIn, staggerOut} from '../../utils';
 import {createGroup} from '../../actions/group';
 import './OtherGroupsList.scss';
+import EditGroupModal from './EditGroupModal';
 
 export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
     const otherRef = useRef(null);
-    const [createInput, setCreateInput] = useState('');
+    const [showAddModal, setShowAddModal] = useState(false);
     const [showGroup, setShowGroup] = useState(allGroups);
     useEffect(() => {
         setShowGroup(allGroups);
@@ -30,9 +32,17 @@ export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
     };
     return (
         <div id='other-group-list' className='fade-in'>
-            <div className='title'>DISCOVER MORE</div>
-
-            <div className='group-content input-wrapper fade-in' style={{paddingLeft: '10px'}}>
+            <div className='title-wrapper'>
+                <div className='title'>DISCOVER MORE</div>
+                <Button className='button' onClick={() => setShowAddModal(true)}>
+                    <MaterialIcon
+                        icon='add'
+                        style={{marginRight: '5px', verticalAlign: 'middle', lineHeight: '20px', fontSize: '18px'}}
+                    />
+                    Create New Map
+                </Button>
+            </div>
+            <div className='input-wrapper fade-in'>
                 <div className='label' style={{lineHeight: 0}}>
                     Search for maps
                 </div>
@@ -40,34 +50,6 @@ export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
                     onChange={(e) => {
                         groupFilter(e.target.value);
                     }}
-                />
-                {/* <MaterialIcon
-          role='button'
-          icon='search'
-          className='search-button'
-        /> */}
-            </div>
-            <div className='input-wrapper group-content fade-in'>
-                <div className='label' style={{lineHeight: 0}}>
-                    create new map
-                </div>
-                <input
-                    value={createInput}
-                    onChange={(e) => {
-                        setCreateInput(e.target.value);
-                    }}
-                    onKeyDown={enterListener}
-                    style={{width: 'calc( 100% - 50px)'}}
-                />
-                <MaterialIcon
-                    role='button'
-                    icon='done'
-                    onClick={(e) => {
-                        createGroup({name: createInput, public: true});
-                        setCreateInput('');
-                    }}
-                    id='create-group-button'
-                    className='search-button'
                 />
             </div>
             <div className='list-wrapper' ref={otherRef}>
@@ -83,6 +65,7 @@ export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
                     </button>
                 ))}
             </div>
+            <EditGroupModal show={showAddModal} setShow={setShowAddModal} />
         </div>
     );
 };

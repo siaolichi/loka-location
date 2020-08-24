@@ -33,6 +33,10 @@
         text-transform: uppercase;
     }
     .group-content{
+        box-shadow: none;
+        outline: inherit;
+        font: inherit;
+        text-align: left;
         background: #0000002d;
         margin: 10px;
         min-height: 50px;
@@ -42,10 +46,11 @@
         border-radius: 10px;
         border: .5px solid rgba(255, 255, 255, 0.5);
         color: white;
-        width: calc(100% - 35px);
+        width: calc(100% - 50px);
         float: right;
         &.button{
             cursor: pointer;
+            font-weight: 100;
             // margin-right: '100px';
         }
     }
@@ -66,17 +71,6 @@
             margin: none;
             cursor: pointer;
         }
-    }
-    button{
-        margin: none;
-        background: none;
-        border: none;
-        box-shadow: none;
-        width: calc(100% - 20px);
-        outline: inherit;
-        font: inherit;
-        text-align: left;
-        font-weight: 100;
     }
 
 }

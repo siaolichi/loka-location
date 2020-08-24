@@ -69,8 +69,7 @@ router.post(
         try {
             const newGroup = new Group({
                 user: req.user.id,
-                name: req.body.name,
-                public: req.body.public,
+                ...req.body,
             });
             const group = await newGroup.save();
             res.json(group);

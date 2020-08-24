@@ -6,32 +6,48 @@
     * {
         transition: none;
     }
-    .title{
-        // background: #0000002d;
-        margin: 10px;
-        min-height: 50px;
-        vertical-align: top;
-        line-height: 50px;
-        padding-left: 20px;
-        border-radius: 10px;
-        color: var(--mdc-theme-primary);
-        font-size: 1.2rem;
-        font-weight: bold;
-        // border: .5px solid var(--mdc-theme-primary);
-        float: right;
-        width: calc(100% - 35px);
-        text-transform: uppercase;
+    
+    .title-wrapper{
+        display:flex;
+        flex-direction: row;
+        width: calc(100% - 40px);
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px;
+        .button{
+            // border: 0.5px solid var(--mdc-theme-primary);
+            height: 40px;
+            width: 180px;
+            font-size: 12px;
+            padding: 0;
+            line-height: 20px;
+            vertical-align: middle;
+            font-weight: 600;
+        }
+        .title{
+            min-height: 50px;
+            vertical-align: top;
+            line-height: 50px;
+            border-radius: 10px;
+            color: var(--mdc-theme-primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
     }
     .list-wrapper{
         display: flex;
         float: right;
-        width: 100%;
         // justify-content: space-between;
         align-items: flex-start;
         flex-wrap: wrap;
         align-items: stretch;
     }
     .group-content{
+        box-shadow: none;
+        outline: inherit;
+        font: inherit;
+        text-align: left;
         background: #0000002d;
         margin: 10px;
         min-height: 50px;
@@ -44,6 +60,7 @@
         float: right;
         &.button{
             cursor: pointer;
+            font-weight: 100;
             // margin-right: '100px';
         }
     }
@@ -51,17 +68,19 @@
         color: white;
         vertical-align: middle;
         float: right;
-        padding: 10px;
+        // padding: 10px;
         cursor: pointer;
     }
     .input-wrapper {
-        width: calc(100% - 55px);
-        float: left;
+        width: calc(100% - 40px);
+        margin: 10px;
+        margin-right: 25px;
+        min-height: 50px;
+        vertical-align: top;
         border: none;
         border-bottom: solid 1px white;
         border-radius: 0;
         background:linear-gradient(to right,  rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0) 100%);
-        margin-right: 25px;
     }
     input{
         background: none;
@@ -71,17 +90,7 @@
         height: 40px;
         margin: 0;
     }
-    button{
-        margin: none;
-        background: none;
-        border: none;
-        box-shadow: none;
-        width: calc(100% - 20px);
-        outline: inherit;
-        font: inherit;
-        text-align: left;
-        font-weight: 100;
-    }
+    
     @media screen and (max-width: 960px) {
         .button{
             width: 100%;
