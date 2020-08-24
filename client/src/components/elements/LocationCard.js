@@ -24,7 +24,7 @@ const LocationCard = ({location, groupId, removeLocation, changeLocationDetail, 
         setFormData(location);
     };
     return locationEdit ? (
-        <div className='location-card group-content location'>
+        <div className='location-card group-content location fade-in'>
             <div className='left-section'></div>
             <div className='right-section'>
                 <label>name</label>
