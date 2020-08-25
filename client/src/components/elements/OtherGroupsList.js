@@ -22,11 +22,6 @@ export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
             setModal((m) => ({...m, currentGroupId: group._id}));
         });
     };
-    const enterListener = (event) => {
-        if (event.key === 'Enter' || event.key === 'NumpadEnter') {
-            document.getElementById('create-group-button').click();
-        }
-    };
     const groupFilter = (string) => {
         setShowGroup(allGroups.filter((el) => el.name.toLowerCase().indexOf(string.toLowerCase()) !== -1));
     };

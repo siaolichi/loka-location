@@ -1,20 +1,21 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import Select, { Option } from '@material/react-select';
+import Select, {Option} from '@material/react-select';
+import axios from 'axios';
 
 import Map from './Map';
 import LocationList from '../elements/LocationList';
 import Spinner from './Spinner';
 
-import { receivePublicGroups, changeGroupDetail } from '../../actions/group';
-import { getGroupDetail } from '../../utils';
+import {receivePublicGroups, changeGroupDetail} from '../../actions/group';
+import {getGroupDetail} from '../../utils';
 
 import './MapPage.scss';
-import { Button } from '@material/react-button';
+import {Button} from '@material/react-button';
 
-const MapPage = ({ match, receivePublicGroups, allGroups, isAuthenticated }) => {
+const MapPage = ({match, receivePublicGroups, allGroups, loading, isAuthenticated}) => {
     const [currentGroup, setCurrentGroup] = useState(null);
     const [animIn, setAnimIn] = useState(false);
     const [show, setShow] = useState('list');
@@ -22,24 +23,16 @@ const MapPage = ({ match, receivePublicGroups, allGroups, isAuthenticated }) => 
     useEffect(() => {
         receivePublicGroups();
     }, []);
-
     useEffect(() => {
-        if (allGroups.length > 0) changeGroup(match.params.group_id || allGroups[0]._id);
-    }, [allGroups]);
-
-    // useEffect(() => {
-    //     if (currentGroup && !animIn) {
-    //         setAnimIn(true);
-    //     }
-    // }, [currentGroup]);
+        if (!loading) changeGroup(match.params.group_id || allGroups[0]._id);
+    }, [loading]);
 
     const changeGroup = async (groupId) => {
-        if (animIn) setAnimIn(false);
-        const newGroup = await getGroupDetail(allGroups.filter((group) => group._id === groupId)[0] || allGroups[0]);
-        setTimeout(async () => {
-            setCurrentGroup(newGroup);
-            setAnimIn(true);
-        }, 1500);
+        setAnimIn(false);
+        setCurrentGroup(null);
+        const newGroup = await getGroupDetail(allGroups.filter((group) => group._id === groupId)[0]);
+        setCurrentGroup(newGroup);
+        setAnimIn(true);
     };
     if (!currentGroup || !allGroups) return <Spinner />;
 
@@ -82,6 +75,7 @@ const MapPage = ({ match, receivePublicGroups, allGroups, isAuthenticated }) => 
                 <LocationList
                     group={currentGroup}
                     animIn={animIn}
+                    setAnimIn={setAnimIn}
                     isAuthenticated={isAuthenticated}
                     setShow={setShow}
                 />

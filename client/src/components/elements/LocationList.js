@@ -4,11 +4,11 @@ import {connect} from 'react-redux';
 
 import LocationCard from './LocationCard';
 import InfoWindow from '../elements/InfoWindow';
-import {editInfowindowContent, staggerIn, staggerOut} from '../../utils';
+import {editInfowindowContent, fadeIn} from '../../utils';
 
 import './LocationList.scss';
 
-const LocationList = ({group, map, infowindow, animIn, isAuthenticated, setShow}) => {
+const LocationList = ({group, map, infowindow, animIn, isAuthenticated, setShow, setAnimIn}) => {
     const infoWindowRef = useRef(null);
     const onCardClick = (location) => {
         setShow('map');
@@ -31,12 +31,10 @@ const LocationList = ({group, map, infowindow, animIn, isAuthenticated, setShow}
         <Transition
             in={animIn}
             mountOnEnter={true}
-            unmountOnExit={true}
+            unmountOnExit={false}
             addEndListener={(n, done) => {
-                if (animIn) {
-                    staggerIn(n.childNodes);
-                } else {
-                    staggerOut(n.childNodes);
+                if (animIn === true) {
+                    fadeIn(n.childNodes);
                 }
             }}
         >

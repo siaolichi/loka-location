@@ -7,15 +7,6 @@ import {getGroupDetail} from '../utils';
 export const receivePublicGroups = (id) => async (dispatch) => {
     try {
         const res = await axios.get('/api/group');
-        // if (id)
-        //     res.data = await res.data.map(async (el) => {
-        //         if (el._id === id) {
-        //             return await getGroupDetail(el);
-        //         } else {
-        //             return el;
-        //         }
-        //     });
-        // else res.data[0] = await getGroupDetail(res.data[0]);
         await dispatch({
             type: GET_GROUPS,
             payload: res.data,
