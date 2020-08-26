@@ -57,19 +57,17 @@ export const GroupPage = ({modal, setModal}) => {
             </div>
             <div className={show === 'map' ? 'right-section selected' : 'right-section'}>
                 <div className='map-section-wrapper'>
-                    {modal.selected.map((el) => el._id).includes(modal.currentGroupId) && (
-                        <div>
-                            <Button
-                                outlined
-                                onClick={() => {
-                                    setEditMap(true);
-                                }}
-                                style={{margin: '10px'}}
-                            >
-                                Add New Location
-                            </Button>
-                        </div>
-                    )}
+                    <div>
+                        <Button
+                            outlined
+                            onClick={() => {
+                                setEditMap(true);
+                            }}
+                            style={{margin: '10px'}}
+                        >
+                            Add New Location
+                        </Button>
+                    </div>
                     {group && <Map group={group} />}
                     {editMap && (
                         <CardModal
