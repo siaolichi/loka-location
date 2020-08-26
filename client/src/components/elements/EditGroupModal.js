@@ -100,7 +100,7 @@ const EditGroupModal = ({
                     <Input value={city.input} onChange={onCityInput} />
                 </TextField>
                 {city.show && (
-                    <Select outlined label='Select One' onChange={onSelectCity} value={editGroup.city}>
+                    <Select outlined label='Select One City' onChange={onSelectCity} value={editGroup.city}>
                         <Option key='default' vlaue='default'></Option>
                         {city.list.map((option, index) => {
                             console.log(option);

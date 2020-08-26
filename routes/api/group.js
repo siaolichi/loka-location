@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const group = await Group.findById(req.params.id).populate('user', ['name', 'avatar']);
-        if (!group.user.name) {
+        if (!group.user && !group.user.name) {
             const facebookUser = await FacebookUser.findById(group.user);
             const googleUser = await GoogleUser.findById(group.user);
             const user = await User.findById(group.user);
