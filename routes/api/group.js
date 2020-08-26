@@ -86,9 +86,9 @@ router.post(
             if (user) {
                 req.user.provider = 'user';
             } else if (facebookUser) {
-                req.user = 'facebook_user';
+                req.user.provider = 'facebook_user';
             } else if (googleUser) {
-                req.user = 'google_user';
+                req.user.provider = 'google_user';
             }
         } catch (error) {
             console.log('Can not find group id');
