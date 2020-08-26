@@ -10,21 +10,49 @@ import EditGroupModal from './EditGroupModal';
 export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
     const otherRef = useRef(null);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [showGroup, setShowGroup] = useState(allGroups);
+    const [groupList, setGroupList] = useState([]);
+    const sortByCities = (groups) => {
+        let sortedGroup = [];
+        let general = {city: 'general', list: []};
+        const cities = groups.map((item) => item.city).filter((value, index, self) => self.indexOf(value) === index);
+        for (let city of cities) {
+            if (city) {
+                const selected = groups.filter((item) => item.city === city);
+                sortedGroup.push({city: city, list: selected});
+            } else {
+                const selected = groups.filter((item) => !item.city);
+                general.list = selected;
+            }
+        }
+        if (general.list.length > 0) sortedGroup.push(general);
+        setGroupList(sortedGroup);
+    };
     useEffect(() => {
-        setShowGroup(allGroups);
+        sortByCities(allGroups);
     }, [allGroups]);
-    useEffect(() => {
-        if (showGroup.length > 0) staggerIn(otherRef.current.childNodes);
-    }, [showGroup]);
     const hideAll = (group) => {
         staggerOut([...otherRef.current.childNodes], () => {
             setModal((m) => ({...m, currentGroupId: group._id}));
         });
     };
     const groupFilter = (string) => {
-        setShowGroup(allGroups.filter((el) => el.name.toLowerCase().indexOf(string.toLowerCase()) !== -1));
+        const filterGroup = allGroups.filter((el) => el.name.toLowerCase().indexOf(string.toLowerCase()) !== -1);
+        sortByCities(filterGroup);
     };
+
+    const listComponent = (list) =>
+        list.map((group, index) => (
+            <button
+                key={index}
+                className='group-content button'
+                onClick={(e) => {
+                    hideAll(group);
+                }}
+            >
+                <div className='group-title'>{group.name}</div>
+                <p className='group-intro'>{group.introduction}</p>
+            </button>
+        ));
     return (
         <div id='other-group-list' className='fade-in'>
             <div className='title-wrapper'>
@@ -48,16 +76,15 @@ export const OtherGroupsList = ({createGroup, setModal, allGroups}) => {
                 />
             </div>
             <div className='list-wrapper' ref={otherRef}>
-                {showGroup.map((group, index) => (
-                    <button
-                        key={index}
-                        className='group-content button'
-                        onClick={(e) => {
-                            hideAll(group);
+                {groupList.map(({city, list}, index) => (
+                    <div
+                        style={{
+                            width: '100%',
                         }}
                     >
-                        {group.name}
-                    </button>
+                        <div className='city-title'>{city}</div>
+                        {listComponent(list)}
+                    </div>
                 ))}
             </div>
             <EditGroupModal show={showAddModal} setShow={setShowAddModal} />

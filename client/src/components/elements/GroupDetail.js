@@ -67,6 +67,7 @@ export const GroupDetail = ({
                             }}
                         />
                     )}
+                    <p style={{color: '#96ffe6'}}>{group.city}</p>
                     <p>{group.introduction}</p>
                 </div>
 

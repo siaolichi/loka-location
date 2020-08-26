@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Select, {Option} from '@material/react-select';
-import axios from 'axios';
 
 import Map from './Map';
 import LocationList from '../elements/LocationList';

@@ -3,9 +3,18 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import TextField, {Input} from '@material/react-text-field';
 import {Button} from '@material/react-button';
+import Select, {Option} from '@material/react-select';
 // import Checkbox from '@material/react-checkbox';
 import Dialog, {DialogContent, DialogFooter, DialogButton} from '@material/react-dialog';
 import {createGroup, editGroupInfo, removeGroupFromAllGroups} from '../../actions/group';
+import citiesJson from '../../utils/world-cities.json';
+import './EditGroupModal.scss';
+const cities = [];
+console.log(citiesJson);
+for (let city of citiesJson) {
+    cities.push(city);
+}
+
 const EditGroupModal = ({
     show,
     setShow,
@@ -23,6 +32,36 @@ const EditGroupModal = ({
         public: true,
         ...group,
     });
+    const [city, setCity] = useState({
+        input: '',
+        list: [],
+        show: false,
+    });
+    const onCityInput = (e) => {
+        const input = e.target.value;
+        if (input.length > 3) {
+            setCity({
+                input,
+                list: cities.filter((city) => city.name.toLowerCase().includes(input.toLowerCase())),
+                show: true,
+            });
+            console.log(city.list);
+        } else {
+            setCity({
+                input,
+                list: [],
+                show: false,
+            });
+        }
+    };
+    const onSelectCity = (e) => {
+        setCity({
+            ...city,
+            input: e.target.value,
+            show: false,
+        });
+        setEditGroup({...editGroup, city: e.target.value});
+    };
     return (
         <Dialog
             id='edit-group-modal'
@@ -57,6 +96,22 @@ const EditGroupModal = ({
                         onChange={(e) => setEditGroup({...editGroup, introduction: e.currentTarget.value})}
                     />
                 </TextField>
+                <TextField label='City' outlined className='city-input'>
+                    <Input value={city.input} onChange={onCityInput} />
+                </TextField>
+                {city.show && (
+                    <Select outlined label='Select One' onChange={onSelectCity} value={editGroup.city}>
+                        <Option key='default' vlaue='default'></Option>
+                        {city.list.map((option, index) => {
+                            console.log(option);
+                            return (
+                                <Option key={option.geonameid} vlaue={option.name}>
+                                    {`${option.name}, ${option.country}`}
+                                </Option>
+                            );
+                        })}
+                    </Select>
+                )}
                 {/* <Checkbox
                     nativeControlId='public-checkbox'
                     checked={editGroup.public}
@@ -64,6 +119,7 @@ const EditGroupModal = ({
                 />
                 <label htmlFor='public-checkbox'>Public</label>
                 <br /> */}
+                <br />
                 {group && (
                     <Button
                         onClick={(e) => {
