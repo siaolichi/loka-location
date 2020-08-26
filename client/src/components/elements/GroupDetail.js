@@ -58,7 +58,7 @@ export const GroupDetail = ({
             <div className='header'>
                 <div className='title'>
                     {group.name}
-                    {profile.user._id === group.user._id && (
+                    {group.user && profile.user._id === group.user._id && (
                         <MaterialIcon
                             icon='edit'
                             className='icon-button edit'
@@ -100,7 +100,7 @@ export const GroupDetail = ({
             <EditGroupModal
                 group={group}
                 clearGroup={clearGroup}
-                show={profile.user._id === group.user._id && edit}
+                show={group.user && profile.user._id === group.user._id && edit}
                 setShow={setEdit}
                 setGroup={setGroup}
             />

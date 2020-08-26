@@ -51,7 +51,7 @@ const LocationList = ({group, map, infowindow, animIn, isAuthenticated, setShow,
                         />
                     ))}
                 <div className='location-footer'>
-                    <div className='text'>this map is created by {group.user.name}</div>
+                    {group.user && <div className='text'>this map is created by {group.user.name}</div>}
                     <br />
                     <br />
                 </div>

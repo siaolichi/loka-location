@@ -45,7 +45,6 @@ const EditGroupModal = ({
                 list: cities.filter((city) => city.name.toLowerCase().includes(input.toLowerCase())),
                 show: true,
             });
-            console.log(city.list);
         } else {
             setCity({
                 input,
