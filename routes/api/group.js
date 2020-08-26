@@ -79,7 +79,20 @@ router.post(
         if (!result.isEmpty()) {
             return res.status(400).json({error: result.array()});
         }
-
+        try {
+            const facebookUser = await FacebookUser.findById(req.user);
+            const googleUser = await GoogleUser.findById(req.user);
+            const user = await User.findById(req.user);
+            if (user) {
+                req.user.provider = 'user';
+            } else if (facebookUser) {
+                req.user = 'facebook_user';
+            } else if (googleUser) {
+                req.user = 'google_user';
+            }
+        } catch (error) {
+            console.log('Can not find group id');
+        }
         try {
             const newGroup = new Group({
                 user: req.user.id,
