@@ -80,9 +80,9 @@ router.post(
             return res.status(400).json({error: result.array()});
         }
         try {
-            const facebookUser = await FacebookUser.findById(req.user);
-            const googleUser = await GoogleUser.findById(req.user);
-            const user = await User.findById(req.user);
+            const facebookUser = await FacebookUser.findById(req.user.id);
+            const googleUser = await GoogleUser.findById(req.user.id);
+            const user = await User.findById(req.user.id);
             if (user) {
                 req.user.provider = 'user';
             } else if (facebookUser) {
@@ -90,7 +90,9 @@ router.post(
             } else if (googleUser) {
                 req.user.provider = 'google_user';
             }
+            console.log('Find Provider: ', req.user, user, facebookUser, googleUser);
         } catch (error) {
+            console.log(error);
             console.log('Can not find group id');
         }
         try {
