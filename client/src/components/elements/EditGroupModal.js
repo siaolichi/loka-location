@@ -10,7 +10,6 @@ import {createGroup, editGroupInfo, removeGroupFromAllGroups} from '../../action
 import citiesJson from '../../utils/world-cities.json';
 import './EditGroupModal.scss';
 const cities = [];
-console.log(citiesJson);
 for (let city of citiesJson) {
     cities.push(city);
 }
