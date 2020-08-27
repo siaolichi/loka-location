@@ -74,13 +74,15 @@ const LocationCard = ({location, groupId, removeLocation, changeLocationDetail, 
                 )}
             </div>
             <div className='right-section'>
-                <div className='location-title' onClick={onClick}>
-                    {location.name}
+                <div>
+                    <div className='location-title' onClick={onClick}>
+                        {location.name}
+                    </div>
+                    <div className='location-addr'>{location.address}</div>
+                    <div className='location-desc'>{location.description}</div>
                 </div>
-                <div className='location-addr'>{location.address}</div>
-                <div className='location-desc'>{location.description}</div>
                 {userId === location.user && (
-                    <div>
+                    <div style={{verticalAlign: 'bottom'}}>
                         <MaterialIcon
                             icon='delete'
                             className='edit-button'

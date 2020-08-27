@@ -33,26 +33,30 @@
         text-transform: uppercase;
     }
     .group-content{
+        transition: all ease-in 0.25s;
         box-shadow: none;
         border: none;
         outline: inherit;
         font: inherit;
         text-align: left;
         background: transparent;
-        margin: 10px;
-        min-height: 30px;
+        padding: 10px;
+        min-height: 50px;
         vertical-align: top;
-        line-height: 50px;
         color: white;
         width: calc(100% - 50px);
         float: right;
         text-transform: uppercase;
         line-height: 1;
         font-size: 1rem;
+        border-radius: 10px;
         &.button{
             cursor: pointer;
             font-weight: bold;
             // margin-right: '100px';
+        }
+        &:hover{
+            background:rgba(255,255,255, 0.1);
         }
     }
     .icon-button {
