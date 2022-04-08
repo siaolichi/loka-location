@@ -4,11 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "install-all": "yarn install && cd client && yarn install && cd ..",
+    "install-all": "npm install && cd client && npm install && cd ..",
     "start": "node server.js",
-    "client": "cd client && yarn start",
+    "client": "npm start --prefix client",
     "server": "nodemon server",
-    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
