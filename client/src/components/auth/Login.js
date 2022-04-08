@@ -96,7 +96,7 @@ const Login = ({ login, isAuthenticated, facebookLogin, googleLogin }) => {
 							>
 								or
 							</div>
-
+							{/* 
 							<FacebookLogin
 								appId={process.env.REACT_APP_FACEBOOK_APP_ID}
 								autoLoad={false}
@@ -115,7 +115,7 @@ const Login = ({ login, isAuthenticated, facebookLogin, googleLogin }) => {
 										<span> Login with Facebook</span>
 									</button>
 								)}
-							/>
+							/> */}
 							<GoogleLogin
 								clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
 								onSuccess={googleLogin}
