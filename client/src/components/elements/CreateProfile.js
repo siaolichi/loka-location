@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import TextField, { Input } from '@material/react-text-field';
-import Button from '@material/react-button';
+import TextField, { Input } from "@material/react-text-field";
+import Button from "@material/react-button";
 
-import { createProfile } from '../../actions/profile';
-import './CreateProfile.scss';
-import '@material/react-text-field/dist/text-field.css';
-import '@material/react-button/dist/button.css';
+import { createProfile } from "../../actions/profile";
+import "./CreateProfile.scss";
+import "@material/react-text-field/dist/text-field.css";
+import "@material/react-button/dist/button.css";
 
 const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
   const [formData, setFormData] = useState(
@@ -16,12 +16,12 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
       ? {
           name: initProfile.user.name,
           email: initProfile.user.email,
-          bio: '',
-          website: '',
-          location: '',
-          facebook: '',
-          twitter: '',
-          instagram: ''
+          bio: "",
+          website: "",
+          location: "",
+          facebook: "",
+          twitter: "",
+          instagram: "",
         }
       : initProfile.social
       ? {
@@ -32,17 +32,17 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
           location: initProfile.location,
           facebook: initProfile.social.facebook,
           twitter: initProfile.social.twitter,
-          instagram: initProfile.social.instagram
+          instagram: initProfile.social.instagram,
         }
       : {
           name: initProfile.user.name,
           email: initProfile.user.email,
           bio: initProfile.bio,
           website: initProfile.website,
-          location: initProfile.location
+          location: initProfile.location,
         }
   );
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     console.log(formData);
     await createProfile(formData, initProfile ? true : false);
     setEditProfile(false);
@@ -54,7 +54,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
           <Input
             disabled
             value={formData.name}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, name: e.currentTarget.value });
             }}
           />
@@ -63,7 +63,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
           <Input
             disabled
             value={formData.email}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, email: e.currentTarget.value });
             }}
           />
@@ -71,7 +71,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
         <TextField label='Website' outlined className='profile-form'>
           <Input
             value={formData.website}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, website: e.currentTarget.value });
             }}
           />
@@ -79,7 +79,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
         <TextField label='Address' outlined className='profile-form'>
           <Input
             value={formData.location}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, location: e.currentTarget.value });
             }}
           />
@@ -109,26 +109,21 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
           />
         </TextField>
          */}
-        <TextField
-          textarea
-          label='Introduction'
-          className='profile-form-textarea'
-          outlined
-        >
+        <TextField textarea label='Introduction' className='profile-form-textarea' outlined>
           <Input
             value={formData.bio}
-            onChange={e => {
+            onChange={(e) => {
               setFormData({ ...formData, bio: e.currentTarget.value });
             }}
           />
         </TextField>
-        <Button outlined style={{ margin: '20px' }} onClick={onSubmit}>
+        <Button outlined style={{ margin: "20px" }} onClick={onSubmit}>
           <b>Submit</b>
         </Button>
         <Button
           outlined
-          style={{ margin: '20px' }}
-          onClick={e => {
+          style={{ margin: "20px" }}
+          onClick={(e) => {
             setEditProfile(false);
           }}
         >
@@ -140,7 +135,7 @@ const CreateProfile = ({ setEditProfile, createProfile, initProfile }) => {
 };
 
 CreateProfile.propTypes = {
-  createProfile: PropTypes.func.isRequired
+  createProfile: PropTypes.func.isRequired,
 };
 
 export default connect(null, { createProfile })(CreateProfile);
