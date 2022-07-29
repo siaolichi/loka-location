@@ -37,11 +37,15 @@ export const editInfowindowContent = (infowindowContent, location) => {
   }
 };
 let service;
-try {
-  service = new window.google.maps.places.PlacesService(document.createElement("div"));
-} catch (error) {
-  console.log("error initing the map", error);
-}
+
+window.onload = function () {
+  try {
+    service = new window.google.maps.places.PlacesService(document.createElement("div"));
+  } catch (error) {
+    console.log("error initing the map", error);
+  }
+};
+
 export const getGroupDetail = async (group) => {
   const result = [];
   for await (let location of group.locations) {
